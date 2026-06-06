@@ -1,0 +1,44 @@
+<%- include('layout', {
+    body: `
+<section class="product-details">
+    <div class="container product-details-container">
+        <div class="product-details-image ${product.tone}">
+            ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-detail-photo">` : `<span class="bottle large"></span>`}
+        </div>
+        <div class="product-details-info">
+            <p class="eyebrow">${product.type}</p>
+            <h1>${product.name}</h1>
+            <p class="product-size">${product.size}</p>
+            <p class="product-price">${product.price}</p>
+
+            <h2>${t.description}</h2>
+            <p class="product-description">${product.description}</p>
+
+            <div class="fragrance-notes">
+                <h2>${t.fragrance}</h2>
+                <div class="notes-group">
+                    <strong>${t.topNotes}</strong>
+                    <p>${product.topNotes}</p>
+                </div>
+                <div class="notes-group">
+                    <strong>${t.heartNotes}</strong>
+                    <p>${product.heartNotes}</p>
+                </div>
+                <div class="notes-group">
+                    <strong>${t.baseNotes}</strong>
+                    <p>${product.baseNotes}</p>
+                </div>
+            </div>
+
+            <h2>${t.story}</h2>
+            <p class="product-description">${product.story}</p>
+            <a href="/contact?lang=${lang}" class="button primary">${t.addToCart}</a>
+        </div>
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

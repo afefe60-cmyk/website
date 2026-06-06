@@ -1,0 +1,28 @@
+<%- include('layout', {
+    body: `
+<section class="page-hero compact">
+    <div class="container">
+        <p class="eyebrow">${t.testimonials}</p>
+        <h1>${t.testimonialTitle}</h1>
+        <p>${t.heroNote}</p>
+    </div>
+</section>
+
+<section class="products">
+    <div class="container testimonial-grid">
+        ${testimonials.map((testimonial) => `
+            <article class="testimonial-card">
+                <div class="stars">${Array(testimonial.rating).fill('★').join('')}</div>
+                <p class="testimonial-text">"${testimonial.text}"</p>
+                <h2>${testimonial.name}</h2>
+                <p>${testimonial.title}</p>
+            </article>
+        `).join('')}
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

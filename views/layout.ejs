@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= isRTL ? 'rtl' : 'ltr' %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<%= t.siteName %> - <%= t.footerTagline %>">
+    <meta name="keywords" content="AJMAN LUXURY, luxury perfumes, oud, extrait de parfum, UAE perfume">
+    <title><%= t.siteName %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        :root {
+            --ink: <%- designSettings.ink %>;
+            --gold: <%- designSettings.gold %>;
+            --paper: <%- designSettings.paper %>;
+            --mist: <%- designSettings.mist %>;
+            --card-radius: <%- designSettings.cardRadius %>;
+            --hero-logo-opacity: <%- designSettings.heroOpacity %>;
+            --site-font: <%- designSettings.fontFamily %>;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary navigation">
+            <a class="brand" href="/?lang=<%= lang %>" aria-label="<%= t.siteName %>">
+                <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="brand-wordmark">
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="/?lang=<%= lang %>"><%= t.home %></a></li>
+                <li><a href="/products?lang=<%= lang %>"><%= t.products %></a></li>
+                <li><a href="/scent-finder?lang=<%= lang %>"><%= t.scentFinder %></a></li>
+                <li><a href="/about?lang=<%= lang %>"><%= t.about %></a></li>
+                <li><a href="/contact?lang=<%= lang %>"><%= t.contact %></a></li>
+            </ul>
+
+            <div class="lang-switch" aria-label="Language switcher">
+                <a href="<%= currentPath %>?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+                <a href="<%= currentPath %>?lang=ar" class="<%= lang === 'ar' ? 'active' : '' %>">عربي</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <%- body %>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="footer-logo">
+            <p>&copy; 2026 <%= t.siteName %>. <%= t.footerTagline %>.</p>
+            <div class="footer-links">
+                <a href="/gallery?lang=<%= lang %>"><%= t.gallery %></a>
+                <a href="/blog?lang=<%= lang %>"><%= t.blog %></a>
+                <a href="/testimonials?lang=<%= lang %>"><%= t.testimonials %></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

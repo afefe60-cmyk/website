@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم AJMAN LUXURY</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <aside class="admin-sidebar">
+        <img src="/images/logo-wordmark.png" alt="AJMAN LUXURY">
+        <nav>
+            <button type="button" class="tab-button active" data-tab="dashboard">الرئيسية</button>
+            <button type="button" class="tab-button" data-tab="content">محتوى الموقع</button>
+            <button type="button" class="tab-button" data-tab="products">العطور</button>
+            <button type="button" class="tab-button" data-tab="journal">المجلة</button>
+            <button type="button" class="tab-button" data-tab="testimonials">آراء العملاء</button>
+            <button type="button" class="tab-button" data-tab="design">التصميم</button>
+        </nav>
+        <a class="site-link" href="/?lang=ar" target="_blank">عرض الموقع</a>
+        <form action="/admin/logout" method="POST">
+            <button type="submit" class="logout-button">تسجيل الخروج</button>
+        </form>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div>
+                <p>لوحة إدارة المحتوى والتصميم</p>
+                <h1>تحكم سريع بموقع العطور</h1>
+            </div>
+            <% if (saved) { %>
+                <div class="save-alert">تم حفظ التغييرات بنجاح</div>
+            <% } %>
+        </header>
+
+        <form action="/admin/save" method="POST" class="admin-form" id="adminForm">
+            <section class="tab-panel active" data-panel="dashboard">
+                <div class="stats-grid">
+                    <article>
+                        <strong><%= siteData.products.length %></strong>
+                        <span>عطور</span>
+                    </article>
+                    <article>
+                        <strong><%= siteData.posts.length %></strong>
+                        <span>مقالات</span>
+                    </article>
+                    <article>
+                        <strong><%= siteData.testimonials.length %></strong>
+                        <span>آراء عملاء</span>
+                    </article>
+                </div>
+
+                <div class="admin-card">
+                    <h2>ابدأ من هنا</h2>
+                    <p>عدّل النصوص الرئيسية، أسعار العطور، المقالات، ألوان الهوية، ثم اضغط حفظ التغييرات. أي تعديل يظهر مباشرة على الموقع.</p>
+                    <div class="quick-actions">
+                        <button type="button" class="tab-shortcut" data-tab="content">تعديل النصوص</button>
+                        <button type="button" class="tab-shortcut" data-tab="products">إدارة العطور</button>
+                        <button type="button" class="tab-shortcut" data-tab="design">تخصيص التصميم</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-panel" data-panel="content">
+                <div class="admin-card">
+                    <h2>نصوص الصفحة الرئيسية</h2>
+                    <div class="field-grid">
+                        <label>عنوان عربي<input name="translations[ar][welcome]" value="<%= siteData.translations.ar.welcome %>"></label>
+                        <label>عنوان إنجليزي<input name="translations[en][welcome]" value="<%= siteData.translations.en.welcome %>"></label>
+                        <label>وصف عربي<textarea name="translations[ar][subtitle]"><%= siteData.translations.ar.subtitle %></textarea></label>
+                        <label>وصف إنجليزي<textarea name="translations[en][subtitle]"><%= siteData.translations.en.subtitle %></textarea></label>
+                        <label>تعريف قصير عربي<input name="translations[ar][heroEyebrow]" value="<%= siteData.translations.ar.heroEyebrow %>"></label>
+                        <label>تعريف قصير إنجليزي<input name="translations[en][heroEyebrow]" value="<%= siteData.translations.en.heroEyebrow %>"></label>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h2>من نحن والتواصل</h2>
+                    <div class="field-grid">
+                        <label>عنوان من نحن عربي<input name="translations[ar][aboutTitle]" value="<%= siteData.translations.ar.aboutTitle %>"></label>
+                        <label>About title<input name="translations[en][aboutTitle]" value="<%= siteData.translations.en.aboutTitle %>"></label>
+                        <label>نص من نحن عربي<textarea name="translations[ar][aboutText1]"><%= siteData.translations.ar.aboutText1 %></textarea></label>
+                        <label>About text<textarea name="translations[en][aboutText1]"><%= siteData.translations.en.aboutText1 %></textarea></label>
+                        <label>الهاتف<input name="translations[ar][phone_label]" value="<%= siteData.translations.ar.phone_label %>"></label>
+                        <label>Phone<input name="translations[en][phone_label]" value="<%= siteData.translations.en.phone_label %>"></label>
+                        <label>البريد<input name="translations[ar][email_label]" value="<%= siteData.translations.ar.email_label %>"></label>
+                        <label>Email<input name="translations[en][email_label]" value="<%= siteData.translations.en.email_label %>"></label>
+                        <label>العنوان عربي<input name="translations[ar][address_label]" value="<%= siteData.translations.ar.address_label %>"></label>
+                        <label>Address<input name="translations[en][address_label]" value="<%= siteData.translations.en.address_label %>"></label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-panel" data-panel="products">
+                <div class="panel-toolbar">
+                    <h2>إدارة العطور</h2>
+                    <button type="button" class="secondary-button" data-add="product-list">إضافة عطر</button>
+                </div>
+                <div id="product-list" class="repeat-list">
+                    <% siteData.products.forEach((product, index) => { %>
+                        <article class="admin-card repeat-item">
+                            <div class="item-heading">
+                                <h3>عطر <%= index + 1 %></h3>
+                                <button type="button" class="danger-button" data-remove>حذف</button>
+                            </div>
+                            <div class="field-grid">
+                                <label>Slug<input name="products[<%= index %>][id]" value="<%= product.id %>"></label>
+                                <label>رابط الصورة<input name="products[<%= index %>][image]" value="<%= product.image || '' %>" placeholder="/images/products/example.jpeg"></label>
+                                <label>لون البطاقة
+                                    <select name="products[<%= index %>][tone]">
+                                        <option value="noir" <%= product.tone === 'noir' ? 'selected' : '' %>>أسود فاخر</option>
+                                        <option value="rose" <%= product.tone === 'rose' ? 'selected' : '' %>>وردي</option>
+                                        <option value="royal" <%= product.tone === 'royal' ? 'selected' : '' %>>أزرق ملكي</option>
+                                        <option value="pearl" <%= product.tone === 'pearl' ? 'selected' : '' %>>أبيض لؤلؤي</option>
+                                        <option value="sapphire" <%= product.tone === 'sapphire' ? 'selected' : '' %>>أزرق فاخر</option>
+                                    </select>
+                                </label>
+                                <label>اسم عربي<input name="products[<%= index %>][name][ar]" value="<%= product.name.ar %>"></label>
+                                <label>Name<input name="products[<%= index %>][name][en]" value="<%= product.name.en %>"></label>
+                                <label>السعر عربي<input name="products[<%= index %>][price][ar]" value="<%= product.price.ar %>"></label>
+                                <label>Price<input name="products[<%= index %>][price][en]" value="<%= product.price.en %>"></label>
+                                <label>الحجم عربي<input name="products[<%= index %>][size][ar]" value="<%= product.size.ar %>"></label>
+                                <label>Size<input name="products[<%= index %>][size][en]" value="<%= product.size.en %>"></label>
+                                <label>الوصف عربي<textarea name="products[<%= index %>][description][ar]"><%= product.description.ar %></textarea></label>
+                                <label>Description<textarea name="products[<%= index %>][description][en]"><%= product.description.en %></textarea></label>
+                                <label>المقدمة<input name="products[<%= index %>][topNotes][ar]" value="<%= product.topNotes.ar %>"></label>
+                                <label>Top notes<input name="products[<%= index %>][topNotes][en]" value="<%= product.topNotes.en %>"></label>
+                                <label>القلب<input name="products[<%= index %>][heartNotes][ar]" value="<%= product.heartNotes.ar %>"></label>
+                                <label>Heart notes<input name="products[<%= index %>][heartNotes][en]" value="<%= product.heartNotes.en %>"></label>
+                                <label>القاعدة<input name="products[<%= index %>][baseNotes][ar]" value="<%= product.baseNotes.ar %>"></label>
+                                <label>Base notes<input name="products[<%= index %>][baseNotes][en]" value="<%= product.baseNotes.en %>"></label>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
+            </section>
+
+            <section class="tab-panel" data-panel="journal">
+                <div class="panel-toolbar">
+                    <h2>المجلة</h2>
+                    <button type="button" class="secondary-button" data-add="post-list">إضافة مقال</button>
+                </div>
+                <div id="post-list" class="repeat-list">
+                    <% siteData.posts.forEach((post, index) => { %>
+                        <article class="admin-card repeat-item">
+                            <div class="item-heading">
+                                <h3>مقال <%= index + 1 %></h3>
+                                <button type="button" class="danger-button" data-remove>حذف</button>
+                            </div>
+                            <div class="field-grid">
+                                <label>Slug<input name="posts[<%= index %>][id]" value="<%= post.id %>"></label>
+                                <label>التاريخ عربي<input name="posts[<%= index %>][date][ar]" value="<%= post.date.ar %>"></label>
+                                <label>Date<input name="posts[<%= index %>][date][en]" value="<%= post.date.en %>"></label>
+                                <label>عنوان عربي<input name="posts[<%= index %>][title][ar]" value="<%= post.title.ar %>"></label>
+                                <label>Title<input name="posts[<%= index %>][title][en]" value="<%= post.title.en %>"></label>
+                                <label>ملخص عربي<textarea name="posts[<%= index %>][excerpt][ar]"><%= post.excerpt.ar %></textarea></label>
+                                <label>Excerpt<textarea name="posts[<%= index %>][excerpt][en]"><%= post.excerpt.en %></textarea></label>
+                                <label>المحتوى عربي<textarea name="posts[<%= index %>][content][ar]"><%= post.content.ar %></textarea></label>
+                                <label>Content<textarea name="posts[<%= index %>][content][en]"><%= post.content.en %></textarea></label>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
+            </section>
+
+            <section class="tab-panel" data-panel="testimonials">
+                <div class="panel-toolbar">
+                    <h2>آراء العملاء</h2>
+                    <button type="button" class="secondary-button" data-add="testimonial-list">إضافة رأي</button>
+                </div>
+                <div id="testimonial-list" class="repeat-list">
+                    <% siteData.testimonials.forEach((testimonial, index) => { %>
+                        <article class="admin-card repeat-item">
+                            <div class="item-heading">
+                                <h3>رأي <%= index + 1 %></h3>
+                                <button type="button" class="danger-button" data-remove>حذف</button>
+                            </div>
+                            <div class="field-grid">
+                                <label>التقييم<input type="number" min="1" max="5" name="testimonials[<%= index %>][rating]" value="<%= testimonial.rating %>"></label>
+                                <label>الاسم عربي<input name="testimonials[<%= index %>][name][ar]" value="<%= testimonial.name.ar %>"></label>
+                                <label>Name<input name="testimonials[<%= index %>][name][en]" value="<%= testimonial.name.en %>"></label>
+                                <label>المدينة عربي<input name="testimonials[<%= index %>][title][ar]" value="<%= testimonial.title.ar %>"></label>
+                                <label>City<input name="testimonials[<%= index %>][title][en]" value="<%= testimonial.title.en %>"></label>
+                                <label>الرأي عربي<textarea name="testimonials[<%= index %>][text][ar]"><%= testimonial.text.ar %></textarea></label>
+                                <label>Review<textarea name="testimonials[<%= index %>][text][en]"><%= testimonial.text.en %></textarea></label>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
+            </section>
+
+            <section class="tab-panel" data-panel="design">
+                <div class="admin-card">
+                    <h2>تخصيص التصميم</h2>
+                    <div class="design-grid">
+                        <label>لون النص الرئيسي<input type="color" name="designSettings[ink]" value="<%= siteData.designSettings.ink %>"></label>
+                        <label>اللون الذهبي<input type="color" name="designSettings[gold]" value="<%= siteData.designSettings.gold %>"></label>
+                        <label>الخلفية<input type="color" name="designSettings[paper]" value="<%= siteData.designSettings.paper %>"></label>
+                        <label>خلفية الأقسام<input type="color" name="designSettings[mist]" value="<%= siteData.designSettings.mist %>"></label>
+                        <label>شفافية شعار الواجهة<input type="range" min="0.05" max="0.4" step="0.01" name="designSettings[heroOpacity]" value="<%= siteData.designSettings.heroOpacity %>"></label>
+                        <label>استدارة البطاقات<input name="designSettings[cardRadius]" value="<%= siteData.designSettings.cardRadius %>"></label>
+                        <label class="wide">الخط<input name="designSettings[fontFamily]" value="<%= siteData.designSettings.fontFamily %>"></label>
+                    </div>
+                </div>
+            </section>
+
+            <div class="save-bar">
+                <button type="submit" class="save-button">حفظ التغييرات</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-button, .tab-shortcut');
+        const panels = document.querySelectorAll('.tab-panel');
+
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+                document.querySelectorAll('.tab-button').forEach((item) => item.classList.toggle('active', item.dataset.tab === tab));
+                panels.forEach((panel) => panel.classList.toggle('active', panel.dataset.panel === tab));
+            });
+        });
+
+        document.querySelectorAll('[data-remove]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const list = button.closest('.repeat-list');
+                if (list.children.length > 1) {
+                    button.closest('.repeat-item').remove();
+                    renumberList(list);
+                }
+            });
+        });
+
+        document.querySelectorAll('[data-add]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const list = document.getElementById(button.dataset.add);
+                const clone = list.querySelector('.repeat-item').cloneNode(true);
+                clone.querySelectorAll('input, textarea').forEach((field) => {
+                    if (field.type !== 'number') {
+                        field.value = '';
+                    }
+                });
+                clone.querySelectorAll('[data-remove]').forEach((removeButton) => {
+                    removeButton.addEventListener('click', () => {
+                        if (list.children.length > 1) {
+                            removeButton.closest('.repeat-item').remove();
+                            renumberList(list);
+                        }
+                    });
+                });
+                list.appendChild(clone);
+                renumberList(list);
+            });
+        });
+
+        function renumberList(list) {
+            const prefix = list.id === 'product-list' ? 'products' : list.id === 'post-list' ? 'posts' : 'testimonials';
+            list.querySelectorAll('.repeat-item').forEach((item, index) => {
+                const title = item.querySelector('h3');
+                if (title) {
+                    title.textContent = title.textContent.replace(/\d+/, index + 1);
+                }
+                item.querySelectorAll('[name]').forEach((field) => {
+                    field.name = field.name.replace(new RegExp(`${prefix}\\[\\d+\\]`), `${prefix}[${index}]`);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

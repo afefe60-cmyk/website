@@ -1,0 +1,36 @@
+<%- include('layout', {
+    body: `
+<section class="page-hero compact">
+    <div class="container">
+        <p class="eyebrow">${t.gallery}</p>
+        <h1>${t.galleryTitle}</h1>
+        <p>${t.footerTagline}</p>
+    </div>
+</section>
+
+<section class="products">
+    <div class="container gallery-grid">
+        ${products.map((product) => `
+            <article class="gallery-item ${product.tone}">
+                ${product.image ? `<img src="${product.image}" alt="${product.name}" class="gallery-photo">` : `<span class="bottle"></span>`}
+                <div>
+                    <h2>${product.name}</h2>
+                    <p>${product.type}</p>
+                </div>
+            </article>
+        `).join('')}
+        <article class="gallery-item identity">
+            <img src="/images/logo.png" alt="${t.siteName}">
+            <div>
+                <h2>${t.siteName}</h2>
+                <p>${t.heroEyebrow}</p>
+            </div>
+        </article>
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

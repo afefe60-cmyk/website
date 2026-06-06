@@ -1,0 +1,56 @@
+<%- include('layout', {
+    body: `
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">${t.heroEyebrow}</p>
+        <h1>${t.welcome}</h1>
+        <p class="hero-text">${t.subtitle}</p>
+        <div class="hero-actions">
+            <a href="/products?lang=${lang}" class="button primary">${t.shopNow}</a>
+            <a href="/scent-finder?lang=${lang}" class="button ghost">${t.scentFinder}</a>
+        </div>
+    </div>
+    <div class="hero-identity" aria-hidden="true">
+        <img src="/images/logo.png" alt="">
+    </div>
+</section>
+
+<section class="intro-band">
+    <div class="container intro-grid">
+        <div>
+            <p class="eyebrow">${t.ourProducts}</p>
+            <h2>${t.collectionIntro}</h2>
+        </div>
+        <p>${t.heroNote}</p>
+    </div>
+</section>
+
+<section class="featured-products">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">${t.products}</p>
+            <h2>${t.ourProducts}</h2>
+        </div>
+        <div class="products-grid">
+            ${products.map((product) => `
+                <article class="product-card ${product.tone}">
+                    <a href="/product/${product.id}?lang=${lang}" class="product-visual" aria-label="${product.name}">
+                        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-photo">` : `<span class="bottle"></span>`}
+                    </a>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-type">${product.type}</p>
+                        <p class="product-size">${product.size}</p>
+                        <a href="/product/${product.id}?lang=${lang}" class="view-details">${t.viewDetails}</a>
+                    </div>
+                </article>
+            `).join('')}
+        </div>
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

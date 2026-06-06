@@ -1,0 +1,35 @@
+<%- include('layout', {
+    body: `
+<section class="page-hero">
+    <div class="container split-page">
+        <div>
+            <p class="eyebrow">${t.about}</p>
+            <h1>${t.aboutTitle}</h1>
+            <p>${t.aboutText1}</p>
+        </div>
+        <div class="logo-panel">
+            <img src="/images/logo.png" alt="${t.siteName}">
+        </div>
+    </div>
+</section>
+
+<section class="about">
+    <div class="container story-grid">
+        <article>
+            <h2>${t.heritageTitle}</h2>
+            <p>${t.aboutText2}</p>
+            <p>${t.heritageText}</p>
+        </article>
+        <article>
+            <h2>${t.commitmentTitle}</h2>
+            <p>${t.aboutText3}</p>
+            <p>${t.commitmentText}</p>
+        </article>
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

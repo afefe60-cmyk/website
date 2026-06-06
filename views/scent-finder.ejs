@@ -1,0 +1,52 @@
+<%- include('layout', {
+    body: `
+<section class="page-hero compact">
+    <div class="container">
+        <p class="eyebrow">${t.scentFinder}</p>
+        <h1>${t.scentFinderTitle}</h1>
+        <p>${t.scentFinderDesc}</p>
+    </div>
+</section>
+
+<section class="contact">
+    <div class="container finder-wrap">
+        <form id="scentFinderForm" class="finder-form" data-lang="${lang}">
+            <fieldset>
+                <legend>${t.question1}</legend>
+                <label><input type="radio" name="profile" value="fresh" required><span>${t.option1}</span></label>
+                <label><input type="radio" name="profile" value="floral"><span>${t.option2}</span></label>
+                <label><input type="radio" name="profile" value="woody"><span>${t.option3}</span></label>
+                <label><input type="radio" name="profile" value="oriental"><span>${t.option4}</span></label>
+            </fieldset>
+
+            <fieldset>
+                <legend>${t.question2}</legend>
+                <label><input type="radio" name="occasion" value="daily" required><span>${t.option5}</span></label>
+                <label><input type="radio" name="occasion" value="evening"><span>${t.option6}</span></label>
+                <label><input type="radio" name="occasion" value="both"><span>${t.option7}</span></label>
+            </fieldset>
+
+            <fieldset>
+                <legend>${t.question3}</legend>
+                <label><input type="radio" name="longevity" value="short" required><span>${t.option8}</span></label>
+                <label><input type="radio" name="longevity" value="medium"><span>${t.option9}</span></label>
+                <label><input type="radio" name="longevity" value="long"><span>${t.option10}</span></label>
+            </fieldset>
+
+            <button type="submit" class="button primary submit-btn">${t.getResult}</button>
+        </form>
+
+        <div id="result" class="finder-result" hidden>
+            <p class="eyebrow">${t.perfectMatch}</p>
+            <h2 id="resultTitle"></h2>
+            <p id="resultText"></p>
+            <a id="resultLink" href="/products?lang=${lang}" class="button ghost">${t.viewProduct}</a>
+        </div>
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

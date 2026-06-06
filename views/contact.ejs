@@ -1,0 +1,61 @@
+<%- include('layout', {
+    body: `
+<section class="page-hero compact">
+    <div class="container">
+        <p class="eyebrow">${t.contact}</p>
+        <h1>${t.contactTitle}</h1>
+        <p>${t.heroNote}</p>
+    </div>
+</section>
+
+<section class="contact">
+    <div class="container contact-container">
+        <div class="contact-info">
+            <h2>${t.contactInfo}</h2>
+            <div class="contact-item">
+                <strong>${t.address}</strong>
+                <p>${t.address_label}</p>
+            </div>
+            <div class="contact-item">
+                <strong>${t.phone}</strong>
+                <p>${t.phone_label}</p>
+            </div>
+            <div class="contact-item">
+                <strong>${t.email}</strong>
+                <p>${t.email_label}</p>
+            </div>
+            <div class="contact-item">
+                <strong>${t.hoursTitle}</strong>
+                <p>${t.hoursWeek}</p>
+                <p>${t.hoursFriday}</p>
+            </div>
+        </div>
+
+        <form class="contact-form">
+            <h2>${t.contactForm}</h2>
+            <div class="form-group">
+                <label for="name">${t.name}</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">${t.email}</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">${t.phone}</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="message">${t.message}</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="button primary submit-btn">${t.send}</button>
+        </form>
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

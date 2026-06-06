@@ -1,0 +1,16 @@
+<%- include('layout', {
+    body: `
+<section class="product-details">
+    <article class="container article-page">
+        <p class="eyebrow">${post.date} · ${post.author}</p>
+        <h1>${post.title}</h1>
+        <p>${post.content}</p>
+        <a href="/blog?lang=${lang}" class="button ghost">${t.backToBlog}</a>
+    </article>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

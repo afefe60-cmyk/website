@@ -1,0 +1,31 @@
+<%- include('layout', {
+    body: `
+<section class="page-hero compact">
+    <div class="container">
+        <p class="eyebrow">${t.blog}</p>
+        <h1>${t.blogTitle}</h1>
+        <p>${t.collectionIntro}</p>
+    </div>
+</section>
+
+<section class="products">
+    <div class="container journal-grid">
+        ${posts.map((post) => `
+            <article class="journal-card">
+                <div class="journal-date">${post.date}</div>
+                <div class="journal-body">
+                    <p class="eyebrow">${post.author}</p>
+                    <h2>${post.title}</h2>
+                    <p>${post.excerpt}</p>
+                    <a href="/blog/${post.id}?lang=${lang}" class="view-details">${t.readMore}</a>
+                </div>
+            </article>
+        `).join('')}
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

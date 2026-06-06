@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دخول لوحة التحكم - AJMAN LUXURY</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="login-page">
+    <main class="login-shell">
+        <form action="/admin/login" method="POST" class="login-card">
+            <img src="/images/logo-wordmark.png" alt="AJMAN LUXURY">
+            <h1>تسجيل دخول لوحة التحكم</h1>
+            <p>أدخل بيانات المدير لإدارة محتوى وتصميم الموقع.</p>
+
+            <% if (error) { %>
+                <div class="login-error">اسم المستخدم أو كلمة المرور غير صحيحة.</div>
+            <% } %>
+
+            <label>
+                اسم المستخدم
+                <input type="text" name="username" autocomplete="username" required autofocus>
+            </label>
+
+            <label>
+                كلمة المرور
+                <input type="password" name="password" autocomplete="current-password" required>
+            </label>
+
+            <button type="submit" class="save-button">دخول</button>
+            <a href="/?lang=ar" class="back-link">العودة إلى الموقع</a>
+        </form>
+    </main>
+</body>
+</html>
