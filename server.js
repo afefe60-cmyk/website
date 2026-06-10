@@ -7,7 +7,10 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'site-data.json');
+const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
 const VIDEO_DIR = path.join(__dirname, 'public', 'videos');
+const SITE_URL = process.env.SITE_URL || `http://localhost:${PORT}`;
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-this-secret';
@@ -404,6 +407,31 @@ function writeSiteData(siteData) {
     applySiteData();
 }
 
+function readOrders() {
+    try {
+        if (!fs.existsSync(ORDERS_FILE)) {
+            return [];
+        }
+
+        return JSON.parse(fs.readFileSync(ORDERS_FILE, 'utf8'));
+    } catch (error) {
+        console.warn(`Unable to read ${ORDERS_FILE}: ${error.message}`);
+        return [];
+    }
+}
+
+function writeOrders(orders) {
+    ensureDataDir();
+    fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2), 'utf8');
+}
+
+function saveOrder(order) {
+    const orders = readOrders();
+    orders.unshift(order);
+    writeOrders(orders);
+    return order;
+}
+
 function snapshotSiteData() {
     return {
         translations,
@@ -457,6 +485,42 @@ function normalizeTestimonials(formTestimonials) {
         title: testimonial.title || { en: '', ar: '' },
         text: testimonial.text || { en: '', ar: '' }
     })).filter((testimonial) => testimonial.name.en || testimonial.name.ar);
+}
+
+function priceToFils(product) {
+    const priceText = product.price?.en || product.price?.ar || '';
+    const amount = Number(String(priceText).replace(/[^\d.]/g, '')) || 0;
+    return Math.round(amount * 100);
+}
+
+function getLocalizedProducts(lang) {
+    return products.map((product) => {
+        const localized = localizeItem(product, lang);
+        localized.priceFils = priceToFils(product);
+        return localized;
+    });
+}
+
+function buildOrderItems(cartItems, lang) {
+    return cartItems.map((cartItem) => {
+        const product = products.find((item) => item.id === cartItem.id);
+        if (!product) {
+            return null;
+        }
+
+        const quantity = Math.max(1, Math.min(Number(cartItem.quantity) || 1, 20));
+        const localized = localizeItem(product, lang);
+        const unitAmount = priceToFils(product);
+
+        return {
+            id: product.id,
+            name: localized.name,
+            image: product.image,
+            quantity,
+            unitAmount,
+            lineTotal: unitAmount * quantity
+        };
+    }).filter(Boolean);
 }
 
 applySiteData();
@@ -675,7 +739,8 @@ app.get('/admin', requireAdmin, (req, res) => {
     res.render('admin', {
         currentPath: req.path,
         saved: req.query.saved === '1',
-        siteData: snapshotSiteData()
+        siteData: snapshotSiteData(),
+        orders: readOrders()
     });
 });
 
@@ -700,15 +765,101 @@ app.post('/admin/save', requireAdmin, (req, res) => {
 });
 
 app.get('/', renderPage('index', (lang) => ({
-    products: products.map((product) => localizeItem(product, lang))
+    products: getLocalizedProducts(lang)
 })));
 
 app.get('/about', renderPage('about', () => ({})));
 
 app.get('/contact', renderPage('contact', () => ({})));
 
+app.get('/checkout', renderPage('checkout', (lang) => ({
+    products: getLocalizedProducts(lang),
+    stripeEnabled: Boolean(STRIPE_SECRET_KEY)
+})));
+
+app.get('/checkout/success', (req, res) => {
+    res.render('checkout-success', pageData(req, {
+        orderId: req.query.order || ''
+    }));
+});
+
+app.post('/api/checkout', async (req, res) => {
+    const lang = req.body.lang === 'ar' ? 'ar' : 'en';
+    const items = buildOrderItems(req.body.items || [], lang);
+    const customer = req.body.customer || {};
+
+    if (!items.length) {
+        res.status(400).json({ error: 'Cart is empty' });
+        return;
+    }
+
+    const total = items.reduce((sum, item) => sum + item.lineTotal, 0);
+    const order = saveOrder({
+        id: `AJ-${Date.now()}`,
+        status: STRIPE_SECRET_KEY ? 'pending_payment' : 'pending_manual',
+        paymentProvider: STRIPE_SECRET_KEY ? 'stripe' : 'manual',
+        lang,
+        customer: {
+            name: customer.name || '',
+            email: customer.email || '',
+            phone: customer.phone || '',
+            address: customer.address || ''
+        },
+        items,
+        total,
+        currency: 'AED',
+        createdAt: new Date().toISOString()
+    });
+
+    if (!STRIPE_SECRET_KEY) {
+        res.json({ url: `/checkout/success?order=${order.id}&lang=${lang}`, orderId: order.id });
+        return;
+    }
+
+    try {
+        const params = new URLSearchParams();
+        params.append('mode', 'payment');
+        params.append('payment_method_types[0]', 'card');
+        params.append('success_url', `${SITE_URL}/checkout/success?order=${order.id}&session_id={CHECKOUT_SESSION_ID}&lang=${lang}`);
+        params.append('cancel_url', `${SITE_URL}/checkout?cancelled=1&lang=${lang}`);
+        params.append('metadata[orderId]', order.id);
+        if (order.customer.email) {
+            params.append('customer_email', order.customer.email);
+        }
+
+        items.forEach((item, index) => {
+            params.append(`line_items[${index}][quantity]`, String(item.quantity));
+            params.append(`line_items[${index}][price_data][currency]`, 'aed');
+            params.append(`line_items[${index}][price_data][unit_amount]`, String(item.unitAmount));
+            params.append(`line_items[${index}][price_data][product_data][name]`, item.name);
+            if (item.image) {
+                params.append(`line_items[${index}][price_data][product_data][images][0]`, `${SITE_URL}${item.image}`);
+            }
+        });
+
+        const stripeResponse = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params
+        });
+        const session = await stripeResponse.json();
+
+        if (!stripeResponse.ok) {
+            throw new Error(session.error?.message || 'Stripe checkout failed');
+        }
+
+        res.json({ url: session.url, orderId: order.id });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Unable to create payment session' });
+    }
+});
+
 app.get('/products', renderPage('products', (lang) => ({
-    products: products.map((product) => localizeItem(product, lang))
+    products: getLocalizedProducts(lang)
 })));
 
 app.get('/product/:id', (req, res) => {
@@ -719,12 +870,15 @@ app.get('/product/:id', (req, res) => {
     }
 
     res.render('product-detail', pageData(req, {
-        product: localizeItem(product, req.lang)
+        product: {
+            ...localizeItem(product, req.lang),
+            priceFils: priceToFils(product)
+        }
     }));
 });
 
 app.get('/gallery', renderPage('gallery', (lang) => ({
-    products: products.map((product) => localizeItem(product, lang))
+    products: getLocalizedProducts(lang)
 })));
 
 app.get('/blog', renderPage('blog', (lang) => ({

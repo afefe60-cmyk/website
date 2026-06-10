@@ -1,0 +1,27 @@
+<%- include('layout', {
+    body: `
+<section class="checkout-success">
+    <div class="container success-card">
+        <p class="eyebrow">${lang === 'ar' ? 'تم استلام الطلب' : 'Order Received'}</p>
+        <h1>${lang === 'ar' ? 'شكراً لاختيارك عجمان لكجري' : 'Thank you for choosing AJMAN LUXURY'}</h1>
+        <p>${lang === 'ar' ? 'تم حفظ طلبك بنجاح. سيتواصل معك فريقنا لتأكيد التفاصيل والتوصيل.' : 'Your order has been saved successfully. Our team will contact you to confirm details and delivery.'}</p>
+        <p class="success-order-id">${lang === 'ar' ? 'رقم الطلب:' : 'Order ID:'} <strong data-order-id>${orderId || ''}</strong></p>
+        <div class="hero-actions">
+            <a href="/products?lang=${lang}" class="button primary">${lang === 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}</a>
+            <a href="/?lang=${lang}" class="button ghost">${lang === 'ar' ? 'العودة للرئيسية' : 'Back Home'}</a>
+        </div>
+    </div>
+</section>
+<script>
+    localStorage.removeItem('ajmanLuxuryCart');
+    document.querySelectorAll('[data-cart-count]').forEach((counter) => {
+        counter.textContent = '0';
+        counter.hidden = true;
+    });
+</script>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

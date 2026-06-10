@@ -2,10 +2,174 @@ document.addEventListener('DOMContentLoaded', () => {
     initCardReveal();
     initContactForm();
     initScentFinder();
+    initCart();
+    initCheckout();
 });
 
 function currentLang() {
     return document.documentElement.lang === 'ar' ? 'ar' : 'en';
+}
+
+const CART_KEY = 'ajmanLuxuryCart';
+
+function readCart() {
+    try {
+        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function writeCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    updateCartCount();
+}
+
+function formatMoney(amount) {
+    return `AED ${Math.max(0, Number(amount) || 0).toLocaleString('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    })}`;
+}
+
+function updateCartCount() {
+    const count = readCart().reduce((sum, item) => sum + item.quantity, 0);
+    document.querySelectorAll('[data-cart-count]').forEach((counter) => {
+        counter.textContent = count;
+        counter.hidden = count === 0;
+    });
+}
+
+function initCart() {
+    updateCartCount();
+    document.querySelectorAll('[data-add-to-cart]').forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const cart = readCart();
+            const product = {
+                id: button.dataset.productId,
+                name: button.dataset.productName,
+                price: button.dataset.productPrice,
+                priceFils: Number(button.dataset.productPriceFils) || 0,
+                image: button.dataset.productImage
+            };
+
+            const existing = cart.find((item) => item.id === product.id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            writeCart(cart);
+            showNotification(currentLang() === 'ar' ? 'تمت إضافة العطر إلى السلة.' : 'Perfume added to your bag.');
+        });
+    });
+}
+
+function initCheckout() {
+    const checkoutPage = document.querySelector('[data-checkout-page]');
+    if (!checkoutPage) {
+        return;
+    }
+
+    const itemsWrap = checkoutPage.querySelector('[data-checkout-items]');
+    const emptyCart = checkoutPage.querySelector('[data-empty-cart]');
+    const totalWrap = checkoutPage.querySelector('[data-checkout-total-wrap]');
+    const totalNode = checkoutPage.querySelector('[data-checkout-total]');
+    const form = checkoutPage.querySelector('[data-checkout-form]');
+    const message = checkoutPage.querySelector('[data-checkout-message]');
+    const lang = checkoutPage.dataset.lang === 'ar' ? 'ar' : 'en';
+
+    function renderCheckout() {
+        const cart = readCart();
+        const total = cart.reduce((sum, item) => sum + (Number(item.priceFils) || 0) * item.quantity, 0);
+
+        emptyCart.hidden = cart.length > 0;
+        totalWrap.hidden = cart.length === 0;
+        form.hidden = cart.length === 0;
+        totalNode.textContent = formatMoney(total / 100);
+
+        itemsWrap.innerHTML = cart.map((item) => `
+            <article class="checkout-item" data-cart-item="${item.id}">
+                ${item.image ? `<img src="${item.image}" alt="${item.name}">` : '<span class="checkout-thumb"></span>'}
+                <div>
+                    <h3>${item.name}</h3>
+                    <p>${item.price}</p>
+                    <div class="quantity-control">
+                        <button type="button" data-qty="-1" aria-label="Decrease">−</button>
+                        <span>${item.quantity}</span>
+                        <button type="button" data-qty="1" aria-label="Increase">+</button>
+                    </div>
+                </div>
+                <strong>${formatMoney((Number(item.priceFils) || 0) * item.quantity / 100)}</strong>
+                <button type="button" class="remove-cart-item" data-remove-item>${lang === 'ar' ? 'حذف' : 'Remove'}</button>
+            </article>
+        `).join('');
+    }
+
+    itemsWrap.addEventListener('click', (event) => {
+        const itemNode = event.target.closest('[data-cart-item]');
+        if (!itemNode) {
+            return;
+        }
+
+        const cart = readCart();
+        const item = cart.find((cartItem) => cartItem.id === itemNode.dataset.cartItem);
+        if (!item) {
+            return;
+        }
+
+        if (event.target.matches('[data-remove-item]')) {
+            writeCart(cart.filter((cartItem) => cartItem.id !== item.id));
+            renderCheckout();
+            return;
+        }
+
+        if (event.target.matches('[data-qty]')) {
+            item.quantity = Math.max(1, item.quantity + Number(event.target.dataset.qty));
+            writeCart(cart);
+            renderCheckout();
+        }
+    });
+
+    checkoutPage.querySelector('[data-clear-cart]').addEventListener('click', () => {
+        writeCart([]);
+        renderCheckout();
+    });
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        message.textContent = lang === 'ar' ? 'جاري تجهيز الطلب...' : 'Preparing your order...';
+
+        const formData = new FormData(form);
+        const customer = Object.fromEntries(formData.entries());
+        const items = readCart().map((item) => ({ id: item.id, quantity: item.quantity }));
+
+        try {
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lang, customer, items })
+            });
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Checkout failed');
+            }
+
+            if (result.url && result.url.startsWith('/checkout/success')) {
+                writeCart([]);
+            }
+            window.location.href = result.url;
+        } catch (error) {
+            message.textContent = lang === 'ar'
+                ? 'تعذر إتمام الطلب الآن. حاول مرة أخرى.'
+                : 'Unable to place the order now. Please try again.';
+        }
+    });
+
+    renderCheckout();
 }
 
 function initCardReveal() {

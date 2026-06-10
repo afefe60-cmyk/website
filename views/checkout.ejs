@@ -1,0 +1,46 @@
+<%- include('layout', {
+    body: `
+<section class="checkout-hero">
+    <div class="container">
+        <p class="eyebrow">${lang === 'ar' ? 'الدفع الآمن' : 'Secure Checkout'}</p>
+        <h1>${lang === 'ar' ? 'إتمام طلب عجمان لكجري' : 'Complete Your AJMAN LUXURY Order'}</h1>
+        <p>${lang === 'ar' ? 'راجع العطور المختارة وأدخل بيانات التوصيل، ثم انتقل للدفع.' : 'Review your perfumes, add delivery details, then continue to payment.'}</p>
+    </div>
+</section>
+
+<section class="checkout-page">
+    <div class="container checkout-grid" data-checkout-page data-lang="${lang}">
+        <div class="checkout-card">
+            <div class="checkout-card-heading">
+                <h2>${lang === 'ar' ? 'سلة العطور' : 'Perfume Bag'}</h2>
+                <button type="button" class="link-button" data-clear-cart>${lang === 'ar' ? 'تفريغ السلة' : 'Clear bag'}</button>
+            </div>
+            <div class="checkout-items" data-checkout-items></div>
+            <div class="empty-cart" data-empty-cart hidden>
+                <p>${lang === 'ar' ? 'السلة فارغة الآن.' : 'Your bag is empty.'}</p>
+                <a href="/products?lang=${lang}" class="button primary">${lang === 'ar' ? 'تسوق العطور' : 'Shop Perfumes'}</a>
+            </div>
+            <div class="checkout-total" data-checkout-total-wrap>
+                <span>${lang === 'ar' ? 'الإجمالي' : 'Total'}</span>
+                <strong data-checkout-total>AED 0</strong>
+            </div>
+        </div>
+
+        <form class="checkout-card checkout-form" data-checkout-form>
+            <h2>${lang === 'ar' ? 'بيانات العميل والتوصيل' : 'Customer & Delivery Details'}</h2>
+            <label>${lang === 'ar' ? 'الاسم الكامل' : 'Full name'}<input name="name" required autocomplete="name"></label>
+            <label>${lang === 'ar' ? 'البريد الإلكتروني' : 'Email'}<input type="email" name="email" required autocomplete="email"></label>
+            <label>${lang === 'ar' ? 'رقم الهاتف' : 'Phone'}<input name="phone" required autocomplete="tel"></label>
+            <label>${lang === 'ar' ? 'العنوان' : 'Delivery address'}<textarea name="address" required rows="4" autocomplete="street-address"></textarea></label>
+            <p class="payment-note">${stripeEnabled ? (lang === 'ar' ? 'سيتم تحويلك إلى صفحة دفع Stripe الآمنة.' : 'You will be redirected to secure Stripe payment.') : (lang === 'ar' ? 'بوابة الدفع غير مفعلة بعد؛ سيتم حفظ الطلب للمتابعة اليدوية.' : 'Payment gateway is not active yet; the order will be saved for manual follow-up.')}</p>
+            <button type="submit" class="button primary checkout-submit">${lang === 'ar' ? 'إتمام الطلب' : 'Place Order'}</button>
+            <p class="checkout-message" data-checkout-message role="status"></p>
+        </form>
+    </div>
+</section>
+    `,
+    lang: lang,
+    isRTL: isRTL,
+    currentPath: currentPath,
+    t: t
+}) %>

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "AJ-1781075462314",
+    "status": "pending_manual",
+    "paymentProvider": "manual",
+    "lang": "ar",
+    "customer": {
+      "name": "zain",
+      "email": "afefe60@gmail.com",
+      "phone": "249116731488",
+      "address": "jjasjkdha"
+    },
+    "items": [
+      {
+        "id": "parliament",
+        "name": "بارليامنت",
+        "image": "/images/products/parliament.jpeg",
+        "quantity": 2,
+        "unitAmount": 50000,
+        "lineTotal": 100000
+      }
+    ],
+    "total": 100000,
+    "currency": "AED",
+    "createdAt": "2026-06-10T07:11:02.315Z"
+  }
+]

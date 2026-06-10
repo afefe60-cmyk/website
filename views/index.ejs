@@ -75,7 +75,7 @@
                             <strong>${product.price}</strong>
                             <span>${product.size}</span>
                         </div>
-                        <a href="/contact?lang=${lang}" class="add-cart-button">${lang === 'ar' ? 'أضف للطلب' : 'Add to Cart'}</a>
+                        <a href="/checkout?lang=${lang}" class="add-cart-button" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">${lang === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</a>
                     </div>
                 </article>
             `).join('')}
@@ -121,7 +121,7 @@
                             <strong>${product.price}</strong>
                             <span>${product.size}</span>
                         </div>
-                        <a href="/contact?lang=${lang}" class="add-cart-button">${lang === 'ar' ? 'أضف للطلب' : 'Add to Cart'}</a>
+                        <a href="/checkout?lang=${lang}" class="add-cart-button" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">${lang === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</a>
                     </div>
                 </article>
             `).join('')}
@@ -182,7 +182,7 @@
                             <strong>${product.price}</strong>
                             <span>${product.size}</span>
                         </div>
-                        <a href="/contact?lang=${lang}" class="add-cart-button">${lang === 'ar' ? 'أضف للطلب' : 'Add to Cart'}</a>
+                        <a href="/checkout?lang=${lang}" class="add-cart-button" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">${lang === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</a>
                     </div>
                 </article>
             `).join('')}

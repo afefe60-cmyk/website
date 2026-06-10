@@ -10,6 +10,68 @@
     --admin-danger: #b32d2e;
 }
 
+.orders-note {
+    color: var(--admin-muted);
+    font-weight: 700;
+}
+
+.orders-table {
+    display: grid;
+    gap: 16px;
+}
+
+.order-card {
+    display: grid;
+    gap: 14px;
+    padding: 20px;
+    border: 1px solid var(--admin-line);
+    border-radius: 8px;
+    background: var(--admin-panel);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.order-head,
+.order-customer,
+.order-items,
+.order-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.order-head strong {
+    display: block;
+    font-size: 1.2rem;
+}
+
+.order-head span,
+.order-customer span,
+.order-items span,
+.order-total span {
+    color: var(--admin-muted);
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #f0f6fc;
+    color: var(--admin-blue-dark) !important;
+    font-weight: 800;
+}
+
+.order-items {
+    justify-content: flex-start;
+    padding-top: 12px;
+    border-top: 1px solid var(--admin-line);
+}
+
+.order-total {
+    padding-top: 12px;
+    border-top: 1px solid var(--admin-line);
+}
+
 * {
     box-sizing: border-box;
 }

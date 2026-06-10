@@ -32,7 +32,7 @@
 
             <h2>${t.story}</h2>
             <p class="product-description">${product.story}</p>
-            <a href="/contact?lang=${lang}" class="button primary">${t.addToCart}</a>
+            <a href="/checkout?lang=${lang}" class="button primary" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">${lang === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</a>
         </div>
     </div>
 </section>
