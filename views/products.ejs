@@ -1,6 +1,6 @@
 <%- include('layout', {
     body: `
-<section class="page-hero compact">
+<section class="shop-listing-hero">
     <div class="container">
         <p class="eyebrow">${t.products}</p>
         <h1>${t.ourProducts}</h1>
@@ -8,21 +8,35 @@
     </div>
 </section>
 
-<section class="products">
+<section class="products shop-section">
     <div class="container">
-        <div class="products-grid">
-            ${products.map((product) => `
-                <article class="product-card ${product.tone}">
+        <div class="shop-toolbar">
+            <span>${products.length} ${lang === 'ar' ? 'عطور' : 'products'}</span>
+            <div class="toolbar-pills">
+                <span>${lang === 'ar' ? 'الأكثر مبيعاً' : 'Best seller'}</span>
+                <span>${lang === 'ar' ? 'إكستريت' : 'Extrait'}</span>
+                <span>${lang === 'ar' ? 'هدايا' : 'Gifts'}</span>
+            </div>
+        </div>
+        <div class="products-grid shop-products-grid">
+            ${products.map((product, index) => `
+                <article class="product-card shop-card ${product.tone}">
                     <a href="/product/${product.id}?lang=${lang}" class="product-visual" aria-label="${product.name}">
+                        ${index < 2 ? `<span class="product-badge">${lang === 'ar' ? 'الأكثر مبيعاً' : 'Best Seller'}</span>` : ''}
                         ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-photo">` : `<span class="bottle"></span>`}
                     </a>
                     <div class="product-info">
                         <h3>${product.name}</h3>
                         <p class="product-type">${product.type}</p>
-                        <p class="product-size">${product.size}</p>
-                        <p class="product-price">${product.price}</p>
                         <p class="product-description">${product.description}</p>
-                        <a href="/product/${product.id}?lang=${lang}" class="view-details">${t.viewDetails}</a>
+                        <div class="price-row">
+                            <strong>${product.price}</strong>
+                            <span>${product.size}</span>
+                        </div>
+                        <div class="product-actions">
+                            <a href="/product/${product.id}?lang=${lang}" class="view-details">${t.viewDetails}</a>
+                            <a href="/contact?lang=${lang}" class="add-cart-button">${lang === 'ar' ? 'أضف للطلب' : 'Add to Cart'}</a>
+                        </div>
                     </div>
                 </article>
             `).join('')}

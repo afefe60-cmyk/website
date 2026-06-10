@@ -203,12 +203,29 @@
                         <label class="wide">الخط<input name="designSettings[fontFamily]" value="<%= siteData.designSettings.fontFamily %>"></label>
                     </div>
                 </div>
+                <div class="admin-card">
+                    <h2>فيديو الهيرو</h2>
+                    <p>ارفع فيديو بصيغة MP4 أو WEBM أو OGG. يفضل أن يكون قصيراً ومضغوطاً حتى يبقى الموقع سريعاً.</p>
+                    <% if (siteData.designSettings.heroVideo) { %>
+                        <video class="admin-video-preview" controls muted>
+                            <source src="<%= siteData.designSettings.heroVideo %>">
+                        </video>
+                        <label>مسار الفيديو الحالي<input name="designSettings[heroVideo]" value="<%= siteData.designSettings.heroVideo %>"></label>
+                    <% } else { %>
+                        <label>مسار الفيديو الحالي<input name="designSettings[heroVideo]" value="" placeholder="/videos/hero.mp4"></label>
+                    <% } %>
+                    <div class="upload-form">
+                        <label>رفع فيديو جديد<input form="heroVideoUploadForm" type="file" name="heroVideo" accept="video/mp4,video/webm,video/ogg" required></label>
+                        <button form="heroVideoUploadForm" type="submit" class="secondary-button">رفع الفيديو</button>
+                    </div>
+                </div>
             </section>
 
             <div class="save-bar">
                 <button type="submit" class="save-button">حفظ التغييرات</button>
             </div>
         </form>
+        <form id="heroVideoUploadForm" action="/admin/upload-hero-video" method="POST" enctype="multipart/form-data"></form>
     </main>
 
     <script>

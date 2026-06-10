@@ -7,6 +7,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'site-data.json');
+const VIDEO_DIR = path.join(__dirname, 'public', 'videos');
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-this-secret';
@@ -343,13 +344,14 @@ let testimonials = [
 ];
 
 let designSettings = {
-    ink: '#171514',
-    gold: '#b99243',
-    paper: '#ffffff',
-    mist: '#f7f5f1',
+    ink: '#16110f',
+    gold: '#c8a45d',
+    paper: '#fffaf3',
+    mist: '#f6ece4',
     fontFamily: '"Adobe Arabic Regular", "Adobe Arabic", "Segoe UI", Arial, sans-serif',
     heroOpacity: '0.18',
-    cardRadius: '8px'
+    cardRadius: '8px',
+    heroVideo: ''
 };
 
 function ensureDataDir() {
@@ -540,6 +542,79 @@ function requireAdmin(req, res, next) {
     res.redirect('/admin/login');
 }
 
+function sanitizeUploadName(filename) {
+    const extension = path.extname(filename).toLowerCase();
+    const basename = path.basename(filename, extension).replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+    return `${basename || 'hero-video'}-${Date.now()}${extension}`;
+}
+
+function parseMultipartUpload(req, fieldName, callback) {
+    const contentType = req.headers['content-type'] || '';
+    const boundaryMatch = contentType.match(/boundary=(.+)$/);
+    if (!boundaryMatch) {
+        callback(new Error('Missing multipart boundary'));
+        return;
+    }
+
+    const chunks = [];
+    let totalSize = 0;
+    const maxSize = 80 * 1024 * 1024;
+
+    req.on('data', (chunk) => {
+        totalSize += chunk.length;
+        if (totalSize > maxSize) {
+            req.destroy();
+            callback(new Error('Video is larger than 80MB'));
+            return;
+        }
+        chunks.push(chunk);
+    });
+
+    req.on('end', () => {
+        const body = Buffer.concat(chunks);
+        const boundary = Buffer.from(`--${boundaryMatch[1]}`);
+        let cursor = body.indexOf(boundary);
+
+        while (cursor !== -1) {
+            const next = body.indexOf(boundary, cursor + boundary.length);
+            if (next === -1) {
+                break;
+            }
+
+            let part = body.subarray(cursor + boundary.length, next);
+            if (part.subarray(0, 2).toString() === '\r\n') {
+                part = part.subarray(2);
+            }
+            if (part.subarray(part.length - 2).toString() === '\r\n') {
+                part = part.subarray(0, part.length - 2);
+            }
+
+            const headerEnd = part.indexOf(Buffer.from('\r\n\r\n'));
+            if (headerEnd !== -1) {
+                const headers = part.subarray(0, headerEnd).toString('latin1');
+                const nameMatch = headers.match(/name="([^"]+)"/);
+                const fileMatch = headers.match(/filename="([^"]*)"/);
+                const typeMatch = headers.match(/Content-Type:\s*([^\r\n]+)/i);
+
+                if (nameMatch?.[1] === fieldName && fileMatch?.[1]) {
+                    callback(null, {
+                        filename: fileMatch[1],
+                        contentType: typeMatch?.[1] || 'application/octet-stream',
+                        buffer: part.subarray(headerEnd + 4)
+                    });
+                    return;
+                }
+            }
+
+            cursor = next;
+        }
+
+        callback(new Error('Video field was not found'));
+    });
+
+    req.on('error', callback);
+}
+
 app.get('/admin/login', (req, res) => {
     res.render('admin-login', {
         error: req.query.error === '1'
@@ -560,6 +635,40 @@ app.post('/admin/login', (req, res) => {
 app.post('/admin/logout', (req, res) => {
     res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; HttpOnly; SameSite=Lax; Path=/admin; Max-Age=0`);
     res.redirect('/admin/login');
+});
+
+app.post('/admin/upload-hero-video', requireAdmin, (req, res) => {
+    parseMultipartUpload(req, 'heroVideo', (error, file) => {
+        if (error) {
+            res.redirect('/admin?upload=error');
+            return;
+        }
+
+        const allowedTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+        const allowedExtensions = ['.mp4', '.webm', '.ogg'];
+        const extension = path.extname(file.filename).toLowerCase();
+
+        if (!allowedTypes.includes(file.contentType) && !allowedExtensions.includes(extension)) {
+            res.redirect('/admin?upload=type');
+            return;
+        }
+
+        fs.mkdirSync(VIDEO_DIR, { recursive: true });
+        const filename = sanitizeUploadName(file.filename);
+        const uploadPath = path.join(VIDEO_DIR, filename);
+        fs.writeFileSync(uploadPath, file.buffer);
+
+        const currentData = snapshotSiteData();
+        writeSiteData({
+            ...currentData,
+            designSettings: {
+                ...currentData.designSettings,
+                heroVideo: `/videos/${filename}`
+            }
+        });
+
+        res.redirect('/admin?saved=1');
+    });
 });
 
 app.get('/admin', requireAdmin, (req, res) => {

@@ -1,1 +1,466 @@
-{}
+{
+  "translations": {
+    "en": {
+      "siteName": "AJMAN LUXURY",
+      "home": "Home",
+      "about": "About",
+      "contact": "Contact",
+      "products": "Perfumes",
+      "gallery": "Gallery",
+      "blog": "Journal",
+      "testimonials": "Testimonials",
+      "scentFinder": "Scent Finder",
+      "welcome": "AJMAN LUXURY",
+      "subtitle": "Extrait de parfum crafted with oud, rose, amber, saffron, and a refined Emirati signature.",
+      "heroEyebrow": "Luxury perfume house from Ajman",
+      "heroNote": "Private blends for evenings, gifts, and daily elegance.",
+      "learnMore": "Our Story",
+      "getInTouch": "Contact Us",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "send": "Send Message",
+      "name": "Name",
+      "message": "Message",
+      "ourProducts": "Signature Collection",
+      "viewDetails": "View Details",
+      "shopNow": "Explore Collection",
+      "collectionIntro": "Balanced, long-lasting perfumes inspired by Arabian heritage and modern luxury.",
+      "aboutTitle": "About AJMAN LUXURY",
+      "aboutText1": "AJMAN LUXURY is a perfume house inspired by the elegance of Ajman and the depth of Arabian perfumery. Every scent is designed to feel polished, memorable, and worthy of special occasions.",
+      "aboutText2": "Our compositions focus on rich raw materials such as oud, amber, rose, musk, saffron, vanilla, and precious woods. The result is a collection with presence, projection, and a smooth dry-down.",
+      "aboutText3": "We create fragrances for people who want a signature trail: refined enough for daily use, strong enough for evening wear, and elegant enough to be gifted.",
+      "heritageTitle": "Our Heritage",
+      "heritageText": "The brand identity draws from the falcon, a symbol of pride, precision, and noble presence in the Emirates.",
+      "commitmentTitle": "Our Promise",
+      "commitmentText": "Every bottle is presented with a focus on quality, clarity, and a premium customer experience from first note to final impression.",
+      "contactTitle": "Contact AJMAN LUXURY",
+      "contactInfo": "Contact Information",
+      "contactForm": "Send us a message",
+      "address_label": "Ajman, United Arab Emirates",
+      "phone_label": "+971 50 000 0000",
+      "email_label": "info@ajmanluxury.ae",
+      "hoursTitle": "Business Hours",
+      "hoursWeek": "Saturday - Thursday: 10:00 AM - 10:00 PM",
+      "hoursFriday": "Friday: 4:00 PM - 10:00 PM",
+      "description": "Description",
+      "fragrance": "Fragrance Notes",
+      "topNotes": "Top Notes",
+      "heartNotes": "Heart Notes",
+      "baseNotes": "Base Notes",
+      "story": "The Story",
+      "addToCart": "Request This Perfume",
+      "galleryTitle": "Luxury Presentation",
+      "blogTitle": "Perfume Journal",
+      "readMore": "Read More",
+      "testimonialTitle": "Client Impressions",
+      "scentFinderTitle": "Find Your Signature Scent",
+      "scentFinderDesc": "Answer three quick questions and discover the AJMAN LUXURY perfume that fits your taste.",
+      "question1": "Which scent profile attracts you most?",
+      "question2": "When will you wear it most?",
+      "question3": "What level of presence do you prefer?",
+      "option1": "Fresh and polished",
+      "option2": "Floral and elegant",
+      "option3": "Woody and confident",
+      "option4": "Oriental and intense",
+      "option5": "Daily wear",
+      "option6": "Evening occasions",
+      "option7": "Both",
+      "option8": "Soft and close",
+      "option9": "Noticeable",
+      "option10": "Long-lasting statement",
+      "getResult": "Show My Match",
+      "perfectMatch": "Your Perfect Match",
+      "viewProduct": "View Product",
+      "backToBlog": "Back to Journal",
+      "footerTagline": "Premium perfumes from the UAE"
+    },
+    "ar": {
+      "siteName": "عجمان لكجري",
+      "home": "الرئيسية",
+      "about": "من نحن",
+      "contact": "تواصل معنا",
+      "products": "العطور",
+      "gallery": "المعرض",
+      "blog": "المجلة",
+      "testimonials": "آراء العملاء",
+      "scentFinder": "اختيار العطر",
+      "welcome": "عجمان لكجري",
+      "subtitle": "عطور إكستريت فاخرة بصياغة تجمع العود والورد والعنبر والزعفران بروح إماراتية راقية.",
+      "heroEyebrow": "دار عطور فاخرة من عجمان",
+      "heroNote": "خلطات خاصة للمناسبات والهدايا والحضور اليومي الأنيق.",
+      "learnMore": "قصتنا",
+      "getInTouch": "تواصل معنا",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "address": "العنوان",
+      "send": "إرسال الرسالة",
+      "name": "الاسم",
+      "message": "الرسالة",
+      "ourProducts": "المجموعة المميزة",
+      "viewDetails": "عرض التفاصيل",
+      "shopNow": "استكشف المجموعة",
+      "collectionIntro": "عطور ثابتة ومتوازنة مستوحاة من التراث العربي والفخامة المعاصرة.",
+      "aboutTitle": "عن عجمان لكجري",
+      "aboutText1": "عجمان لكجري دار عطور تستلهم أناقة عجمان وعمق صناعة العطور العربية. كل عطر صُمم ليترك حضوراً مصقولاً وذكرى لا تُنسى.",
+      "aboutText2": "نركز في تركيباتنا على خامات غنية مثل العود والعنبر والورد والمسك والزعفران والفانيلا والأخشاب الثمينة، لنقدم عطراً بثبات واضح ونهاية ناعمة.",
+      "aboutText3": "نصنع العطر لمن يبحث عن بصمة شخصية: راقٍ للاستخدام اليومي، قوي للمساء، وفخم بما يكفي ليكون هدية مميزة.",
+      "heritageTitle": "هويتنا",
+      "heritageText": "تستند الهوية إلى الصقر بوصفه رمزاً للفخر والدقة والحضور النبيل في الإمارات.",
+      "commitmentTitle": "وعدنا",
+      "commitmentText": "كل زجاجة تُقدّم بعناية في الجودة والوضوح وتجربة العميل، من أول نفحة حتى آخر انطباع.",
+      "contactTitle": "تواصل مع عجمان لكجري",
+      "contactInfo": "معلومات التواصل",
+      "contactForm": "أرسل لنا رسالة",
+      "address_label": "عجمان، الإمارات العربية المتحدة",
+      "phone_label": "+971 50 000 0000",
+      "email_label": "info@ajmanluxury.ae",
+      "hoursTitle": "ساعات العمل",
+      "hoursWeek": "السبت - الخميس: 10:00 صباحاً - 10:00 مساءً",
+      "hoursFriday": "الجمعة: 4:00 مساءً - 10:00 مساءً",
+      "description": "الوصف",
+      "fragrance": "النوتات العطرية",
+      "topNotes": "المقدمة",
+      "heartNotes": "القلب",
+      "baseNotes": "القاعدة",
+      "story": "القصة",
+      "addToCart": "اطلب هذا العطر",
+      "galleryTitle": "عرض فاخر",
+      "blogTitle": "مجلة العطور",
+      "readMore": "قراءة المزيد",
+      "testimonialTitle": "انطباعات العملاء",
+      "scentFinderTitle": "اختر عطرك المناسب",
+      "scentFinderDesc": "أجب عن ثلاثة أسئلة سريعة لاكتشاف عطر عجمان لكجري الأقرب إلى ذوقك.",
+      "question1": "أي طابع عطري يجذبك أكثر؟",
+      "question2": "متى سترتديه غالباً؟",
+      "question3": "ما مستوى الحضور الذي تفضله؟",
+      "option1": "منعش ومصقول",
+      "option2": "زهري وأنيق",
+      "option3": "خشبي وواثق",
+      "option4": "شرقي وعميق",
+      "option5": "استخدام يومي",
+      "option6": "مناسبات مسائية",
+      "option7": "كلاهما",
+      "option8": "ناعم وقريب",
+      "option9": "واضح وملحوظ",
+      "option10": "ثبات طويل وحضور قوي",
+      "getResult": "اعرض العطر المناسب",
+      "perfectMatch": "العطر الأنسب لك",
+      "viewProduct": "عرض العطر",
+      "backToBlog": "العودة إلى المجلة",
+      "footerTagline": "عطور فاخرة من الإمارات"
+    }
+  },
+  "products": [
+    {
+      "id": "council",
+      "tone": "noir",
+      "image": "/images/products/council.jpeg",
+      "name": {
+        "ar": "كاونسل",
+        "en": "Council"
+      },
+      "type": {
+        "en": "",
+        "ar": ""
+      },
+      "size": {
+        "ar": "100 مل",
+        "en": "100 ml"
+      },
+      "price": {
+        "ar": "480 درهم",
+        "en": "AED 480"
+      },
+      "description": {
+        "ar": "عطر عود مهيب بنفحات التوابل الدافئة والعنبر والأخشاب المصقولة، صُمم للمجالس والحضور الواثق.",
+        "en": "A dignified oud fragrance with warm spice, amber, and polished woods. Created for formal gatherings and confident presence."
+      },
+      "topNotes": {
+        "ar": "زعفران، برغموت، فلفل أسود",
+        "en": "Saffron, bergamot, black pepper"
+      },
+      "heartNotes": {
+        "ar": "عود، ورد، بخور",
+        "en": "Oud, rose, incense"
+      },
+      "baseNotes": {
+        "ar": "عنبر، جلد، صندل",
+        "en": "Amber, leather, sandalwood"
+      },
+      "story": {
+        "en": "",
+        "ar": ""
+      }
+    },
+    {
+      "id": "first-lady",
+      "tone": "rose",
+      "image": "/images/products/first-lady.jpeg",
+      "name": {
+        "ar": "فيرست ليدي",
+        "en": "First Lady"
+      },
+      "type": {
+        "en": "",
+        "ar": ""
+      },
+      "size": {
+        "ar": "100 مل",
+        "en": "100 ml"
+      },
+      "price": {
+        "ar": "450 درهم",
+        "en": "AED 450"
+      },
+      "description": {
+        "ar": "عطر زهري عنبري راقٍ يجمع الورد والياسمين والفانيلا والمسك الناعم لبصمة أنثوية أنيقة.",
+        "en": "A graceful floral amber perfume with rose, jasmine, vanilla, and soft musk for an elegant feminine trail."
+      },
+      "topNotes": {
+        "ar": "كمثرى، ماندرين، فلفل وردي",
+        "en": "Pear, mandarin, pink pepper"
+      },
+      "heartNotes": {
+        "ar": "ورد، ياسمين، زهر البرتقال",
+        "en": "Rose, jasmine, orange blossom"
+      },
+      "baseNotes": {
+        "ar": "فانيلا، مسك، عنبر",
+        "en": "Vanilla, musk, amber"
+      },
+      "story": {
+        "en": "",
+        "ar": ""
+      }
+    },
+    {
+      "id": "president",
+      "tone": "royal",
+      "image": "/images/products/president.jpeg",
+      "name": {
+        "ar": "بريزدنت",
+        "en": "President"
+      },
+      "type": {
+        "en": "",
+        "ar": ""
+      },
+      "size": {
+        "ar": "100 مل",
+        "en": "100 ml"
+      },
+      "price": {
+        "ar": "520 درهم",
+        "en": "AED 520"
+      },
+      "description": {
+        "ar": "عطر عنبري خشبي جريء يبدأ بانتعاش الحمضيات والأعشاب العطرية وينتهي بقاعدة دخانية عميقة.",
+        "en": "A bold amber woods fragrance with citrus brightness, aromatic herbs, and a deep smoky base."
+      },
+      "topNotes": {
+        "ar": "جريب فروت، هيل، مريمية",
+        "en": "Grapefruit, cardamom, clary sage"
+      },
+      "heartNotes": {
+        "ar": "خشب الأرز، لافندر، باتشولي",
+        "en": "Cedarwood, lavender, patchouli"
+      },
+      "baseNotes": {
+        "ar": "عنبر رمادي، فيتيفر، أخشاب دخانية",
+        "en": "Ambergris, vetiver, smoky woods"
+      },
+      "story": {
+        "en": "",
+        "ar": ""
+      }
+    },
+    {
+      "id": "parliament",
+      "tone": "pearl",
+      "image": "/images/products/parliament.jpeg",
+      "name": {
+        "ar": "بارليامنت",
+        "en": "Parliament"
+      },
+      "type": {
+        "en": "",
+        "ar": ""
+      },
+      "size": {
+        "ar": "100 مل",
+        "en": "100 ml"
+      },
+      "price": {
+        "ar": "500 درهم",
+        "en": "AED 500"
+      },
+      "description": {
+        "ar": "عطر مسكي مشرق بنفحات الزهور البيضاء والأخشاب النظيفة ولمسة بودرية راقية.",
+        "en": "A bright musky fragrance with white florals, clean woods, and a refined powdery finish."
+      },
+      "topNotes": {
+        "ar": "برغموت، نيرولي، شاي أبيض",
+        "en": "Bergamot, neroli, white tea"
+      },
+      "heartNotes": {
+        "ar": "ورد أبيض، آيرس، ياسمين",
+        "en": "White rose, iris, jasmine"
+      },
+      "baseNotes": {
+        "ar": "مسك، أخشاب كشمير، عنبر",
+        "en": "Musk, cashmere woods, amber"
+      },
+      "story": {
+        "en": "",
+        "ar": ""
+      }
+    },
+    {
+      "id": "chairman",
+      "tone": "sapphire",
+      "image": "/images/products/chairman.jpeg",
+      "name": {
+        "ar": "تشيرمان",
+        "en": "Chairman"
+      },
+      "type": {
+        "en": "",
+        "ar": ""
+      },
+      "size": {
+        "ar": "100 مل",
+        "en": "100 ml"
+      },
+      "price": {
+        "ar": "540 درهم",
+        "en": "AED 540"
+      },
+      "description": {
+        "ar": "عطر أزرق عطري يجمع الحمضيات واللافندر والأخشاب البحرية مع قاعدة عنبرية واثقة.",
+        "en": "A blue aromatic perfume with citrus, lavender, marine woods, and a confident amber base."
+      },
+      "topNotes": {
+        "ar": "ليمون، نعناع، جريب فروت",
+        "en": "Lemon, mint, grapefruit"
+      },
+      "heartNotes": {
+        "ar": "لافندر، جيرانيوم، نفحات بحرية",
+        "en": "Lavender, geranium, marine accord"
+      },
+      "baseNotes": {
+        "ar": "عنبر، أرز، فيتيفر",
+        "en": "Amber, cedar, vetiver"
+      },
+      "story": {
+        "en": "",
+        "ar": ""
+      }
+    }
+  ],
+  "posts": [
+    {
+      "id": "oud-signature",
+      "date": {
+        "ar": "يونيو 2026",
+        "en": "June 2026"
+      },
+      "author": {
+        "en": "",
+        "ar": ""
+      },
+      "title": {
+        "ar": "لماذا يعبّر العود عن الفخامة العربية؟",
+        "en": "Why Oud Defines Arabian Luxury"
+      },
+      "excerpt": {
+        "ar": "يمنح العود العطر عمقاً ودفئاً وهوية لا تخطئها الحواس.",
+        "en": "Oud adds depth, warmth, and unmistakable identity to luxury perfume."
+      },
+      "content": {
+        "ar": "العود ليس مجرد نوتة عطرية، بل توقيع ثقافي. في العطور الفاخرة يمنح التركيبة بنية وثباتاً وظلاً راقياً يساند الورد والتوابل والعنبر والأخشاب.",
+        "en": "Oud is more than a note; it is a cultural signature. In luxury perfumery, it gives structure, longevity, and a refined shadow that supports florals, spices, amber, and woods."
+      }
+    },
+    {
+      "id": "choose-extrait",
+      "date": {
+        "ar": "مايو 2026",
+        "en": "May 2026"
+      },
+      "author": {
+        "en": "",
+        "ar": ""
+      },
+      "title": {
+        "ar": "كيف تختار إكستريت دي بارفان مناسباً؟",
+        "en": "How to Choose an Extrait de Parfum"
+      },
+      "excerpt": {
+        "ar": "ابدأ بالمناسبة وقوة الانتشار والنوتات التي تشبه بصمتك الشخصية.",
+        "en": "Start with occasion, projection, and the notes that feel like your signature."
+      },
+      "content": {
+        "ar": "الإكستريت دي بارفان مركز ومعبّر. اختر الزهري العنبري الناعم للأناقة اليومية، والعود والتوابل للمجالس، والأخشاب العنبرية للثقة المسائية.",
+        "en": "An extrait de parfum is concentrated and expressive. Choose softer floral amber for daytime elegance, oud and spice for gatherings, and woody amber blends for evening confidence."
+      }
+    }
+  ],
+  "testimonials": [
+    {
+      "rating": 5,
+      "name": {
+        "ar": "م. النعيمي",
+        "en": "M. Al Nuaimi"
+      },
+      "title": {
+        "ar": "عجمان",
+        "en": "Ajman"
+      },
+      "text": {
+        "ar": "كاونسل يترك أثراً فاخراً من العود ويثبت بشكل جميل طوال المساء.",
+        "en": "Council has a luxurious oud trail that lasts beautifully through the evening."
+      }
+    },
+    {
+      "rating": 5,
+      "name": {
+        "ar": "سارة أ.",
+        "en": "Sara A."
+      },
+      "title": {
+        "ar": "دبي",
+        "en": "Dubai"
+      },
+      "text": {
+        "ar": "فيرست ليدي عطر أنيق وناعم ومثالي للهدايا.",
+        "en": "First Lady is elegant, soft, and perfect for gifting."
+      }
+    },
+    {
+      "rating": 5,
+      "name": {
+        "ar": "خالد ر.",
+        "en": "Khalid R."
+      },
+      "title": {
+        "ar": "الشارقة",
+        "en": "Sharjah"
+      },
+      "text": {
+        "ar": "بريزدنت عطر مصقول وقوي دون أن يكون ثقيلاً.",
+        "en": "President feels polished and powerful without becoming heavy."
+      }
+    }
+  ],
+  "designSettings": {
+    "ink": "#16110f",
+    "gold": "#c8a45d",
+    "paper": "#fffaf3",
+    "mist": "#f6ece4",
+    "fontFamily": "\"Adobe Arabic Regular\", \"Adobe Arabic\", \"Segoe UI\", Arial, sans-serif",
+    "heroOpacity": "0.18",
+    "cardRadius": "8px",
+    "heroVideo": "/videos/ultra-luxury-perfume-commercial-for-ajman-luxury--black-and-gold-branding--majestic-eagle-logo--luxu-seed2085715948-1781066618815.mp4"
+  }
+}

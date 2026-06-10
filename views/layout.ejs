@@ -20,6 +20,10 @@
     </style>
 </head>
 <body>
+    <div class="top-offer-bar">
+        <span><%= lang === 'ar' ? 'عروض حصرية على عطور عجمان لكجري' : 'Exclusive offers on AJMAN LUXURY perfumes' %></span>
+    </div>
+
     <header class="site-header">
         <nav class="site-nav" aria-label="Primary navigation">
             <a class="brand" href="/?lang=<%= lang %>" aria-label="<%= t.siteName %>">
@@ -34,9 +38,16 @@
                 <li><a href="/contact?lang=<%= lang %>"><%= t.contact %></a></li>
             </ul>
 
-            <div class="lang-switch" aria-label="Language switcher">
-                <a href="<%= currentPath %>?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
-                <a href="<%= currentPath %>?lang=ar" class="<%= lang === 'ar' ? 'active' : '' %>">عربي</a>
+            <div class="header-tools">
+                <div class="lang-switch" aria-label="Language switcher">
+                    <a href="<%= currentPath %>?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+                    <a href="<%= currentPath %>?lang=ar" class="<%= lang === 'ar' ? 'active' : '' %>">عربي</a>
+                </div>
+                <div class="store-actions" aria-label="Store actions">
+                    <a href="/admin/login" title="<%= lang === 'ar' ? 'لوحة التحكم' : 'Admin' %>">◎</a>
+                    <a href="/contact?lang=<%= lang %>" title="<%= lang === 'ar' ? 'الطلب' : 'Order' %>">♡</a>
+                    <a href="/products?lang=<%= lang %>" title="<%= lang === 'ar' ? 'العطور' : 'Perfumes' %>">Bag</a>
+                </div>
             </div>
         </nav>
     </header>

@@ -1,47 +1,188 @@
 <%- include('layout', {
     body: `
-<section class="hero">
-    <div class="hero-copy">
-        <p class="eyebrow">${t.heroEyebrow}</p>
-        <h1>${t.welcome}</h1>
-        <p class="hero-text">${t.subtitle}</p>
-        <div class="hero-actions">
-            <a href="/products?lang=${lang}" class="button primary">${t.shopNow}</a>
-            <a href="/scent-finder?lang=${lang}" class="button ghost">${t.scentFinder}</a>
-        </div>
+<section class="cinematic-hero" aria-label="${lang === 'ar' ? 'فيديو عجمان لكجري' : 'AJMAN LUXURY cinematic hero'}">
+    ${designSettings.heroVideo ? `
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+            <source src="${designSettings.heroVideo}" type="video/${designSettings.heroVideo.endsWith('.webm') ? 'webm' : designSettings.heroVideo.endsWith('.ogg') ? 'ogg' : 'mp4'}">
+        </video>
+    ` : ''}
+    <div class="cinematic-bg">
+        ${products.slice(0, 5).map((product, index) => `
+            <a href="/product/${product.id}?lang=${lang}" class="cinematic-slide slide-${index + 1}">
+                ${product.image ? `<img src="${product.image}" alt="${product.name}">` : `<span class="bottle large"></span>`}
+            </a>
+        `).join('')}
     </div>
-    <div class="hero-identity" aria-hidden="true">
+    <div class="scent-layer">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="falcon-mark" aria-hidden="true">
         <img src="/images/logo.png" alt="">
     </div>
-</section>
-
-<section class="intro-band">
-    <div class="container intro-grid">
-        <div>
-            <p class="eyebrow">${t.ourProducts}</p>
-            <h2>${t.collectionIntro}</h2>
+    <div class="cinematic-copy">
+        <p class="eyebrow">${lang === 'ar' ? 'عجمان لكجري للعطور الفاخرة' : 'AJMAN LUXURY PERFUMES'}</p>
+        <h1>${lang === 'ar' ? 'الفخامة أو لا شيء' : 'Greatness or Nothing'}</h1>
+        <p>${lang === 'ar' ? 'مشهد عطري مستوحى من الصقر الإماراتي، زجاجات فاخرة، وروائح تترك حضوراً لا ينسى.' : 'A cinematic fragrance experience inspired by the Emirati falcon, refined bottles, and unforgettable presence.'}</p>
+        <div class="hero-actions">
+            <a href="/products?lang=${lang}" class="button primary">${lang === 'ar' ? 'تسوق العطور' : 'Shop Perfumes'}</a>
+            <a href="/contact?lang=${lang}" class="button ghost">${lang === 'ar' ? 'اطلب الآن' : 'Order Now'}</a>
         </div>
-        <p>${t.heroNote}</p>
+    </div>
+    <div class="hero-timeline" aria-hidden="true">
+        <span></span>
     </div>
 </section>
 
-<section class="featured-products">
+<section class="collection-strip">
     <div class="container">
-        <div class="section-heading">
-            <p class="eyebrow">${t.products}</p>
-            <h2>${t.ourProducts}</h2>
+        <div class="section-heading compact-heading">
+            <h2>${lang === 'ar' ? 'أحدث الإصدارات' : 'Top Releases'}</h2>
+            <p>${lang === 'ar' ? 'اكتشف مجموعات عجمان لكجري المميزة' : 'Discover our distinctive AJMAN LUXURY collections'}</p>
         </div>
-        <div class="products-grid">
+        <div class="collection-grid">
             ${products.map((product) => `
-                <article class="product-card ${product.tone}">
+                <a href="/product/${product.id}?lang=${lang}" class="collection-tile">
+                    ${product.image ? `<img src="${product.image}" alt="${product.name}">` : `<span class="bottle"></span>`}
+                    <span>${product.name}</span>
+                </a>
+            `).join('')}
+        </div>
+    </div>
+</section>
+
+<section class="featured-products shop-section">
+    <div class="container">
+        <div class="section-heading shop-heading">
+            <div>
+                <p class="eyebrow">${lang === 'ar' ? 'اختيارات العملاء' : 'Customer Favorites'}</p>
+                <h2>${lang === 'ar' ? 'الأكثر مبيعاً' : 'Best Sellers'}</h2>
+            </div>
+            <a href="/products?lang=${lang}">${lang === 'ar' ? 'عرض الكل' : 'View All'}</a>
+        </div>
+        <div class="products-grid shop-products-grid">
+            ${products.slice(0, 4).map((product, index) => `
+                <article class="product-card shop-card ${product.tone}">
                     <a href="/product/${product.id}?lang=${lang}" class="product-visual" aria-label="${product.name}">
+                        ${index < 2 ? `<span class="product-badge">${lang === 'ar' ? 'الأكثر مبيعاً' : 'Best Seller'}</span>` : ''}
                         ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-photo">` : `<span class="bottle"></span>`}
                     </a>
                     <div class="product-info">
                         <h3>${product.name}</h3>
                         <p class="product-type">${product.type}</p>
-                        <p class="product-size">${product.size}</p>
-                        <a href="/product/${product.id}?lang=${lang}" class="view-details">${t.viewDetails}</a>
+                        <div class="price-row">
+                            <strong>${product.price}</strong>
+                            <span>${product.size}</span>
+                        </div>
+                        <a href="/contact?lang=${lang}" class="add-cart-button">${lang === 'ar' ? 'أضف للطلب' : 'Add to Cart'}</a>
+                    </div>
+                </article>
+            `).join('')}
+        </div>
+    </div>
+</section>
+
+<section class="gift-section">
+    <div class="container gift-grid">
+        <div class="gift-media">
+            ${products[0]?.image ? `<img src="${products[0].image}" alt="${products[0].name}">` : ''}
+        </div>
+        <div class="gift-copy">
+            <p class="eyebrow">${lang === 'ar' ? 'فن الإهداء' : 'The Art of Gifting'}</p>
+            <h2>${lang === 'ar' ? 'هدايا عطرية تليق بالمناسبات' : 'Luxury scents made for memorable gifts'}</h2>
+            <p>${lang === 'ar' ? 'اختيار العطر المناسب هو رسالة ذوق. تقدم عجمان لكجري زجاجات فاخرة وروائح ثابتة تصلح للهدايا الرسمية، المناسبات، والاحتفاء بمن تحب.' : 'A fine perfume is a message of taste. AJMAN LUXURY presents elegant bottles and lasting scents for gifting, occasions, and refined personal style.'}</p>
+            <a href="/products?lang=${lang}" class="button primary">${lang === 'ar' ? 'اكتشف الهدايا' : 'Discover Gifts'}</a>
+        </div>
+    </div>
+</section>
+
+<section class="offer-products shop-section">
+    <div class="container">
+        <div class="section-heading shop-heading">
+            <div>
+                <p class="eyebrow">${lang === 'ar' ? 'عروض عجمان لكجري' : 'AJMAN LUXURY Offers'}</p>
+                <h2>${lang === 'ar' ? 'عرض 2 + 1 مجاناً' : 'Buy 2 Get 1 Free'}</h2>
+                <p>${lang === 'ar' ? 'أضف ثلاثة عطور لتفعيل العرض' : 'Add three perfumes to activate the offer'}</p>
+            </div>
+            <a href="/contact?lang=${lang}">${lang === 'ar' ? 'اطلب العرض' : 'Claim Offer'}</a>
+        </div>
+        <div class="products-grid shop-products-grid">
+            ${products.map((product) => `
+                <article class="product-card shop-card ${product.tone}">
+                    <a href="/product/${product.id}?lang=${lang}" class="product-visual" aria-label="${product.name}">
+                        <span class="product-badge">${lang === 'ar' ? '2 + 1' : '2 + 1 Free'}</span>
+                        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-photo">` : `<span class="bottle"></span>`}
+                    </a>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-type">${lang === 'ar' ? 'عرض خاص لفترة محدودة' : 'Limited bundle offer'}</p>
+                        <div class="price-row">
+                            <strong>${product.price}</strong>
+                            <span>${product.size}</span>
+                        </div>
+                        <a href="/contact?lang=${lang}" class="add-cart-button">${lang === 'ar' ? 'أضف للطلب' : 'Add to Cart'}</a>
+                    </div>
+                </article>
+            `).join('')}
+        </div>
+    </div>
+</section>
+
+<section class="promo-banner light-promo">
+    <div class="container promo-inner">
+        <div>
+            <p class="eyebrow">${lang === 'ar' ? 'عرض 1 + 1' : 'Buy 1 Get 1'}</p>
+            <h2>${lang === 'ar' ? 'اجمع عطرك اليومي مع عطر للمساء' : 'Pair your daily scent with an evening signature'}</h2>
+            <p>${lang === 'ar' ? 'أضف عطرين لتفعيل العرض واصنع مجموعة تناسب يومك ومناسباتك.' : 'Add two perfumes to activate the offer and build a collection for daily wear and special evenings.'}</p>
+        </div>
+        <a href="/contact?lang=${lang}" class="button primary">${lang === 'ar' ? 'اطلب الآن' : 'Order Now'}</a>
+    </div>
+</section>
+
+<section class="new-era-section">
+    <div class="container new-era-grid">
+        <div>
+            <p class="eyebrow">${lang === 'ar' ? 'مجموعة العهد الجديد' : 'NEW ERA COLLECTION'}</p>
+            <h2>${lang === 'ar' ? 'نقاء يرتقي بالحضور وثبات يدوم' : 'A level of purity that rises above all'}</h2>
+            <p>${lang === 'ar' ? 'حضور خالد يتجاوز الوقت. صُممت مجموعة عجمان لكجري بروائح مركزة، زجاجات أنيقة، وانطباع فاخر يبقى طويلاً.' : 'A timeless presence that transcends time. AJMAN LUXURY blends concentrated scents, elegant bottles, and a refined impression that lasts.'}</p>
+            <a href="/products?lang=${lang}" class="button primary">${lang === 'ar' ? 'اكتشف المجموعة' : 'Explore Collection'}</a>
+        </div>
+        <div class="new-era-products">
+            ${products.slice(1, 4).map((product) => `
+                <a href="/product/${product.id}?lang=${lang}">
+                    <img src="${product.image}" alt="${product.name}">
+                    <span>${product.name}</span>
+                </a>
+            `).join('')}
+        </div>
+    </div>
+</section>
+
+<section class="featured-products shop-section pink-world">
+    <div class="container">
+        <div class="section-heading shop-heading">
+            <div>
+                <p class="eyebrow">${lang === 'ar' ? 'عالم فيرست ليدي' : 'First Lady World'}</p>
+                <h2>${lang === 'ar' ? 'أناقة ناعمة وحضور لا ينسى' : 'Soft elegance, unforgettable presence'}</h2>
+            </div>
+            <a href="/product/first-lady?lang=${lang}">${lang === 'ar' ? 'عرض العطر' : 'View Perfume'}</a>
+        </div>
+        <div class="products-grid shop-products-grid">
+            ${products.filter((product) => product.id === 'first-lady' || product.id === 'parliament' || product.id === 'chairman' || product.id === 'president').map((product, index) => `
+                <article class="product-card shop-card ${product.tone}">
+                    <a href="/product/${product.id}?lang=${lang}" class="product-visual" aria-label="${product.name}">
+                        ${index === 0 ? `<span class="product-badge">${lang === 'ar' ? 'مختار' : 'Featured'}</span>` : ''}
+                        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-photo">` : `<span class="bottle"></span>`}
+                    </a>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-type">${product.type}</p>
+                        <div class="price-row">
+                            <strong>${product.price}</strong>
+                            <span>${product.size}</span>
+                        </div>
+                        <a href="/contact?lang=${lang}" class="add-cart-button">${lang === 'ar' ? 'أضف للطلب' : 'Add to Cart'}</a>
                     </div>
                 </article>
             `).join('')}
