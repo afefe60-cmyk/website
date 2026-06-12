@@ -72,6 +72,15 @@
     border-top: 1px solid var(--admin-line);
 }
 
+.chat-admin-message {
+    margin: 0;
+    padding: 14px;
+    border-radius: 8px;
+    background: #f6f7f7;
+    color: var(--admin-ink);
+    white-space: pre-wrap;
+}
+
 * {
     box-sizing: border-box;
 }

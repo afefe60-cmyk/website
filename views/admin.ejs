@@ -12,6 +12,7 @@
         <nav>
             <button type="button" class="tab-button active" data-tab="dashboard">الرئيسية</button>
             <button type="button" class="tab-button" data-tab="orders">الطلبات</button>
+            <button type="button" class="tab-button" data-tab="chat">رسائل الواتساب</button>
             <button type="button" class="tab-button" data-tab="content">محتوى الموقع</button>
             <button type="button" class="tab-button" data-tab="products">العطور</button>
             <button type="button" class="tab-button" data-tab="journal">المجلة</button>
@@ -53,6 +54,10 @@
                     <article>
                         <strong><%= orders.length %></strong>
                         <span>طلبات</span>
+                    </article>
+                    <article>
+                        <strong><%= chatMessages.length %></strong>
+                        <span>رسائل واتساب</span>
                     </article>
                 </div>
 
@@ -104,6 +109,44 @@
                     <div class="admin-card">
                         <h2>لا توجد طلبات بعد</h2>
                         <p>عندما يضيف العميل عطراً للسلة ويتمم الطلب، سيظهر هنا.</p>
+                    </div>
+                <% } %>
+            </section>
+
+            <section class="tab-panel" data-panel="chat">
+                <div class="panel-toolbar">
+                    <h2>رسائل دردشة الواتساب</h2>
+                    <span class="orders-note">هذه الرسائل أرسلها العملاء من النافذة الصغيرة داخل الموقع دون مغادرة الصفحة.</span>
+                </div>
+                <% if (chatMessages.length) { %>
+                    <div class="orders-table">
+                        <% chatMessages.forEach((chat) => { %>
+                            <article class="order-card chat-admin-card">
+                                <div class="order-head">
+                                    <div>
+                                        <strong><%= chat.customer.name || 'زائر الموقع' %></strong>
+                                        <span><%= new Date(chat.createdAt).toLocaleString('en-GB') %></span>
+                                    </div>
+                                    <span class="status-badge"><%= chat.status %></span>
+                                </div>
+                                <p class="chat-admin-message"><%= chat.message %></p>
+                                <div class="order-customer">
+                                    <span>الهاتف: <%= chat.customer.phone || '-' %></span>
+                                    <span>اللغة: <%= chat.lang %></span>
+                                </div>
+                                <div class="order-total">
+                                    <span><%= chat.id %></span>
+                                    <% if (chat.customer.phone) { %>
+                                        <a class="secondary-button" target="_blank" rel="noopener" href="https://wa.me/<%= String(chat.customer.phone).replace(/\\D/g, '') %>">رد عبر واتساب</a>
+                                    <% } %>
+                                </div>
+                            </article>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <div class="admin-card">
+                        <h2>لا توجد رسائل بعد</h2>
+                        <p>عندما يرسل العميل استفساراً من نافذة الدردشة داخل الموقع، سيظهر هنا.</p>
                     </div>
                 <% } %>
             </section>
@@ -247,6 +290,7 @@
                         <label>شفافية شعار الواجهة<input type="range" min="0.05" max="0.4" step="0.01" name="designSettings[heroOpacity]" value="<%= siteData.designSettings.heroOpacity %>"></label>
                         <label>استدارة البطاقات<input name="designSettings[cardRadius]" value="<%= siteData.designSettings.cardRadius %>"></label>
                         <label class="wide">الخط<input name="designSettings[fontFamily]" value="<%= siteData.designSettings.fontFamily %>"></label>
+                        <label class="wide">رقم واتساب خدمة العملاء<input name="designSettings[whatsappNumber]" value="<%= siteData.designSettings.whatsappNumber || '' %>" placeholder="971500000000"></label>
                     </div>
                 </div>
                 <div class="admin-card">

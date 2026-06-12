@@ -8,9 +8,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'site-data.json');
 const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
+const CHAT_MESSAGES_FILE = path.join(__dirname, 'data', 'chat-messages.json');
 const VIDEO_DIR = path.join(__dirname, 'public', 'videos');
 const SITE_URL = process.env.SITE_URL || `http://localhost:${PORT}`;
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
+const WHATSAPP_NUMBER = (process.env.WHATSAPP_NUMBER || '971500000000').replace(/\D/g, '');
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-this-secret';
@@ -354,7 +356,8 @@ let designSettings = {
     fontFamily: '"Adobe Arabic Regular", "Adobe Arabic", "Segoe UI", Arial, sans-serif',
     heroOpacity: '0.18',
     cardRadius: '8px',
-    heroVideo: ''
+    heroVideo: '',
+    whatsappNumber: WHATSAPP_NUMBER
 };
 
 function ensureDataDir() {
@@ -430,6 +433,31 @@ function saveOrder(order) {
     orders.unshift(order);
     writeOrders(orders);
     return order;
+}
+
+function readChatMessages() {
+    try {
+        if (!fs.existsSync(CHAT_MESSAGES_FILE)) {
+            return [];
+        }
+
+        return JSON.parse(fs.readFileSync(CHAT_MESSAGES_FILE, 'utf8'));
+    } catch (error) {
+        console.warn(`Unable to read ${CHAT_MESSAGES_FILE}: ${error.message}`);
+        return [];
+    }
+}
+
+function writeChatMessages(messages) {
+    ensureDataDir();
+    fs.writeFileSync(CHAT_MESSAGES_FILE, JSON.stringify(messages, null, 2), 'utf8');
+}
+
+function saveChatMessage(message) {
+    const messages = readChatMessages();
+    messages.unshift(message);
+    writeChatMessages(messages);
+    return message;
 }
 
 function snapshotSiteData() {
@@ -534,12 +562,18 @@ function localizeItem(item, lang) {
 }
 
 function pageData(req, extra = {}) {
+    const whatsappNumber = String(designSettings.whatsappNumber || WHATSAPP_NUMBER).replace(/\D/g, '');
+    const whatsappMessage = req.lang === 'ar'
+        ? 'مرحباً عجمان لكجري، أحتاج مساعدة بخصوص العطور والطلب.'
+        : 'Hello AJMAN LUXURY, I need help with perfumes and ordering.';
+
     return {
         lang: req.lang,
         isRTL: req.isRTL,
         currentPath: req.path,
         t: translations[req.lang],
         designSettings,
+        whatsappUrl: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`,
         ...extra
     };
 }
@@ -740,12 +774,20 @@ app.get('/admin', requireAdmin, (req, res) => {
         currentPath: req.path,
         saved: req.query.saved === '1',
         siteData: snapshotSiteData(),
-        orders: readOrders()
+        orders: readOrders(),
+        chatMessages: readChatMessages()
     });
 });
 
 app.post('/admin/save', requireAdmin, (req, res) => {
     const currentData = snapshotSiteData();
+    const updatedDesignSettings = {
+        ...currentData.designSettings,
+        ...req.body.designSettings
+    };
+
+    updatedDesignSettings.whatsappNumber = String(updatedDesignSettings.whatsappNumber || WHATSAPP_NUMBER).replace(/\D/g, '');
+
     const updatedData = {
         translations: {
             en: { ...currentData.translations.en, ...req.body.translations?.en },
@@ -754,10 +796,7 @@ app.post('/admin/save', requireAdmin, (req, res) => {
         products: normalizeProducts(req.body.products),
         posts: normalizePosts(req.body.posts),
         testimonials: normalizeTestimonials(req.body.testimonials),
-        designSettings: {
-            ...currentData.designSettings,
-            ...req.body.designSettings
-        }
+        designSettings: updatedDesignSettings
     };
 
     writeSiteData(updatedData);
@@ -771,6 +810,39 @@ app.get('/', renderPage('index', (lang) => ({
 app.get('/about', renderPage('about', () => ({})));
 
 app.get('/contact', renderPage('contact', () => ({})));
+
+app.post('/api/whatsapp-chat', (req, res) => {
+    const lang = req.body.lang === 'ar' ? 'ar' : 'en';
+    const name = String(req.body.name || '').trim().slice(0, 80);
+    const phone = String(req.body.phone || '').trim().slice(0, 40);
+    const message = String(req.body.message || '').trim().slice(0, 1200);
+
+    if (!message) {
+        res.status(400).json({ error: 'Message is required' });
+        return;
+    }
+
+    const savedMessage = saveChatMessage({
+        id: `WA-${Date.now()}`,
+        status: 'new',
+        lang,
+        customer: {
+            name,
+            phone
+        },
+        message,
+        page: req.headers.referer || '',
+        createdAt: new Date().toISOString()
+    });
+
+    res.json({
+        ok: true,
+        id: savedMessage.id,
+        reply: lang === 'ar'
+            ? 'تم استلام رسالتك داخل الموقع. سيتواصل معك فريق خدمة العملاء قريباً.'
+            : 'Your message has been received. Customer care will contact you shortly.'
+    });
+});
 
 app.get('/checkout', renderPage('checkout', (lang) => ({
     products: getLocalizedProducts(lang),

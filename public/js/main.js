@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScentFinder();
     initCart();
     initCheckout();
+    initWhatsAppWidget();
 });
 
 function currentLang() {
@@ -170,6 +171,79 @@ function initCheckout() {
     });
 
     renderCheckout();
+}
+
+function initWhatsAppWidget() {
+    const widget = document.querySelector('[data-whatsapp-widget]');
+    if (!widget) {
+        return;
+    }
+
+    const toggle = widget.querySelector('[data-whatsapp-toggle]');
+    const closeButton = widget.querySelector('[data-whatsapp-close]');
+    const panel = widget.querySelector('[data-whatsapp-panel]');
+    const form = widget.querySelector('[data-whatsapp-form]');
+    const status = widget.querySelector('[data-whatsapp-status]');
+    const messages = widget.querySelector('[data-whatsapp-messages]');
+    const lang = widget.dataset.lang === 'ar' ? 'ar' : 'en';
+
+    function setOpen(isOpen) {
+        panel.hidden = !isOpen;
+        widget.classList.toggle('is-open', isOpen);
+        if (isOpen) {
+            const messageField = form.querySelector('[name="message"]');
+            setTimeout(() => messageField.focus(), 80);
+        }
+    }
+
+    function addBubble(text, type = 'user') {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble ${type}`;
+        bubble.textContent = text;
+        messages.appendChild(bubble);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    toggle.addEventListener('click', () => setOpen(panel.hidden));
+    closeButton.addEventListener('click', () => setOpen(false));
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const payload = Object.fromEntries(formData.entries());
+        payload.lang = lang;
+
+        addBubble(payload.message);
+        status.textContent = lang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
+        form.querySelector('button').disabled = true;
+
+        try {
+            const response = await fetch('/api/whatsapp-chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Message failed');
+            }
+
+            addBubble(result.reply, 'support');
+            status.textContent = lang === 'ar' ? 'تم الإرسال بنجاح' : 'Sent successfully';
+            form.querySelector('[name="message"]').value = '';
+        } catch (error) {
+            addBubble(
+                lang === 'ar'
+                    ? 'تعذر إرسال الرسالة الآن. حاول مرة أخرى أو استخدم صفحة التواصل.'
+                    : 'Unable to send now. Please try again or use the contact page.',
+                'support error'
+            );
+            status.textContent = '';
+        } finally {
+            form.querySelector('button').disabled = false;
+        }
+    });
 }
 
 function initCardReveal() {
