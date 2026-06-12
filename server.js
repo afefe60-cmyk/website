@@ -10,6 +10,7 @@ const DATA_FILE = path.join(__dirname, 'data', 'site-data.json');
 const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
 const CHAT_MESSAGES_FILE = path.join(__dirname, 'data', 'chat-messages.json');
 const VIDEO_DIR = path.join(__dirname, 'public', 'videos');
+const ICON_DIR = path.join(__dirname, 'public', 'icons');
 const SITE_URL = process.env.SITE_URL || `http://localhost:${PORT}`;
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
 const WHATSAPP_NUMBER = (process.env.WHATSAPP_NUMBER || '971500000000').replace(/\D/g, '');
@@ -357,6 +358,7 @@ let designSettings = {
     heroOpacity: '0.18',
     cardRadius: '8px',
     heroVideo: '',
+    faviconPath: '/favicon.png',
     whatsappNumber: WHATSAPP_NUMBER
 };
 
@@ -762,6 +764,40 @@ app.post('/admin/upload-hero-video', requireAdmin, (req, res) => {
             designSettings: {
                 ...currentData.designSettings,
                 heroVideo: `/videos/${filename}`
+            }
+        });
+
+        res.redirect('/admin?saved=1');
+    });
+});
+
+app.post('/admin/upload-favicon', requireAdmin, (req, res) => {
+    parseMultipartUpload(req, 'favicon', (error, file) => {
+        if (error) {
+            res.redirect('/admin?upload=error');
+            return;
+        }
+
+        const allowedTypes = ['image/png', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'];
+        const allowedExtensions = ['.png', '.svg', '.ico'];
+        const extension = path.extname(file.filename).toLowerCase();
+
+        if (!allowedTypes.includes(file.contentType) && !allowedExtensions.includes(extension)) {
+            res.redirect('/admin?upload=type');
+            return;
+        }
+
+        fs.mkdirSync(ICON_DIR, { recursive: true });
+        const filename = sanitizeUploadName(file.filename).replace('hero-video', 'favicon');
+        const uploadPath = path.join(ICON_DIR, filename);
+        fs.writeFileSync(uploadPath, file.buffer);
+
+        const currentData = snapshotSiteData();
+        writeSiteData({
+            ...currentData,
+            designSettings: {
+                ...currentData.designSettings,
+                faviconPath: `/icons/${filename}`
             }
         });
 

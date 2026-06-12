@@ -451,6 +451,17 @@ select:focus {
     background: #111;
 }
 
+.admin-favicon-preview {
+    width: 82px;
+    height: 82px;
+    object-fit: contain;
+    margin-bottom: 16px;
+    padding: 10px;
+    border: 1px solid var(--admin-line);
+    border-radius: 14px;
+    background: #1d2327;
+}
+
 .upload-form {
     display: grid;
     grid-template-columns: 1fr auto;

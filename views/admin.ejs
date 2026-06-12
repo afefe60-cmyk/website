@@ -309,6 +309,20 @@
                         <button form="heroVideoUploadForm" type="submit" class="secondary-button">رفع الفيديو</button>
                     </div>
                 </div>
+                <div class="admin-card">
+                    <h2>أيقونة الموقع Favicon</h2>
+                    <p>ارفع أيقونة بصيغة PNG أو SVG أو ICO. الأفضل مقاس مربع مثل 512×512 أو 180×180.</p>
+                    <% if (siteData.designSettings.faviconPath) { %>
+                        <img class="admin-favicon-preview" src="<%= siteData.designSettings.faviconPath %>" alt="Favicon preview">
+                        <label>مسار الأيقونة الحالي<input name="designSettings[faviconPath]" value="<%= siteData.designSettings.faviconPath %>"></label>
+                    <% } else { %>
+                        <label>مسار الأيقونة الحالي<input name="designSettings[faviconPath]" value="/favicon.png"></label>
+                    <% } %>
+                    <div class="upload-form">
+                        <label>رفع أيقونة جديدة<input form="faviconUploadForm" type="file" name="favicon" accept="image/png,image/svg+xml,image/x-icon,.ico" required></label>
+                        <button form="faviconUploadForm" type="submit" class="secondary-button">رفع الأيقونة</button>
+                    </div>
+                </div>
             </section>
 
             <div class="save-bar">
@@ -316,6 +330,7 @@
             </div>
         </form>
         <form id="heroVideoUploadForm" action="/admin/upload-hero-video" method="POST" enctype="multipart/form-data"></form>
+        <form id="faviconUploadForm" action="/admin/upload-favicon" method="POST" enctype="multipart/form-data"></form>
     </main>
 
     <script>
