@@ -1203,6 +1203,12 @@ html[dir="rtl"] .bottle::after {
     font-weight: 800;
 }
 
+.store-icon {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+}
+
 .lang-switch {
     border-radius: 0;
     border-color: #dedede;
@@ -1555,6 +1561,10 @@ html[dir="rtl"] .shop-hero::after {
     .header-tools {
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    .store-actions a:not(.bag-link) {
+        display: none;
     }
 
     .shop-hero,
@@ -2200,6 +2210,17 @@ html[dir="rtl"] .hero-timeline span {
     border-color: rgba(216, 173, 99, 0.62);
     background: linear-gradient(135deg, #d8ad63, #7c3aed);
     color: #100916;
+}
+
+.theme-royal-purple .store-actions a:not(.bag-link) {
+    border-color: rgba(216, 173, 99, 0.28);
+    background: rgba(255, 255, 255, 0.06);
+    color: #d8ad63;
+}
+
+.theme-royal-purple .store-actions a:not(.bag-link):hover {
+    background: rgba(216, 173, 99, 0.16);
+    color: #fff;
 }
 
 .theme-royal-purple .button.primary:hover,
