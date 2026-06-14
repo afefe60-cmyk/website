@@ -283,6 +283,12 @@
                 <div class="admin-card">
                     <h2>تخصيص التصميم</h2>
                     <div class="design-grid">
+                        <label class="wide">الثيم
+                            <select name="designSettings[themeMode]">
+                                <option value="classic" <%= (siteData.designSettings.themeMode || 'classic') === 'classic' ? 'selected' : '' %>>الثيم الحالي الفاخر</option>
+                                <option value="royal-purple" <%= siteData.designSettings.themeMode === 'royal-purple' ? 'selected' : '' %>>ثيم أسود وبنفسجي ملكي</option>
+                            </select>
+                        </label>
                         <label>لون النص الرئيسي<input type="color" name="designSettings[ink]" value="<%= siteData.designSettings.ink %>"></label>
                         <label>اللون الذهبي<input type="color" name="designSettings[gold]" value="<%= siteData.designSettings.gold %>"></label>
                         <label>الخلفية<input type="color" name="designSettings[paper]" value="<%= siteData.designSettings.paper %>"></label>

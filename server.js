@@ -350,6 +350,7 @@ let testimonials = [
 ];
 
 let designSettings = {
+    themeMode: 'classic',
     ink: '#16110f',
     gold: '#c8a45d',
     paper: '#fffaf3',

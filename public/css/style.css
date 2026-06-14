@@ -2091,6 +2091,154 @@ html[dir="rtl"] .hero-timeline span {
         #16110f;
 }
 
+/* Royal black and purple theme */
+.theme-royal-purple {
+    --ink: #f8f0ff;
+    --ink-soft: #d8c7ec;
+    --gold: #d8ad63;
+    --gold-dark: #b98a3f;
+    --paper: #100916;
+    --mist: #1d1028;
+    --line: rgba(216, 173, 99, 0.24);
+    --muted: #bca9cf;
+    --blush: #341944;
+    --amber: #8b5cf6;
+    --shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+    background:
+        radial-gradient(circle at 16% 8%, rgba(139, 92, 246, 0.22), transparent 32%),
+        radial-gradient(circle at 86% 18%, rgba(216, 173, 99, 0.12), transparent 28%),
+        #100916;
+}
+
+.theme-royal-purple .top-offer-bar {
+    background: linear-gradient(90deg, #09050d, #341944, #09050d);
+}
+
+.theme-royal-purple .site-header {
+    background: rgba(16, 9, 22, 0.96);
+    border-bottom-color: rgba(216, 173, 99, 0.22);
+}
+
+.theme-royal-purple .brand-wordmark,
+.theme-royal-purple .footer-logo {
+    filter: invert(1) sepia(0.35) saturate(1.4) hue-rotate(235deg) brightness(1.16);
+}
+
+.theme-royal-purple .nav-links a,
+.theme-royal-purple .footer-links a,
+.theme-royal-purple .lang-switch a {
+    color: var(--ink-soft);
+}
+
+.theme-royal-purple .lang-switch {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(216, 173, 99, 0.2);
+}
+
+.theme-royal-purple .lang-switch a.active {
+    background: linear-gradient(135deg, #6d28d9, #341944);
+    color: #fff;
+}
+
+.theme-royal-purple .cinematic-hero,
+.theme-royal-purple .hero,
+.theme-royal-purple .shop-listing-hero,
+.theme-royal-purple .checkout-hero,
+.theme-royal-purple .checkout-success,
+.theme-royal-purple .light-promo,
+.theme-royal-purple .gift-section {
+    background:
+        radial-gradient(circle at 18% 12%, rgba(139, 92, 246, 0.28), transparent 34%),
+        radial-gradient(circle at 82% 16%, rgba(216, 173, 99, 0.14), transparent 30%),
+        linear-gradient(135deg, #100916, #1d1028 58%, #09050d);
+}
+
+.theme-royal-purple .collection-strip,
+.theme-royal-purple .shop-section,
+.theme-royal-purple .products,
+.theme-royal-purple .featured-products,
+.theme-royal-purple .contact,
+.theme-royal-purple .about,
+.theme-royal-purple .product-details {
+    background: var(--paper);
+}
+
+.theme-royal-purple .product-card,
+.theme-royal-purple .shop-card,
+.theme-royal-purple .checkout-card,
+.theme-royal-purple .success-card,
+.theme-royal-purple .journal-card,
+.theme-royal-purple .testimonial-card,
+.theme-royal-purple .contact-form,
+.theme-royal-purple .contact-info {
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(139, 92, 246, 0.08)),
+        #1a0f24;
+    border-color: rgba(216, 173, 99, 0.22);
+    color: var(--ink);
+}
+
+.theme-royal-purple .product-type,
+.theme-royal-purple .product-description,
+.theme-royal-purple .checkout-card p,
+.theme-royal-purple .section-heading p,
+.theme-royal-purple .gift-copy p {
+    color: var(--muted);
+}
+
+.theme-royal-purple .toolbar-pills span,
+.theme-royal-purple .shop-card .view-details {
+    border-color: rgba(216, 173, 99, 0.24);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ink);
+}
+
+.theme-royal-purple .button.primary,
+.theme-royal-purple .add-cart-button,
+.theme-royal-purple .checkout-form button,
+.theme-royal-purple .store-actions .bag-link {
+    border-color: rgba(216, 173, 99, 0.62);
+    background: linear-gradient(135deg, #d8ad63, #7c3aed);
+    color: #100916;
+}
+
+.theme-royal-purple .button.primary:hover,
+.theme-royal-purple .add-cart-button:hover,
+.theme-royal-purple .shop-card .view-details:hover {
+    background: #f8f0ff;
+    color: #100916;
+}
+
+.theme-royal-purple input,
+.theme-royal-purple textarea,
+.theme-royal-purple select,
+.theme-royal-purple .whatsapp-panel,
+.theme-royal-purple .whatsapp-form input,
+.theme-royal-purple .whatsapp-form textarea {
+    background: #160c20;
+    border-color: rgba(216, 173, 99, 0.24);
+    color: var(--ink);
+}
+
+.theme-royal-purple .whatsapp-panel-body {
+    background:
+        radial-gradient(circle at 16% 10%, rgba(139, 92, 246, 0.18), transparent 32%),
+        #130b1b;
+}
+
+.theme-royal-purple .chat-bubble.support {
+    background: #241331;
+    color: var(--ink);
+}
+
+.theme-royal-purple .new-era-section,
+.theme-royal-purple .site-footer,
+.theme-royal-purple .promo-banner {
+    background:
+        radial-gradient(circle at 78% 12%, rgba(139, 92, 246, 0.3), transparent 34%),
+        linear-gradient(135deg, #09050d, #341944 58%, #100916);
+}
+
 .whatsapp-widget {
     position: fixed;
     right: 22px;
