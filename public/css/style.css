@@ -1289,6 +1289,10 @@ html[dir="rtl"] .shop-hero::after {
     background: #fff;
 }
 
+.offer-products.shop-section {
+    padding-bottom: 34px;
+}
+
 .compact-heading {
     display: grid;
     gap: 6px;
@@ -1348,6 +1352,302 @@ html[dir="rtl"] .shop-hero::after {
 
 .promo-inner p {
     color: rgba(255, 255, 255, 0.75);
+}
+
+.interactive-promo {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: auto;
+    padding: 34px 0;
+}
+
+.interactive-promo .promo-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    width: min(1180px, calc(100% - 40px));
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+    align-items: center;
+    gap: clamp(22px, 3vw, 42px);
+    padding: clamp(24px, 3vw, 38px);
+    border: 1px solid rgba(216, 173, 99, 0.18);
+    border-radius: 30px;
+    background:
+        radial-gradient(circle at 74% 45%, rgba(216, 173, 99, 0.1), transparent 30%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(124, 58, 237, 0.08));
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
+}
+
+.promo-copy {
+    max-width: 660px;
+    padding: 6px 0;
+}
+
+.promo-copy .button {
+    margin-top: 22px;
+}
+
+.promo-video-scene {
+    position: relative;
+    justify-self: end;
+    width: min(380px, 100%);
+    height: 220px;
+    overflow: hidden;
+    border: 1px solid rgba(216, 173, 99, 0.24);
+    border-radius: 28px;
+    background: #100916;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 24px 74px rgba(0, 0, 0, 0.34);
+}
+
+.promo-video {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.86;
+    filter: saturate(1.08) contrast(1.06);
+}
+
+.interactive-promo .promo-copy h2 {
+    color: #ffffff;
+}
+
+.interactive-promo .promo-copy p:not(.eyebrow) {
+    color: rgba(255, 255, 255, 0.86);
+}
+
+.promo-video-glow {
+    position: absolute;
+    inset: auto 14% -28px;
+    z-index: 3;
+    height: 70px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(216, 173, 99, 0.38), transparent 64%);
+    filter: blur(18px);
+    pointer-events: none;
+}
+
+.interactive-promo [data-promo-title],
+.interactive-promo [data-promo-text] {
+    transition: opacity 280ms ease, transform 280ms ease, filter 280ms ease;
+}
+
+.interactive-promo.is-changing [data-promo-title],
+.interactive-promo.is-changing [data-promo-text] {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+}
+
+.promo-bottle-scene {
+    position: relative;
+    width: min(300px, 100%);
+    height: 230px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid rgba(216, 173, 99, 0.18);
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at 52% 42%, rgba(216, 173, 99, 0.18), transparent 42%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(124, 58, 237, 0.12));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 22px 70px rgba(0, 0, 0, 0.22);
+}
+
+.promo-bottle {
+    position: relative;
+    z-index: 3;
+    width: 118px;
+    max-height: 182px;
+    object-fit: contain;
+    border-radius: 18px;
+    filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.42));
+    animation: promoBottleFloat 4.8s ease-in-out infinite, promoBottleSwap 4.2s ease-in-out infinite;
+    transition: opacity 280ms ease, transform 280ms ease, filter 280ms ease;
+}
+
+.interactive-promo.is-changing .promo-bottle {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+    filter: blur(4px) drop-shadow(0 22px 28px rgba(0, 0, 0, 0.42));
+}
+
+.incense-cup {
+    position: relative;
+    z-index: 3;
+    width: 78px;
+    height: 82px;
+    margin-bottom: 8px;
+    border-radius: 18px 18px 26px 26px;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.22), transparent 18%, rgba(255, 255, 255, 0.18) 34%, transparent 52%, rgba(255, 255, 255, 0.2) 72%, transparent),
+        linear-gradient(135deg, #8d7454, #dfc18a 48%, #6c4b31);
+    box-shadow:
+        inset 0 8px 14px rgba(255, 255, 255, 0.16),
+        inset 0 -10px 18px rgba(36, 18, 6, 0.28),
+        0 20px 34px rgba(0, 0, 0, 0.36);
+}
+
+.incense-cup::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    right: 9px;
+    top: -8px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, #17110d 0 45%, #b58d58 48% 100%);
+    box-shadow: 0 0 20px rgba(216, 173, 99, 0.4);
+}
+
+.incense-smoke {
+    position: absolute;
+    left: 50%;
+    bottom: 68px;
+    width: 30px;
+    height: 122px;
+    border-radius: 999px;
+    opacity: 0.82;
+    filter: blur(7px);
+    background:
+        radial-gradient(ellipse at 50% 12%, rgba(255, 255, 255, 0.95), transparent 24%),
+        radial-gradient(ellipse at 36% 42%, rgba(255, 255, 255, 0.72), transparent 34%),
+        radial-gradient(ellipse at 60% 72%, rgba(219, 226, 255, 0.52), transparent 38%);
+    transform-origin: bottom center;
+    mix-blend-mode: screen;
+    animation: incenseRise 4.8s ease-in-out infinite;
+}
+
+.incense-smoke-one {
+    transform: translateX(-18px) rotate(-12deg);
+}
+
+.incense-smoke-two {
+    height: 150px;
+    width: 38px;
+    animation-delay: -1.6s;
+    transform: translateX(-3px) rotate(10deg);
+}
+
+.incense-smoke-three {
+    height: 112px;
+    width: 26px;
+    animation-delay: -3s;
+    transform: translateX(16px) rotate(20deg);
+}
+
+.promo-glow {
+    position: absolute;
+    inset: 36px 8px 6px;
+    z-index: 1;
+    border-radius: 999px;
+    background:
+        radial-gradient(circle, rgba(216, 173, 99, 0.38), transparent 62%),
+        radial-gradient(circle, rgba(124, 58, 237, 0.32), transparent 68%);
+    filter: blur(12px);
+    animation: promoGlow 3.8s ease-in-out infinite;
+}
+
+.promo-smoke {
+    position: absolute;
+    z-index: 1;
+    width: 420px;
+    height: 120px;
+    border-radius: 999px;
+    background:
+        radial-gradient(circle at 25% 50%, rgba(255, 255, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 55% 45%, rgba(216, 173, 99, 0.15), transparent 32%),
+        radial-gradient(circle at 80% 55%, rgba(139, 92, 246, 0.18), transparent 34%);
+    filter: blur(22px);
+    opacity: 0.38;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    animation: promoSmoke 9s ease-in-out infinite;
+}
+
+@keyframes incenseRise {
+    0% {
+        opacity: 0;
+        transform: translate3d(-8px, 16px, 0) rotate(-8deg) scale(0.72);
+    }
+    22% {
+        opacity: 0.88;
+    }
+    58% {
+        opacity: 0.7;
+        transform: translate3d(14px, -46px, 0) rotate(13deg) scale(1.18);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(-20px, -112px, 0) rotate(-20deg) scale(1.55);
+    }
+}
+
+@keyframes promoBottleSwap {
+    0%,
+    100% {
+        filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.42)) saturate(1);
+    }
+    50% {
+        filter: drop-shadow(0 28px 34px rgba(124, 58, 237, 0.28)) saturate(1.08);
+    }
+}
+
+.smoke-one {
+    left: 8%;
+    bottom: -20px;
+}
+
+.smoke-two {
+    right: 16%;
+    top: 8px;
+    animation-delay: -3s;
+}
+
+.smoke-three {
+    right: -8%;
+    bottom: 12px;
+    animation-delay: -6s;
+}
+
+@keyframes promoBottleFloat {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-10px) scale(1.03);
+    }
+}
+
+@keyframes promoGlow {
+    0%,
+    100% {
+        opacity: 0.55;
+        transform: scale(0.96);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scale(1.08);
+    }
+}
+
+@keyframes promoSmoke {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 0.32;
+    }
+    50% {
+        transform: translate3d(40px, -16px, 0) scale(1.16);
+        opacity: 0.58;
+    }
 }
 
 .shop-heading {
@@ -1589,6 +1889,43 @@ html[dir="rtl"] .shop-hero::after {
     .shop-heading {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .interactive-promo .promo-inner {
+        grid-template-columns: 1fr;
+        width: min(100% - 28px, 520px);
+        gap: 20px;
+        padding: 22px;
+        border-radius: 24px;
+    }
+
+    .promo-bottle-scene {
+        width: min(260px, 100%);
+        height: 170px;
+        justify-self: center;
+        order: 2;
+    }
+
+    .promo-video-scene {
+        width: 100%;
+        height: 178px;
+        justify-self: center;
+        order: 2;
+    }
+
+    .promo-bottle {
+        width: 86px;
+        max-height: 138px;
+    }
+
+    .incense-cup {
+        width: 62px;
+        height: 64px;
+    }
+
+    .incense-smoke {
+        bottom: 56px;
+        height: 96px;
     }
 
     .shop-products-grid,
@@ -2258,6 +2595,81 @@ html[dir="rtl"] .hero-timeline span {
     background:
         radial-gradient(circle at 78% 12%, rgba(139, 92, 246, 0.3), transparent 34%),
         linear-gradient(135deg, #09050d, #341944 58%, #100916);
+}
+
+.theme-royal-purple .light-promo {
+    color: #f8f0ff;
+}
+
+.theme-royal-purple .light-promo .eyebrow {
+    color: #d8ad63;
+}
+
+.theme-royal-purple .light-promo h2 {
+    color: #ffffff;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.42);
+}
+
+.theme-royal-purple .light-promo p {
+    color: #e5d7f6;
+}
+
+.theme-royal-purple .interactive-promo {
+    box-shadow: inset 0 1px 0 rgba(216, 173, 99, 0.18), inset 0 -1px 0 rgba(216, 173, 99, 0.12);
+    background:
+        radial-gradient(circle at 82% 50%, rgba(216, 173, 99, 0.12), transparent 22%),
+        radial-gradient(circle at 62% 40%, rgba(124, 58, 237, 0.18), transparent 34%),
+        linear-gradient(135deg, #09050d, #241030 62%, #3a1f62);
+}
+
+.theme-royal-purple .interactive-promo .promo-inner {
+    border-color: rgba(216, 173, 99, 0.2);
+    background:
+        radial-gradient(circle at 78% 46%, rgba(216, 173, 99, 0.12), transparent 28%),
+        linear-gradient(135deg, rgba(8, 5, 12, 0.74), rgba(45, 21, 67, 0.72));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 26px 86px rgba(0, 0, 0, 0.28);
+}
+
+.theme-royal-purple .promo-bottle {
+    border: 1px solid rgba(216, 173, 99, 0.28);
+}
+
+.theme-royal-purple .promo-bottle-scene {
+    background:
+        radial-gradient(circle at 56% 44%, rgba(216, 173, 99, 0.2), transparent 38%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(124, 58, 237, 0.14));
+    border-color: rgba(216, 173, 99, 0.22);
+}
+
+.theme-royal-purple .promo-video-scene {
+    border-color: rgba(216, 173, 99, 0.3);
+    background:
+        radial-gradient(circle at 48% 28%, rgba(124, 58, 237, 0.28), transparent 44%),
+        #09050d;
+    box-shadow:
+        inset 0 1px 0 rgba(216, 173, 99, 0.14),
+        0 28px 82px rgba(0, 0, 0, 0.42),
+        0 0 44px rgba(124, 58, 237, 0.16);
+}
+
+.theme-royal-purple .site-footer {
+    border-top: 1px solid rgba(216, 173, 99, 0.22);
+}
+
+.theme-royal-purple .site-footer p {
+    color: #f8f0ff;
+    font-weight: 700;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+}
+
+.theme-royal-purple .site-footer .footer-links a {
+    color: #d8ad63;
+}
+
+.theme-royal-purple .site-footer .footer-links a:hover {
+    color: #fff;
 }
 
 .whatsapp-widget {

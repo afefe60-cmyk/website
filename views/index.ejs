@@ -129,14 +129,23 @@
     </div>
 </section>
 
-<section class="promo-banner light-promo">
+<section class="promo-banner light-promo interactive-promo" data-rotating-promo data-lang="${lang}" data-promo-images="${products.slice(0, 4).map((product) => product.image || '').join('|')}">
+    <div class="promo-smoke smoke-one"></div>
+    <div class="promo-smoke smoke-two"></div>
+    <div class="promo-smoke smoke-three"></div>
     <div class="container promo-inner">
-        <div>
+        <div class="promo-copy">
             <p class="eyebrow">${lang === 'ar' ? 'عرض 1 + 1' : 'Buy 1 Get 1'}</p>
-            <h2>${lang === 'ar' ? 'اجمع عطرك اليومي مع عطر للمساء' : 'Pair your daily scent with an evening signature'}</h2>
-            <p>${lang === 'ar' ? 'أضف عطرين لتفعيل العرض واصنع مجموعة تناسب يومك ومناسباتك.' : 'Add two perfumes to activate the offer and build a collection for daily wear and special evenings.'}</p>
+            <h2 data-promo-title>${lang === 'ar' ? 'اصنع توقيعك العطري من النهار إلى المساء' : 'Create your day-to-night fragrance signature'}</h2>
+            <p data-promo-text>${lang === 'ar' ? 'اختر عطراً أنيقاً ليومك وآخر أكثر عمقاً لمناسباتك المسائية ضمن عرض عجمان لكجري.' : 'Choose an elegant scent for the day and a deeper signature for refined evening occasions with AJMAN LUXURY.'}</p>
+            <a href="/contact?lang=${lang}" class="button primary">${lang === 'ar' ? 'اطلب الآن' : 'Order Now'}</a>
         </div>
-        <a href="/contact?lang=${lang}" class="button primary">${lang === 'ar' ? 'اطلب الآن' : 'Order Now'}</a>
+        <div class="promo-video-scene" aria-hidden="true">
+            <video class="promo-video" autoplay muted loop playsinline preload="metadata">
+                <source src="/videos/promo-atmosphere.mp4" type="video/mp4">
+            </video>
+            <span class="promo-video-glow"></span>
+        </div>
     </div>
 </section>
 

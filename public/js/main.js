@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCart();
     initCheckout();
     initWhatsAppWidget();
+    initRotatingPromo();
 });
 
 function currentLang() {
@@ -244,6 +245,47 @@ function initWhatsAppWidget() {
             form.querySelector('button').disabled = false;
         }
     });
+}
+
+function initRotatingPromo() {
+    const promo = document.querySelector('[data-rotating-promo]');
+    if (!promo) {
+        return;
+    }
+
+    const lang = promo.dataset.lang === 'ar' ? 'ar' : 'en';
+    const title = promo.querySelector('[data-promo-title]');
+    const text = promo.querySelector('[data-promo-text]');
+    const bottle = promo.querySelector('[data-promo-bottle]');
+    const images = (promo.dataset.promoImages || '').split('|').filter(Boolean);
+    const phrases = {
+        en: [
+            ['Create your day-to-night fragrance signature', 'Choose an elegant scent for the day and a deeper signature for refined evening occasions with AJMAN LUXURY.'],
+            ['One for daylight, one for mystery', 'Build a pair that moves from polished mornings to unforgettable nights.'],
+            ['A ritual of presence and power', 'Layer elegance, warmth, and depth with two perfumes designed for lasting impact.'],
+            ['Your scent story, doubled', 'Select two luxury bottles and let every moment carry its own signature.']
+        ],
+        ar: [
+            ['اصنع توقيعك العطري من النهار إلى المساء', 'اختر عطراً أنيقاً ليومك وآخر أكثر عمقاً لمناسباتك المسائية ضمن عرض عجمان لكجري.'],
+            ['عطر للنهار وآخر للغموض', 'اصنع ثنائية تنتقل من صباح راقٍ إلى مساء لا يُنسى.'],
+            ['طقس من الحضور والهيبة', 'اجمع الأناقة والدفء والعمق في عطرين بثبات وانطباع فاخر.'],
+            ['قصتك العطرية بلمستين', 'اختر زجاجتين فاخرتين واجعل لكل لحظة توقيعها الخاص.']
+        ]
+    };
+
+    let index = 0;
+    setInterval(() => {
+        index = (index + 1) % phrases[lang].length;
+        promo.classList.add('is-changing');
+        setTimeout(() => {
+            title.textContent = phrases[lang][index][0];
+            text.textContent = phrases[lang][index][1];
+            if (bottle && images[index % images.length]) {
+                bottle.src = images[index % images.length];
+            }
+            promo.classList.remove('is-changing');
+        }, 280);
+    }, 4200);
 }
 
 function initCardReveal() {
