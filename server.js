@@ -13,7 +13,7 @@ const VIDEO_DIR = path.join(__dirname, 'public', 'videos');
 const ICON_DIR = path.join(__dirname, 'public', 'icons');
 const SITE_URL = process.env.SITE_URL || `http://localhost:${PORT}`;
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
-const WHATSAPP_NUMBER = (process.env.WHATSAPP_NUMBER || '971500000000').replace(/\D/g, '');
+const WHATSAPP_NUMBER = (process.env.WHATSAPP_NUMBER || '971561634196').replace(/\D/g, '');
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-this-secret';
@@ -71,7 +71,7 @@ let translations = {
         contactInfo: 'Contact Information',
         contactForm: 'Send us a message',
         address_label: 'Ajman, United Arab Emirates',
-        phone_label: '+971 50 000 0000',
+        phone_label: '+971561634196',
         email_label: 'info@ajmanluxury.ae',
         hoursTitle: 'Business Hours',
         hoursWeek: 'Saturday - Thursday: 10:00 AM - 10:00 PM',
@@ -146,7 +146,7 @@ let translations = {
         contactInfo: 'معلومات التواصل',
         contactForm: 'أرسل لنا رسالة',
         address_label: 'عجمان، الإمارات العربية المتحدة',
-        phone_label: '+971 50 000 0000',
+        phone_label: '+971561634196',
         email_label: 'info@ajmanluxury.ae',
         hoursTitle: 'ساعات العمل',
         hoursWeek: 'السبت - الخميس: 10:00 صباحاً - 10:00 مساءً',
