@@ -33,7 +33,14 @@
                 <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="brand-wordmark">
             </a>
 
-            <ul class="nav-links">
+            <button class="mobile-menu-toggle" type="button" data-mobile-menu-toggle aria-expanded="false" aria-controls="mobile-mega-menu">
+                <span><%= lang === 'ar' ? 'القائمة' : 'Menu' %></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+
+            <ul class="nav-links" id="mobile-mega-menu" data-mobile-mega-menu>
                 <li><a href="/?lang=<%= lang %>"><%= t.home %></a></li>
                 <li><a href="/products?lang=<%= lang %>"><%= t.products %></a></li>
                 <li><a href="/scent-finder?lang=<%= lang %>"><%= t.scentFinder %></a></li>
