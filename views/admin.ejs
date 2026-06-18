@@ -20,7 +20,7 @@
             <button type="button" class="tab-button" data-tab="design">التصميم</button>
         </nav>
         <a class="site-link" href="/?lang=ar" target="_blank">عرض الموقع</a>
-        <form action="/admin/logout" method="POST">
+        <form action="<%= adminBase || '/admin' %>/logout" method="POST">
             <button type="submit" class="logout-button">تسجيل الخروج</button>
         </form>
     </aside>
@@ -36,7 +36,7 @@
             <% } %>
         </header>
 
-        <form action="/admin/save" method="POST" class="admin-form" id="adminForm">
+        <form action="<%= adminBase || '/admin' %>/save" method="POST" class="admin-form" id="adminForm">
             <section class="tab-panel active" data-panel="dashboard">
                 <div class="stats-grid">
                     <article>
@@ -335,8 +335,8 @@
                 <button type="submit" class="save-button">حفظ التغييرات</button>
             </div>
         </form>
-        <form id="heroVideoUploadForm" action="/admin/upload-hero-video" method="POST" enctype="multipart/form-data"></form>
-        <form id="faviconUploadForm" action="/admin/upload-favicon" method="POST" enctype="multipart/form-data"></form>
+        <form id="heroVideoUploadForm" action="<%= adminBase || '/admin' %>/upload-hero-video" method="POST" enctype="multipart/form-data"></form>
+        <form id="faviconUploadForm" action="<%= adminBase || '/admin' %>/upload-favicon" method="POST" enctype="multipart/form-data"></form>
     </main>
 
     <script>

@@ -8,7 +8,7 @@
 </head>
 <body class="login-page">
     <main class="login-shell">
-        <form action="/admin/login" method="POST" class="login-card">
+        <form action="<%= adminBase || '/admin' %>/login" method="POST" class="login-card">
             <img src="/images/logo-wordmark.png" alt="AJMAN LUXURY">
             <h1>تسجيل دخول لوحة التحكم</h1>
             <p>أدخل بيانات المدير لإدارة محتوى وتصميم الموقع.</p>

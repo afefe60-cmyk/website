@@ -71,7 +71,7 @@ let translations = {
         contactInfo: 'Contact Information',
         contactForm: 'Send us a message',
         address_label: 'Ajman, United Arab Emirates',
-        phone_label: '+971561634196',
+        phone_label: '+971 56 163 4196',
         email_label: 'info@ajmanluxury.ae',
         hoursTitle: 'Business Hours',
         hoursWeek: 'Saturday - Thursday: 10:00 AM - 10:00 PM',
@@ -146,7 +146,7 @@ let translations = {
         contactInfo: 'معلومات التواصل',
         contactForm: 'أرسل لنا رسالة',
         address_label: 'عجمان، الإمارات العربية المتحدة',
-        phone_label: '+971561634196',
+        phone_label: '+971 56 163 4196',
         email_label: 'info@ajmanluxury.ae',
         hoursTitle: 'ساعات العمل',
         hoursWeek: 'السبت - الخميس: 10:00 صباحاً - 10:00 مساءً',
@@ -405,6 +405,10 @@ function applySiteData() {
     if (siteData.designSettings) {
         designSettings = { ...designSettings, ...siteData.designSettings };
     }
+
+    if (process.env.WHATSAPP_NUMBER) {
+        designSettings.whatsappNumber = WHATSAPP_NUMBER;
+    }
 }
 
 function writeSiteData(siteData) {
@@ -640,7 +644,37 @@ function requireAdmin(req, res, next) {
         return;
     }
 
-    res.redirect('/admin/login');
+    res.redirect(`${getAdminBase(req)}/login`);
+}
+
+function getAdminBase(req) {
+    return req.path.startsWith('/local-admin') ? '/local-admin' : '/admin';
+}
+
+function renderAdminLogin(req, res) {
+    res.render('admin-login', {
+        adminBase: getAdminBase(req),
+        error: req.query.error === '1'
+    });
+}
+
+function handleAdminLogin(req, res) {
+    const adminBase = getAdminBase(req);
+    const { username, password } = req.body;
+
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        res.setHeader('Set-Cookie', `${SESSION_COOKIE}=${encodeURIComponent(signSession(username))}; HttpOnly; SameSite=Lax; Path=/; Max-Age=28800`);
+        res.redirect(adminBase);
+        return;
+    }
+
+    res.redirect(`${adminBase}/login?error=1`);
+}
+
+function handleAdminLogout(req, res) {
+    const adminBase = getAdminBase(req);
+    res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0`);
+    res.redirect(`${adminBase}/login`);
 }
 
 function sanitizeUploadName(filename) {
@@ -716,32 +750,17 @@ function parseMultipartUpload(req, fieldName, callback) {
     req.on('error', callback);
 }
 
-app.get('/admin/login', (req, res) => {
-    res.render('admin-login', {
-        error: req.query.error === '1'
-    });
-});
+app.get(['/admin/login', '/local-admin/login'], renderAdminLogin);
 
-app.post('/admin/login', (req, res) => {
-    const { username, password } = req.body;
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        res.setHeader('Set-Cookie', `${SESSION_COOKIE}=${encodeURIComponent(signSession(username))}; HttpOnly; SameSite=Lax; Path=/admin; Max-Age=28800`);
-        res.redirect('/admin');
-        return;
-    }
+app.post(['/admin/login', '/local-admin/login'], handleAdminLogin);
 
-    res.redirect('/admin/login?error=1');
-});
+app.post(['/admin/logout', '/local-admin/logout'], handleAdminLogout);
 
-app.post('/admin/logout', (req, res) => {
-    res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; HttpOnly; SameSite=Lax; Path=/admin; Max-Age=0`);
-    res.redirect('/admin/login');
-});
-
-app.post('/admin/upload-hero-video', requireAdmin, (req, res) => {
+app.post(['/admin/upload-hero-video', '/local-admin/upload-hero-video'], requireAdmin, (req, res) => {
+    const adminBase = getAdminBase(req);
     parseMultipartUpload(req, 'heroVideo', (error, file) => {
         if (error) {
-            res.redirect('/admin?upload=error');
+            res.redirect(`${adminBase}?upload=error`);
             return;
         }
 
@@ -750,7 +769,7 @@ app.post('/admin/upload-hero-video', requireAdmin, (req, res) => {
         const extension = path.extname(file.filename).toLowerCase();
 
         if (!allowedTypes.includes(file.contentType) && !allowedExtensions.includes(extension)) {
-            res.redirect('/admin?upload=type');
+            res.redirect(`${adminBase}?upload=type`);
             return;
         }
 
@@ -768,14 +787,15 @@ app.post('/admin/upload-hero-video', requireAdmin, (req, res) => {
             }
         });
 
-        res.redirect('/admin?saved=1');
+        res.redirect(`${adminBase}?saved=1`);
     });
 });
 
-app.post('/admin/upload-favicon', requireAdmin, (req, res) => {
+app.post(['/admin/upload-favicon', '/local-admin/upload-favicon'], requireAdmin, (req, res) => {
+    const adminBase = getAdminBase(req);
     parseMultipartUpload(req, 'favicon', (error, file) => {
         if (error) {
-            res.redirect('/admin?upload=error');
+            res.redirect(`${adminBase}?upload=error`);
             return;
         }
 
@@ -784,7 +804,7 @@ app.post('/admin/upload-favicon', requireAdmin, (req, res) => {
         const extension = path.extname(file.filename).toLowerCase();
 
         if (!allowedTypes.includes(file.contentType) && !allowedExtensions.includes(extension)) {
-            res.redirect('/admin?upload=type');
+            res.redirect(`${adminBase}?upload=type`);
             return;
         }
 
@@ -802,12 +822,13 @@ app.post('/admin/upload-favicon', requireAdmin, (req, res) => {
             }
         });
 
-        res.redirect('/admin?saved=1');
+        res.redirect(`${adminBase}?saved=1`);
     });
 });
 
-app.get('/admin', requireAdmin, (req, res) => {
+app.get(['/admin', '/local-admin'], requireAdmin, (req, res) => {
     res.render('admin', {
+        adminBase: getAdminBase(req),
         currentPath: req.path,
         saved: req.query.saved === '1',
         siteData: snapshotSiteData(),
@@ -816,7 +837,8 @@ app.get('/admin', requireAdmin, (req, res) => {
     });
 });
 
-app.post('/admin/save', requireAdmin, (req, res) => {
+app.post(['/admin/save', '/local-admin/save'], requireAdmin, (req, res) => {
+    const adminBase = getAdminBase(req);
     const currentData = snapshotSiteData();
     const updatedDesignSettings = {
         ...currentData.designSettings,
@@ -837,7 +859,7 @@ app.post('/admin/save', requireAdmin, (req, res) => {
     };
 
     writeSiteData(updatedData);
-    res.redirect('/admin?saved=1');
+    res.redirect(`${adminBase}?saved=1`);
 });
 
 app.get('/', renderPage('index', (lang) => ({
