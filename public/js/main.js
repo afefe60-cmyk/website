@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initModalHandlers();
     initWhatsAppWidget();
     initCheckout();
+    initGoldClickSparkles();
 });
 
 function currentLang() {
@@ -634,3 +635,41 @@ function initCheckout() {
 
     renderCheckout();
 }
+
+/* Golden Sparkle Click Micro-Interactions (Feature 6) */
+function initGoldClickSparkles() {
+    document.addEventListener('click', (e) => {
+        const target = e.target.closest('.btn, [data-add-to-cart], .tab-btn, .icon-btn, .scent-radar-toggle-btn, .pyramid-level, .quiz-opt, .quick-view-btn, .lang-switch');
+        if (!target) return;
+
+        const x = e.clientX;
+        const y = e.clientY;
+        const particleCount = 10;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'gold-sparkle-particle';
+            
+            const size = Math.random() * 5 + 3;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+
+            const angle = (Math.PI * 2 / particleCount) * i + (Math.random() - 0.5);
+            const distance = Math.random() * 45 + 20;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+
+            particle.style.setProperty('--tx', `${tx}px`);
+            particle.style.setProperty('--ty', `${ty}px`);
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 750);
+        }
+    });
+}
+

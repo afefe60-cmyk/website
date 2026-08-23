@@ -301,19 +301,52 @@ body {
   box-shadow: 0 25px 60px rgba(200, 164, 93, 0.15);
 }
 
-/* Typography & Helpers */
+/* Typography & 3D Metallic Gold Embossed Effects */
 .font-title {
   font-family: var(--font-title);
+  letter-spacing: 0.3px;
 }
 
 .gold-text {
-  background: linear-gradient(135deg, #fffaf3 0%, #c8a45d 50%, #e5cd8d 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #fff6e0 15%, #e5cd8d 35%, #c8a45d 65%, #9b7437 90%, #e5cd8d 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(200, 164, 93, 0.35)) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  display: inline-block;
+}
+
+.hero-title.gold-text {
+  filter: drop-shadow(0 4px 15px rgba(200, 164, 93, 0.45)) drop-shadow(0 8px 30px rgba(0, 0, 0, 0.9));
 }
 
 .gold-icon {
   color: var(--gold-primary);
+  filter: drop-shadow(0 0 6px rgba(200, 164, 93, 0.4));
+}
+
+/* Golden Click Sparkle Micro-Interactions */
+.gold-sparkle-particle {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffdf8 0%, #e5cd8d 50%, #c8a45d 100%);
+  box-shadow: 0 0 10px 2px rgba(229, 205, 141, 0.8), 0 0 20px rgba(200, 164, 93, 0.5);
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  animation: goldSparklePop 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes goldSparklePop {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) translate(var(--tx), var(--ty));
+  }
 }
 
 /* Top Announcement Bar */
