@@ -1,221 +1,467 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initCardReveal();
-    initContactForm();
-    initScentFinder();
-    initCart();
-    initCheckout();
+    initSplashScreen();
+    initParticlesCanvas();
+    initHeroAudio();
+    initCategoryFilters();
+    initShowcaseVideoControls();
+    initCartDrawer();
+    initModalHandlers();
     initWhatsAppWidget();
-    initRotatingPromo();
-    initMobileMegaMenu();
+    initCheckout();
 });
 
 function currentLang() {
     return document.documentElement.lang === 'ar' ? 'ar' : 'en';
 }
 
-function initMobileMegaMenu() {
-    const toggle = document.querySelector('[data-mobile-menu-toggle]');
-    const menu = document.querySelector('[data-mobile-mega-menu]');
+/* Luxury Splash Screen Animation */
+function initSplashScreen() {
+    const splash = document.getElementById('splash-screen');
+    if (!splash) return;
 
-    if (!toggle || !menu) {
-        return;
-    }
-
-    const closeMenu = () => {
-        menu.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
+    const hideSplash = () => {
+        splash.classList.add('is-hidden');
+        setTimeout(() => {
+            splash.remove();
+        }, 850);
     };
 
-    toggle.addEventListener('click', () => {
-        const willOpen = !menu.classList.contains('is-open');
-        menu.classList.toggle('is-open', willOpen);
-        toggle.setAttribute('aria-expanded', String(willOpen));
-    });
+    if (document.readyState === 'complete') {
+        setTimeout(hideSplash, 1800);
+    } else {
+        window.addEventListener('load', () => {
+            setTimeout(hideSplash, 1600);
+        });
+        setTimeout(hideSplash, 2400);
+    }
+}
 
-    menu.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', closeMenu);
-    });
+/* Floating Luxury Particles Canvas */
+function initParticlesCanvas() {
+    const canvas = document.getElementById('particles-canvas');
+    if (!canvas) return;
 
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            closeMenu();
-        }
-    });
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 780) {
-            closeMenu();
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    const particleCount = 45;
+
+    for (let i = 0; i < particleCount; i++) {
+        particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 2 + 0.5,
+            color: Math.random() > 0.4 ? 'rgba(200, 164, 93, ' : 'rgba(229, 205, 141, ',
+            alpha: Math.random() * 0.5 + 0.2,
+            speedY: -Math.random() * 0.5 - 0.1,
+            speedX: (Math.random() - 0.5) * 0.3
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        particles.forEach((p) => {
+            p.y += p.speedY;
+            p.x += p.speedX;
+
+            if (p.y < 0) {
+                p.y = height;
+                p.x = Math.random() * width;
+            }
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color + p.alpha + ')';
+            ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
+/* Hero Audio Toggle */
+function initHeroAudio() {
+    const toggleBtn = document.getElementById('hero-audio-toggle');
+    const heroVideo = document.getElementById('hero-video');
+    if (!toggleBtn || !heroVideo) return;
+
+    toggleBtn.addEventListener('click', () => {
+        heroVideo.muted = !heroVideo.muted;
+        const textSpan = toggleBtn.querySelector('.audio-text');
+        const isAr = currentLang() === 'ar';
+        if (heroVideo.muted) {
+            textSpan.textContent = isAr ? 'تشغيل الصوت' : 'Unmute Video';
+            toggleBtn.style.background = 'rgba(13, 10, 9, 0.7)';
+        } else {
+            textSpan.textContent = isAr ? 'كتم الصوت' : 'Mute Video';
+            toggleBtn.style.background = 'rgba(200, 164, 93, 0.3)';
         }
     });
 }
 
+/* Video Showcase Switcher & Play/Pause */
+function initShowcaseVideoControls() {
+    const playBtn = document.getElementById('showcase-play-btn');
+    const video = document.getElementById('showcase-video');
+    if (!playBtn || !video) return;
+
+    playBtn.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        } else {
+            video.pause();
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        }
+    });
+}
+
+function switchShowcaseVideo(src, btnElement) {
+    const video = document.getElementById('showcase-video');
+    const playBtn = document.getElementById('showcase-play-btn');
+    if (!video) return;
+
+    video.src = src;
+    video.play();
+    if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+    document.querySelectorAll('.video-playlist-btn').forEach((btn) => btn.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
+}
+
+/* Category Filter Tabs */
+function initCategoryFilters() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const products = document.querySelectorAll('.product-card');
+
+    tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+            tabs.forEach((t) => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            const filter = tab.dataset.filter;
+
+            products.forEach((prod) => {
+                if (filter === 'all' || prod.dataset.category === filter) {
+                    prod.style.display = 'flex';
+                } else {
+                    prod.style.display = 'none';
+                }
+            });
+        });
+    });
+}
+
+/* Fragrance Pyramid Interactive Details */
+const pyramidData = {
+    top: {
+        title: { ar: 'المكونات العليا (Top Notes)', en: 'Top Notes' },
+        time: { ar: 'الـ 15 دقيقة الأولى', en: 'First 15 Minutes' },
+        desc: {
+            ar: 'افتتاحية ناصعة ومشرقة من البرغموت والزعفران والروائح الهوائية المنعشة التي تلفت الانتباه من اللحظة الأولى.',
+            en: 'Bright opening notes of bergamot, saffron, and fresh air accords that make an immediate statement.'
+        }
+    },
+    heart: {
+        title: { ar: 'قلب العطر (Heart Notes)', en: 'Heart Notes' },
+        time: { ar: 'من ساعة إلى 4 ساعات', en: '1 to 4 Hours' },
+        desc: {
+            ar: 'روح العطر المشرقة بالورد الدمشقي، العود الكامبودي، الياسمين واللافندر التي تمنح العطر شخصيته المتزنة والعميقة.',
+            en: 'The heart of the fragrance with Damask rose, Cambodian oud, jasmine, and lavender giving signature character.'
+        }
+    },
+    base: {
+        title: { ar: 'القاعدة العطرية (Base Notes)', en: 'Base Notes' },
+        time: { ar: 'تثبت حتى 24 ساعة', en: 'Up to 24 Hours' },
+        desc: {
+            ar: 'عمق فاخر ودافئ من العنبر الأشهب، أخشاب الأرز، المسك الأبيض والصندل، مما يضمن ثباتاً عالياً وبصمة مسائية لا تُنسى.',
+            en: 'Rich base of ambergris, cedarwood, white musk, and sandalwood ensuring incredible longevity.'
+        }
+    }
+};
+
+function selectPyramidLevel(levelKey, element) {
+    document.querySelectorAll('.pyramid-level').forEach((lvl) => lvl.classList.remove('active'));
+    if (element) element.classList.add('active');
+
+    const data = pyramidData[levelKey];
+    if (!data) return;
+
+    const lang = currentLang();
+    document.getElementById('pyramid-details-title').textContent = data.title[lang];
+    document.getElementById('pyramid-details-time').textContent = data.time[lang];
+    document.getElementById('pyramid-details-desc').textContent = data.desc[lang];
+}
+
+/* Quiz Logic */
+const quizAnswers = { 1: null, 2: null, 3: null };
+
+function selectQuizAnswer(step, value) {
+    quizAnswers[step] = value;
+
+    const currentStepEl = document.getElementById(`quiz-step-${step}`);
+    if (currentStepEl) currentStepEl.classList.remove('active');
+
+    const progressBar = document.getElementById('quiz-progress-bar');
+
+    if (step < 3) {
+        const nextStepEl = document.getElementById(`quiz-step-${step + 1}`);
+        if (nextStepEl) nextStepEl.classList.add('active');
+        if (progressBar) progressBar.style.width = `${((step + 1) / 3) * 100}%`;
+    } else {
+        showQuizResult();
+    }
+}
+
+function showQuizResult() {
+    const resultStep = document.getElementById('quiz-result');
+    const progressBar = document.getElementById('quiz-progress-bar');
+    if (resultStep) resultStep.classList.add('active');
+    if (progressBar) progressBar.style.width = '100%';
+
+    const isAr = currentLang() === 'ar';
+
+    let match = 'council';
+    let matchName = isAr ? 'كاونسل' : 'Council';
+    let matchImg = '/images/products/council.jpeg';
+    let matchPrice = isAr ? '480 درهم' : 'AED 480';
+
+    if (quizAnswers[1] === 'soft') {
+        match = 'first-lady';
+        matchName = isAr ? 'فيرست ليدي' : 'First Lady';
+        matchImg = '/images/products/first-lady.jpeg';
+        matchPrice = isAr ? '450 درهم' : 'AED 450';
+    } else if (quizAnswers[1] === 'fresh') {
+        match = 'chairman';
+        matchName = isAr ? 'تشيرمان' : 'Chairman';
+        matchImg = '/images/products/chairman.jpeg';
+        matchPrice = isAr ? '540 درهم' : 'AED 540';
+    } else if (quizAnswers[2] === 'formal') {
+        match = 'president';
+        matchName = isAr ? 'بريزدنت' : 'President';
+        matchImg = '/images/products/president.jpeg';
+        matchPrice = isAr ? '520 درهم' : 'AED 520';
+    }
+
+    document.getElementById('quiz-recommended-name').textContent = matchName;
+    document.getElementById('quiz-recommended-img').src = matchImg;
+    document.getElementById('quiz-recommended-price').textContent = matchPrice;
+
+    const addBtn = document.getElementById('quiz-add-btn');
+    if (addBtn) {
+        addBtn.onclick = () => {
+            addToCart({
+                id: match,
+                name: matchName,
+                price: matchPrice,
+                image: matchImg
+            });
+        };
+    }
+}
+
+function resetQuiz() {
+    quizAnswers[1] = quizAnswers[2] = quizAnswers[3] = null;
+    document.querySelectorAll('.quiz-step').forEach((s) => s.classList.remove('active'));
+    document.getElementById('quiz-step-1').classList.add('active');
+    const progressBar = document.getElementById('quiz-progress-bar');
+    if (progressBar) progressBar.style.width = '33.33%';
+}
+
+/* Cart Storage & Drawer Engine */
 const CART_KEY = 'ajmanLuxuryCart';
 
 function readCart() {
     try {
         return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-    } catch (error) {
+    } catch (e) {
         return [];
     }
 }
 
 function writeCart(cart) {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
-    updateCartCount();
+    updateCartUI();
 }
 
-function formatMoney(amount) {
-    return `AED ${Math.max(0, Number(amount) || 0).toLocaleString('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-    })}`;
+function addToCart(product) {
+    const cart = readCart();
+    const existing = cart.find((item) => item.id === product.id);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+    writeCart(cart);
+    openCartDrawer();
+    showToast(currentLang() === 'ar' ? 'تمت إضافة العطر إلى سلتك الفاخرة ✨' : 'Added to your luxury cart ✨');
 }
 
-function updateCartCount() {
-    const count = readCart().reduce((sum, item) => sum + item.quantity, 0);
-    document.querySelectorAll('[data-cart-count]').forEach((counter) => {
-        counter.textContent = count;
-        counter.hidden = count === 0;
+function updateCartUI() {
+    const cart = readCart();
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    document.querySelectorAll('[data-cart-count]').forEach((badge) => {
+        badge.textContent = count;
     });
-}
 
-function initCart() {
-    updateCartCount();
-    document.querySelectorAll('[data-add-to-cart]').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            const cart = readCart();
-            const product = {
-                id: button.dataset.productId,
-                name: button.dataset.productName,
-                price: button.dataset.productPrice,
-                priceFils: Number(button.dataset.productPriceFils) || 0,
-                image: button.dataset.productImage
-            };
+    const cartItemsWrap = document.getElementById('cart-items');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    if (!cartItemsWrap) return;
 
-            const existing = cart.find((item) => item.id === product.id);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
+    let subtotal = 0;
 
-            writeCart(cart);
-            showNotification(currentLang() === 'ar' ? 'تمت إضافة العطر إلى السلة.' : 'Perfume added to your bag.');
-        });
-    });
-}
-
-function initCheckout() {
-    const checkoutPage = document.querySelector('[data-checkout-page]');
-    if (!checkoutPage) {
+    if (cart.length === 0) {
+        cartItemsWrap.innerHTML = `<p style="text-align: center; color: var(--text-secondary); padding: 2rem 0;">${currentLang() === 'ar' ? 'السلة فارغة حالياً' : 'Your cart is empty'}</p>`;
+        if (cartSubtotal) cartSubtotal.textContent = '0 د.إ';
         return;
     }
 
-    const itemsWrap = checkoutPage.querySelector('[data-checkout-items]');
-    const emptyCart = checkoutPage.querySelector('[data-empty-cart]');
-    const totalWrap = checkoutPage.querySelector('[data-checkout-total-wrap]');
-    const totalNode = checkoutPage.querySelector('[data-checkout-total]');
-    const form = checkoutPage.querySelector('[data-checkout-form]');
-    const message = checkoutPage.querySelector('[data-checkout-message]');
-    const lang = checkoutPage.dataset.lang === 'ar' ? 'ar' : 'en';
-
-    function renderCheckout() {
-        const cart = readCart();
-        const total = cart.reduce((sum, item) => sum + (Number(item.priceFils) || 0) * item.quantity, 0);
-
-        emptyCart.hidden = cart.length > 0;
-        totalWrap.hidden = cart.length === 0;
-        form.hidden = cart.length === 0;
-        totalNode.textContent = formatMoney(total / 100);
-
-        itemsWrap.innerHTML = cart.map((item) => `
-            <article class="checkout-item" data-cart-item="${item.id}">
-                ${item.image ? `<img src="${item.image}" alt="${item.name}">` : '<span class="checkout-thumb"></span>'}
-                <div>
-                    <h3>${item.name}</h3>
-                    <p>${item.price}</p>
-                    <div class="quantity-control">
-                        <button type="button" data-qty="-1" aria-label="Decrease">−</button>
+    cartItemsWrap.innerHTML = cart.map((item) => {
+        const itemPriceNum = Number(String(item.price).replace(/[^\d.]/g, '')) || 0;
+        subtotal += itemPriceNum * item.quantity;
+        return `
+            <div class="cart-item">
+                <img src="${item.image || '/images/logo.png'}" class="cart-item-img" alt="${item.name}">
+                <div class="cart-item-info">
+                    <div class="cart-item-title">${item.name}</div>
+                    <div class="cart-item-price">${item.price}</div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.4rem;">
+                        <button onclick="changeQty('${item.id}', -1)" style="background: rgba(200,164,93,0.2); border: none; color: var(--gold-light); width: 24px; height: 24px; border-radius: 50%; cursor: pointer;">-</button>
                         <span>${item.quantity}</span>
-                        <button type="button" data-qty="1" aria-label="Increase">+</button>
+                        <button onclick="changeQty('${item.id}', 1)" style="background: rgba(200,164,93,0.2); border: none; color: var(--gold-light); width: 24px; height: 24px; border-radius: 50%; cursor: pointer;">+</button>
                     </div>
                 </div>
-                <strong>${formatMoney((Number(item.priceFils) || 0) * item.quantity / 100)}</strong>
-                <button type="button" class="remove-cart-item" data-remove-item>${lang === 'ar' ? 'حذف' : 'Remove'}</button>
-            </article>
-        `).join('');
+                <button onclick="removeFromCart('${item.id}')" style="background: transparent; border: none; color: #ff5555; cursor: pointer;"><i class="fas fa-trash"></i></button>
+            </div>
+        `;
+    }).join('');
+
+    if (cartSubtotal) {
+        cartSubtotal.textContent = `${subtotal} ${currentLang() === 'ar' ? 'د.إ' : 'AED'}`;
     }
-
-    itemsWrap.addEventListener('click', (event) => {
-        const itemNode = event.target.closest('[data-cart-item]');
-        if (!itemNode) {
-            return;
-        }
-
-        const cart = readCart();
-        const item = cart.find((cartItem) => cartItem.id === itemNode.dataset.cartItem);
-        if (!item) {
-            return;
-        }
-
-        if (event.target.matches('[data-remove-item]')) {
-            writeCart(cart.filter((cartItem) => cartItem.id !== item.id));
-            renderCheckout();
-            return;
-        }
-
-        if (event.target.matches('[data-qty]')) {
-            item.quantity = Math.max(1, item.quantity + Number(event.target.dataset.qty));
-            writeCart(cart);
-            renderCheckout();
-        }
-    });
-
-    checkoutPage.querySelector('[data-clear-cart]').addEventListener('click', () => {
-        writeCart([]);
-        renderCheckout();
-    });
-
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        message.textContent = lang === 'ar' ? 'جاري تجهيز الطلب...' : 'Preparing your order...';
-
-        const formData = new FormData(form);
-        const customer = Object.fromEntries(formData.entries());
-        const items = readCart().map((item) => ({ id: item.id, quantity: item.quantity }));
-
-        try {
-            const response = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ lang, customer, items })
-            });
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.error || 'Checkout failed');
-            }
-
-            if (result.url && result.url.startsWith('/checkout/success')) {
-                writeCart([]);
-            }
-            window.location.href = result.url;
-        } catch (error) {
-            message.textContent = lang === 'ar'
-                ? 'تعذر إتمام الطلب الآن. حاول مرة أخرى.'
-                : 'Unable to place the order now. Please try again.';
-        }
-    });
-
-    renderCheckout();
 }
 
+function changeQty(id, delta) {
+    const cart = readCart();
+    const item = cart.find((i) => i.id === id);
+    if (!item) return;
+
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+        writeCart(cart.filter((i) => i.id !== id));
+    } else {
+        writeCart(cart);
+    }
+}
+
+function removeFromCart(id) {
+    const cart = readCart();
+    writeCart(cart.filter((i) => i.id !== id));
+}
+
+function initCartDrawer() {
+    const toggleBtn = document.getElementById('cart-toggle-btn');
+    const closeBtn = document.getElementById('close-cart-btn');
+    const overlay = document.getElementById('cart-overlay');
+
+    if (toggleBtn) toggleBtn.addEventListener('click', openCartDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeCartDrawer);
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeCartDrawer();
+        });
+    }
+
+    document.querySelectorAll('[data-add-to-cart]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            addToCart({
+                id: btn.dataset.productId,
+                name: btn.dataset.productName,
+                price: btn.dataset.productPrice,
+                priceFils: Number(btn.dataset.productPriceFils) || 0,
+                image: btn.dataset.productImage
+            });
+        });
+    });
+
+    updateCartUI();
+}
+
+function openCartDrawer() {
+    const overlay = document.getElementById('cart-overlay');
+    if (overlay) overlay.classList.add('active');
+}
+
+function closeCartDrawer() {
+    const overlay = document.getElementById('cart-overlay');
+    if (overlay) overlay.classList.remove('active');
+}
+
+/* Quick View Modal Handler */
+function openQuickView(productId) {
+    const modal = document.getElementById('quick-view-modal');
+    const content = document.getElementById('modal-content');
+    if (!modal || !content) return;
+
+    const isAr = currentLang() === 'ar';
+    content.innerHTML = `
+        <div style="text-align: center;">
+            <h2 class="font-title gold-text" style="font-size: 2rem; margin-bottom: 0.5rem;">${isAr ? 'عجمان لكجري — عطر فاخر' : 'AJMAN LUXURY'}</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${isAr ? 'تركيز إكستريت دي بارفان بثبات عالي ونوتات نيش راقية.' : 'Extrait de Parfum concentration with exceptional longevity.'}</p>
+            <a href="/product/${productId}?lang=${currentLang()}" class="btn btn-primary">${isAr ? 'صفحة العطر الكاملة' : 'View Full Details'}</a>
+        </div>
+    `;
+    modal.classList.add('active');
+}
+
+function initModalHandlers() {
+    const closeBtn = document.getElementById('close-modal-btn');
+    const modal = document.getElementById('quick-view-modal');
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('quick-view-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+/* Toast Notifications */
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3200);
+}
+
+/* WhatsApp Widget & Live Chat */
 function initWhatsAppWidget() {
     const widget = document.querySelector('[data-whatsapp-widget]');
-    if (!widget) {
-        return;
-    }
+    if (!widget) return;
 
     const toggle = widget.querySelector('[data-whatsapp-toggle]');
     const closeButton = widget.querySelector('[data-whatsapp-close]');
@@ -228,10 +474,6 @@ function initWhatsAppWidget() {
     function setOpen(isOpen) {
         panel.hidden = !isOpen;
         widget.classList.toggle('is-open', isOpen);
-        if (isOpen) {
-            const messageField = form.querySelector('[name="message"]');
-            setTimeout(() => messageField.focus(), 80);
-        }
     }
 
     function addBubble(text, type = 'user') {
@@ -242,177 +484,71 @@ function initWhatsAppWidget() {
         messages.scrollTop = messages.scrollHeight;
     }
 
-    toggle.addEventListener('click', () => setOpen(panel.hidden));
-    closeButton.addEventListener('click', () => setOpen(false));
+    if (toggle) toggle.addEventListener('click', () => setOpen(panel.hidden));
+    if (closeButton) closeButton.addEventListener('click', () => setOpen(false));
 
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const formData = new FormData(form);
-        const payload = Object.fromEntries(formData.entries());
-        payload.lang = lang;
+    if (form) {
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+            payload.lang = lang;
 
-        addBubble(payload.message);
-        status.textContent = lang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
-        form.querySelector('button').disabled = true;
+            addBubble(payload.message);
+            if (status) status.textContent = lang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
 
-        try {
-            const response = await fetch('/api/whatsapp-chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.error || 'Message failed');
-            }
-
-            addBubble(result.reply, 'support');
-            status.textContent = lang === 'ar' ? 'تم الإرسال بنجاح' : 'Sent successfully';
-            form.querySelector('[name="message"]').value = '';
-        } catch (error) {
-            addBubble(
-                lang === 'ar'
-                    ? 'تعذر إرسال الرسالة الآن. حاول مرة أخرى أو استخدم صفحة التواصل.'
-                    : 'Unable to send now. Please try again or use the contact page.',
-                'support error'
-            );
-            status.textContent = '';
-        } finally {
-            form.querySelector('button').disabled = false;
-        }
-    });
-}
-
-function initRotatingPromo() {
-    const promo = document.querySelector('[data-rotating-promo]');
-    if (!promo) {
-        return;
-    }
-
-    const lang = promo.dataset.lang === 'ar' ? 'ar' : 'en';
-    const title = promo.querySelector('[data-promo-title]');
-    const text = promo.querySelector('[data-promo-text]');
-    const bottle = promo.querySelector('[data-promo-bottle]');
-    const images = (promo.dataset.promoImages || '').split('|').filter(Boolean);
-    const phrases = {
-        en: [
-            ['Create your day-to-night fragrance signature', 'Choose an elegant scent for the day and a deeper signature for refined evening occasions with AJMAN LUXURY.'],
-            ['One for daylight, one for mystery', 'Build a pair that moves from polished mornings to unforgettable nights.'],
-            ['A ritual of presence and power', 'Layer elegance, warmth, and depth with two perfumes designed for lasting impact.'],
-            ['Your scent story, doubled', 'Select two luxury bottles and let every moment carry its own signature.']
-        ],
-        ar: [
-            ['اصنع توقيعك العطري من النهار إلى المساء', 'اختر عطراً أنيقاً ليومك وآخر أكثر عمقاً لمناسباتك المسائية ضمن عرض عجمان لكجري.'],
-            ['عطر للنهار وآخر للغموض', 'اصنع ثنائية تنتقل من صباح راقٍ إلى مساء لا يُنسى.'],
-            ['طقس من الحضور والهيبة', 'اجمع الأناقة والدفء والعمق في عطرين بثبات وانطباع فاخر.'],
-            ['قصتك العطرية بلمستين', 'اختر زجاجتين فاخرتين واجعل لكل لحظة توقيعها الخاص.']
-        ]
-    };
-
-    let index = 0;
-    setInterval(() => {
-        index = (index + 1) % phrases[lang].length;
-        promo.classList.add('is-changing');
-        setTimeout(() => {
-            title.textContent = phrases[lang][index][0];
-            text.textContent = phrases[lang][index][1];
-            if (bottle && images[index % images.length]) {
-                bottle.src = images[index % images.length];
-            }
-            promo.classList.remove('is-changing');
-        }, 280);
-    }, 4200);
-}
-
-function initCardReveal() {
-    const cards = document.querySelectorAll('.product-card, .journal-card, .testimonial-card, .gallery-item');
-    if (!('IntersectionObserver' in window)) {
-        cards.forEach((card) => card.classList.add('is-visible'));
-        return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
+            try {
+                const response = await fetch('/api/whatsapp-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                addBubble(result.reply, 'support');
+                if (status) status.textContent = lang === 'ar' ? 'تم الإرسال' : 'Sent';
+                form.querySelector('[name="message"]').value = '';
+            } catch (error) {
+                addBubble(lang === 'ar' ? 'تعذر الإرسال حالياً.' : 'Unable to send.', 'support error');
             }
         });
-    }, { threshold: 0.12 });
-
-    cards.forEach((card) => observer.observe(card));
+    }
 }
 
-function initContactForm() {
-    const contactForm = document.querySelector('.contact-form');
-    if (!contactForm) {
-        return;
+/* Checkout Logic Compatibility */
+function initCheckout() {
+    const checkoutPage = document.querySelector('[data-checkout-page]');
+    if (!checkoutPage) return;
+
+    const itemsWrap = checkoutPage.querySelector('[data-checkout-items]');
+    const emptyCart = checkoutPage.querySelector('[data-empty-cart]');
+    const totalWrap = checkoutPage.querySelector('[data-checkout-total-wrap]');
+    const totalNode = checkoutPage.querySelector('[data-checkout-total]');
+    const form = checkoutPage.querySelector('[data-checkout-form]');
+    const lang = checkoutPage.dataset.lang === 'ar' ? 'ar' : 'en';
+
+    function renderCheckout() {
+        const cart = readCart();
+        const total = cart.reduce((sum, item) => {
+            const priceNum = Number(String(item.price).replace(/[^\d.]/g, '')) || 0;
+            return sum + priceNum * item.quantity;
+        }, 0);
+
+        if (emptyCart) emptyCart.hidden = cart.length > 0;
+        if (totalWrap) totalWrap.hidden = cart.length === 0;
+        if (form) form.hidden = cart.length === 0;
+        if (totalNode) totalNode.textContent = `${total} AED`;
+
+        if (itemsWrap) {
+            itemsWrap.innerHTML = cart.map((item) => `
+                <div class="checkout-item" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-glass);">
+                    <div>
+                        <strong>${item.name}</strong> × ${item.quantity}
+                    </div>
+                    <span>${item.price}</span>
+                </div>
+            `).join('');
+        }
     }
 
-    contactForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const message = currentLang() === 'ar'
-            ? 'شكراً لتواصلكم مع عجمان لكجري. سنعود إليكم قريباً.'
-            : 'Thank you for contacting AJMAN LUXURY. We will get back to you soon.';
-        showNotification(message);
-        contactForm.reset();
-    });
-}
-
-function initScentFinder() {
-    const finderForm = document.getElementById('scentFinderForm');
-    if (!finderForm) {
-        return;
-    }
-
-    finderForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const lang = finderForm.dataset.lang === 'ar' ? 'ar' : 'en';
-        const profile = finderForm.querySelector('input[name="profile"]:checked').value;
-        const occasion = finderForm.querySelector('input[name="occasion"]:checked').value;
-        const longevity = finderForm.querySelector('input[name="longevity"]:checked').value;
-
-        let match = 'president';
-        if (profile === 'fresh' || profile === 'floral') {
-            match = 'first-lady';
-        }
-        if (profile === 'woody' || profile === 'oriental') {
-            match = occasion === 'evening' || longevity === 'long' ? 'council' : 'president';
-        }
-
-        const copy = {
-            en: {
-                council: ['Council', 'A warm oud extrait with spice, amber, and a strong evening presence.'],
-                'first-lady': ['First Lady', 'A graceful floral amber scent for soft elegance and memorable gifts.'],
-                president: ['President', 'A confident amber woods perfume for polished daily and evening wear.']
-            },
-            ar: {
-                council: ['كاونسل', 'عطر عود دافئ بالتوابل والعنبر وحضور مسائي واضح.'],
-                'first-lady': ['فيرست ليدي', 'عطر زهري عنبري ناعم للأناقة والهدايا الراقية.'],
-                president: ['بريزدنت', 'عطر عنبري خشبي واثق للاستخدام اليومي والمساء.']
-            }
-        };
-
-        document.getElementById('resultTitle').textContent = copy[lang][match][0];
-        document.getElementById('resultText').textContent = copy[lang][match][1];
-        document.getElementById('resultLink').href = `/product/${match}?lang=${lang}`;
-
-        const result = document.getElementById('result');
-        result.hidden = false;
-        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-}
-
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = message;
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-        notification.classList.add('is-leaving');
-        setTimeout(() => notification.remove(), 250);
-    }, 2800);
+    renderCheckout();
 }

@@ -1,206 +1,291 @@
 <%- include('layout', {
     body: `
-<section class="cinematic-hero" aria-label="${lang === 'ar' ? 'فيديو عجمان لكجري' : 'AJMAN LUXURY cinematic hero'}">
+  <!-- Hero Section with Background Video -->
+  <section class="hero" id="home">
     ${designSettings.heroVideo ? `
-        <video class="hero-video" autoplay muted loop playsinline preload="metadata">
-            <source src="${designSettings.heroVideo}" type="video/${designSettings.heroVideo.endsWith('.webm') ? 'webm' : designSettings.heroVideo.endsWith('.ogg') ? 'ogg' : 'mp4'}">
+      <video autoplay muted loop playsinline class="hero-video-bg" id="hero-video">
+        <source src="${designSettings.heroVideo}" type="video/mp4" />
+      </video>
+    ` : `
+      <video autoplay muted loop playsinline class="hero-video-bg" id="hero-video">
+        <source src="/videos/promo-atmosphere.mp4" type="video/mp4" />
+      </video>
+    `}
+    
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <span class="hero-badge">${lang === 'ar' ? 'عجمان لكجري — عالم النوتات العطرية والرفاهية' : 'AJMAN LUXURY — Haute Parfumerie & Luxury'}</span>
+      <h1 class="hero-title font-title gold-text">${lang === 'ar' ? 'سحر النوتات العطرية والرفاهية المطلقة' : 'The Magic of Fragrance & Absolute Luxury'}</h1>
+      <p class="hero-subtitle">${lang === 'ar' ? 'نعزف أندر الزيوت العطرية العالمية في معزوفات نيش تأسر الحواس وتخلّد الحضور بروح إماراتية راقية.' : 'Crafting rare perfume oils into niche compositions that captivate the senses with a refined Emirati signature.'}</p>
+      
+      <div class="hero-buttons">
+        <a href="#collection" class="btn btn-primary font-title">
+          <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <span>${lang === 'ar' ? 'اكتشف المجموعة' : 'Explore Collection'}</span>
+        </a>
+        <a href="#quiz" class="btn btn-outline font-title">
+          <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+          <span>${lang === 'ar' ? 'اختبر عطرك المفضل' : 'Scent Finder Quiz'}</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Video Sound Toggle Button -->
+    <button class="video-audio-toggle" id="hero-audio-toggle">
+      <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+      <span class="audio-text">${lang === 'ar' ? 'تشغيل الصوت' : 'Unmute Video'}</span>
+    </button>
+  </section>
+
+  <!-- Dedicated Video Showcase Section -->
+  <section class="section video-showcase-section" id="video-showcase">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">${lang === 'ar' ? 'التناغم العطري' : 'Olfactory Symphony'}</span>
+        <h2 class="section-title font-title gold-text">${lang === 'ar' ? 'سيمفونية عجمان لكجري' : 'Symphony of AJMAN LUXURY'}</h2>
+        <p class="section-description">${lang === 'ar' ? 'شاهد كيف نسكب الفخامة ونمزج نوتات العود والعنبر بحرفية إيطالية وفرنسية رفيعة المستوى.' : 'Experience how we pour luxury and blend notes of oud, rose, and amber with high craftsmanship.'}</p>
+      </div>
+
+      <div class="video-frame-wrapper">
+        <!-- Video Watermark Brand Stamp -->
+        <div class="video-logo-stamp">
+          <img src="/images/logo.png" alt="AJMAN LUXURY Watermark" onerror="this.onerror=null; this.src='/images/logo-wordmark.png';" />
+          <span>AJMAN LUXURY</span>
+        </div>
+
+        <video id="showcase-video" class="showcase-video" loop playsinline autoplay muted>
+          <source src="${designSettings.heroVideo || '/videos/promo-atmosphere.mp4'}" type="video/mp4" />
         </video>
-    ` : ''}
-    <div class="cinematic-bg">
-        ${products.slice(0, 5).map((product, index) => `
-            <a href="/product/${product.id}?lang=${lang}" class="cinematic-slide slide-${index + 1}">
-                ${product.image ? `<img src="${product.image}" alt="${product.name}">` : `<span class="bottle large"></span>`}
-            </a>
+        <div class="video-custom-controls">
+          <button class="play-pause-btn" id="showcase-play-btn" aria-label="Play Showcase Video">
+            <i class="fas fa-pause"></i>
+          </button>
+          <span style="color: var(--gold-light); font-size: 0.9rem; font-weight: 600;">AJMAN LUXURY Official Presentation</span>
+        </div>
+      </div>
+
+      <!-- Video Playlist Selector Tabs -->
+      <div class="video-playlist-tabs" style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.8rem; flex-wrap: wrap;">
+        <button class="btn btn-outline video-playlist-btn active" onclick="switchShowcaseVideo('${designSettings.heroVideo || '/videos/promo-atmosphere.mp4'}', this)">
+          <i class="fas fa-film"></i> ${lang === 'ar' ? 'العرض الفاخر الرئيسي' : 'Main Luxury Reel'}
+        </button>
+        <button class="btn btn-outline video-playlist-btn" onclick="switchShowcaseVideo('/videos/promo-atmosphere.mp4', this)">
+          <i class="fas fa-film"></i> ${lang === 'ar' ? 'أجواء عجمان لكجري' : 'Luxury Atmosphere'}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curated Collection Catalog -->
+  <section class="section" id="collection">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">${lang === 'ar' ? 'مجموعاتنا الخاصة' : 'Private Collections'}</span>
+        <h2 class="section-title font-title gold-text">${lang === 'ar' ? 'عطور النيش الفاخرة' : 'Signature Niche Perfumes'}</h2>
+        <p class="section-description">${lang === 'ar' ? 'كل زجاجة تمثل تحفة فنية مصممة يدويًا بثبات عالي وفوحان آسر.' : 'Each bottle is a handcrafted masterpiece with high projection and exceptional longevity.'}</p>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="tab-btn active" data-filter="all">${lang === 'ar' ? 'الكل' : 'All'}</button>
+        <button class="tab-btn" data-filter="oud">${lang === 'ar' ? 'العود والعنبر' : 'Oud & Amber'}</button>
+        <button class="tab-btn" data-filter="floral">${lang === 'ar' ? 'الزهور الملكية' : 'Royal Florals'}</button>
+        <button class="tab-btn" data-filter="niche">${lang === 'ar' ? 'النيش الإكستري' : 'Extrait Niche'}</button>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="products-grid">
+        ${products.map((product) => `
+          <div class="product-card glass-panel" data-category="${product.id === 'council' || product.id === 'president' ? 'oud' : product.id === 'first-lady' || product.id === 'parliament' ? 'floral' : 'niche'}">
+            <div class="product-badge">${product.size}</div>
+            <div class="product-img-wrapper" onclick="openQuickView('${product.id}')">
+              <img src="${product.image}" alt="${product.name}" class="product-img" onerror="this.onerror=null; this.src='/images/logo.png';" />
+              <button class="quick-view-btn"><i class="fas fa-eye"></i> ${lang === 'ar' ? 'نظرة سريعة' : 'Quick View'}</button>
+            </div>
+            <div class="product-details">
+              <h3 class="font-title gold-text">${product.name}</h3>
+              <p class="product-type">${product.type || (lang === 'ar' ? 'إكستريت دي بارفان' : 'Extrait de Parfum')}</p>
+              <p class="product-desc">${product.description}</p>
+              
+              <div class="fragrance-notes-preview">
+                <small><strong>${lang === 'ar' ? 'المكونات:' : 'Notes:'}</strong> ${product.topNotes || ''}</small>
+              </div>
+
+              <div class="product-footer">
+                <span class="product-price">${product.price}</span>
+                <button class="btn btn-primary btn-sm" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">
+                  <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                  <span>${lang === 'ar' ? 'أضف للسلة' : 'Add to Bag'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
         `).join('')}
+      </div>
     </div>
-    <div class="scent-layer">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <div class="falcon-mark" aria-hidden="true">
-        <img src="/images/logo.png" alt="">
-    </div>
-    <div class="cinematic-copy">
-        <p class="eyebrow">${lang === 'ar' ? 'عجمان لكجري للعطور الفاخرة' : 'AJMAN LUXURY PERFUMES'}</p>
-        <h1>${lang === 'ar' ? 'الفخامة أو لا شيء' : 'Greatness or Nothing'}</h1>
-        <p>${lang === 'ar' ? 'مشهد عطري مستوحى من الصقر الإماراتي، زجاجات فاخرة، وروائح تترك حضوراً لا ينسى.' : 'A cinematic fragrance experience inspired by the Emirati falcon, refined bottles, and unforgettable presence.'}</p>
-        <div class="hero-actions">
-            <a href="/products?lang=${lang}" class="button primary">${lang === 'ar' ? 'تسوق العطور' : 'Shop Perfumes'}</a>
-            <a href="/contact?lang=${lang}" class="button ghost">${lang === 'ar' ? 'اطلب الآن' : 'Order Now'}</a>
-        </div>
-    </div>
-    <div class="hero-timeline" aria-hidden="true">
-        <span></span>
-    </div>
-</section>
+  </section>
 
-<section class="collection-strip">
+  <!-- Fragrance Pyramid Interactive Feature -->
+  <section class="section pyramid-section" id="pyramid">
     <div class="container">
-        <div class="section-heading compact-heading">
-            <h2>${lang === 'ar' ? 'أحدث الإصدارات' : 'Top Releases'}</h2>
-            <p>${lang === 'ar' ? 'اكتشف مجموعات عجمان لكجري المميزة' : 'Discover our distinctive AJMAN LUXURY collections'}</p>
-        </div>
-        <div class="collection-grid">
-            ${products.map((product) => `
-                <a href="/product/${product.id}?lang=${lang}" class="collection-tile">
-                    ${product.image ? `<img src="${product.image}" alt="${product.name}">` : `<span class="bottle"></span>`}
-                    <span>${product.name}</span>
-                </a>
-            `).join('')}
-        </div>
-    </div>
-</section>
+      <div class="section-header">
+        <span class="section-subtitle">${lang === 'ar' ? 'علم العطور' : 'Perfume Architecture'}</span>
+        <h2 class="section-title font-title gold-text">${lang === 'ar' ? 'الهرم العطري والتدرج' : 'Interactive Fragrance Pyramid'}</h2>
+        <p class="section-description">${lang === 'ar' ? 'اكتشف كيف تتفتح نوتات عطرك مع مرور الوقت من الانتعاش الأولي وحتى الثبات الخشبي العميق.' : 'Discover how scent notes evolve over time from fresh top notes to deep amber bases.'}</p>
+      </div>
 
-<section class="featured-products shop-section">
-    <div class="container">
-        <div class="section-heading shop-heading">
-            <div>
-                <p class="eyebrow">${lang === 'ar' ? 'اختيارات العملاء' : 'Customer Favorites'}</p>
-                <h2>${lang === 'ar' ? 'الأكثر مبيعاً' : 'Best Sellers'}</h2>
+      <div class="pyramid-container">
+        <div class="pyramid-visual">
+          <div class="pyramid-level active" data-level="top" onclick="selectPyramidLevel('top', this)">
+            <div class="pyramid-header">
+              <span class="pyramid-title font-title">${lang === 'ar' ? 'المكونات العليا (Top Notes)' : 'Top Notes'}</span>
+              <span class="pyramid-time">${lang === 'ar' ? 'الـ 15 دقيقة الأولى' : 'First 15 Minutes'}</span>
             </div>
-            <a href="/products?lang=${lang}">${lang === 'ar' ? 'عرض الكل' : 'View All'}</a>
-        </div>
-        <div class="products-grid shop-products-grid">
-            ${products.slice(0, 4).map((product, index) => `
-                <article class="product-card shop-card ${product.tone}">
-                    <a href="/product/${product.id}?lang=${lang}" class="product-visual" aria-label="${product.name}">
-                        ${index < 2 ? `<span class="product-badge">${lang === 'ar' ? 'الأكثر مبيعاً' : 'Best Seller'}</span>` : ''}
-                        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-photo">` : `<span class="bottle"></span>`}
-                    </a>
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-type">${product.type}</p>
-                        <div class="price-row">
-                            <strong>${product.price}</strong>
-                            <span>${product.size}</span>
-                        </div>
-                        <a href="/checkout?lang=${lang}" class="add-cart-button" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">${lang === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</a>
-                    </div>
-                </article>
-            `).join('')}
-        </div>
-    </div>
-</section>
+            <p class="pyramid-desc">${lang === 'ar' ? 'افتتاحية ناصعة من الحمضيات والزعفران والبرغموت والنوتات الزهرية النادرة.' : 'Luminous opening of citrus, saffron, bergamot, and rare spices.'}</p>
+          </div>
 
-<section class="gift-section">
-    <div class="container gift-grid">
-        <div class="gift-media">
-            ${products[0]?.image ? `<img src="${products[0].image}" alt="${products[0].name}">` : ''}
-        </div>
-        <div class="gift-copy">
-            <p class="eyebrow">${lang === 'ar' ? 'فن الإهداء' : 'The Art of Gifting'}</p>
-            <h2>${lang === 'ar' ? 'هدايا عطرية تليق بالمناسبات' : 'Luxury scents made for memorable gifts'}</h2>
-            <p>${lang === 'ar' ? 'اختيار العطر المناسب هو رسالة ذوق. تقدم عجمان لكجري زجاجات فاخرة وروائح ثابتة تصلح للهدايا الرسمية، المناسبات، والاحتفاء بمن تحب.' : 'A fine perfume is a message of taste. AJMAN LUXURY presents elegant bottles and lasting scents for gifting, occasions, and refined personal style.'}</p>
-            <a href="/products?lang=${lang}" class="button primary">${lang === 'ar' ? 'اكتشف الهدايا' : 'Discover Gifts'}</a>
-        </div>
-    </div>
-</section>
-
-<section class="offer-products shop-section">
-    <div class="container">
-        <div class="section-heading shop-heading">
-            <div>
-                <p class="eyebrow">${lang === 'ar' ? 'عروض عجمان لكجري' : 'AJMAN LUXURY Offers'}</p>
-                <h2>${lang === 'ar' ? 'عرض 2 + 1 مجاناً' : 'Buy 2 Get 1 Free'}</h2>
-                <p>${lang === 'ar' ? 'أضف ثلاثة عطور لتفعيل العرض' : 'Add three perfumes to activate the offer'}</p>
+          <div class="pyramid-level" data-level="heart" onclick="selectPyramidLevel('heart', this)">
+            <div class="pyramid-header">
+              <span class="pyramid-title font-title">${lang === 'ar' ? 'قلب العطر (Heart Notes)' : 'Heart Notes'}</span>
+              <span class="pyramid-time">${lang === 'ar' ? 'من ساعة إلى 4 ساعات' : '1 to 4 Hours'}</span>
             </div>
-            <a href="/contact?lang=${lang}">${lang === 'ar' ? 'اطلب العرض' : 'Claim Offer'}</a>
-        </div>
-        <div class="products-grid shop-products-grid">
-            ${products.map((product) => `
-                <article class="product-card shop-card ${product.tone}">
-                    <a href="/product/${product.id}?lang=${lang}" class="product-visual" aria-label="${product.name}">
-                        <span class="product-badge">${lang === 'ar' ? '2 + 1' : '2 + 1 Free'}</span>
-                        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-photo">` : `<span class="bottle"></span>`}
-                    </a>
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-type">${lang === 'ar' ? 'عرض خاص لفترة محدودة' : 'Limited bundle offer'}</p>
-                        <div class="price-row">
-                            <strong>${product.price}</strong>
-                            <span>${product.size}</span>
-                        </div>
-                        <a href="/checkout?lang=${lang}" class="add-cart-button" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">${lang === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</a>
-                    </div>
-                </article>
-            `).join('')}
-        </div>
-    </div>
-</section>
+            <p class="pyramid-desc">${lang === 'ar' ? 'روح العطر المشرقة بالورد الدمشقي، العود الكامبودي، الياسمين واللافندر.' : 'The heart of the fragrance with Damask rose, Oud, jasmine, and warm lavender.'}</p>
+          </div>
 
-<section class="promo-banner light-promo interactive-promo" data-rotating-promo data-lang="${lang}" data-promo-images="${products.slice(0, 4).map((product) => product.image || '').join('|')}">
-    <div class="promo-smoke smoke-one"></div>
-    <div class="promo-smoke smoke-two"></div>
-    <div class="promo-smoke smoke-three"></div>
-    <div class="container promo-inner">
-        <div class="promo-copy">
-            <p class="eyebrow">${lang === 'ar' ? 'عرض 1 + 1' : 'Buy 1 Get 1'}</p>
-            <h2 data-promo-title>${lang === 'ar' ? 'اصنع توقيعك العطري من النهار إلى المساء' : 'Create your day-to-night fragrance signature'}</h2>
-            <p data-promo-text>${lang === 'ar' ? 'اختر عطراً أنيقاً ليومك وآخر أكثر عمقاً لمناسباتك المسائية ضمن عرض عجمان لكجري.' : 'Choose an elegant scent for the day and a deeper signature for refined evening occasions with AJMAN LUXURY.'}</p>
-            <a href="/contact?lang=${lang}" class="button primary">${lang === 'ar' ? 'اطلب الآن' : 'Order Now'}</a>
-        </div>
-        <div class="promo-video-scene" aria-hidden="true">
-            <video class="promo-video" autoplay muted loop playsinline preload="metadata">
-                <source src="/videos/promo-atmosphere.mp4" type="video/mp4">
-            </video>
-            <span class="promo-video-glow"></span>
-        </div>
-    </div>
-</section>
-
-<section class="new-era-section">
-    <div class="container new-era-grid">
-        <div>
-            <p class="eyebrow">${lang === 'ar' ? 'مجموعة العهد الجديد' : 'NEW ERA COLLECTION'}</p>
-            <h2>${lang === 'ar' ? 'نقاء يرتقي بالحضور وثبات يدوم' : 'A level of purity that rises above all'}</h2>
-            <p>${lang === 'ar' ? 'حضور خالد يتجاوز الوقت. صُممت مجموعة عجمان لكجري بروائح مركزة، زجاجات أنيقة، وانطباع فاخر يبقى طويلاً.' : 'A timeless presence that transcends time. AJMAN LUXURY blends concentrated scents, elegant bottles, and a refined impression that lasts.'}</p>
-            <a href="/products?lang=${lang}" class="button primary">${lang === 'ar' ? 'اكتشف المجموعة' : 'Explore Collection'}</a>
-        </div>
-        <div class="new-era-products">
-            ${products.slice(1, 4).map((product) => `
-                <a href="/product/${product.id}?lang=${lang}">
-                    <img src="${product.image}" alt="${product.name}">
-                    <span>${product.name}</span>
-                </a>
-            `).join('')}
-        </div>
-    </div>
-</section>
-
-<section class="featured-products shop-section pink-world">
-    <div class="container">
-        <div class="section-heading shop-heading">
-            <div>
-                <p class="eyebrow">${lang === 'ar' ? 'عالم فيرست ليدي' : 'First Lady World'}</p>
-                <h2>${lang === 'ar' ? 'أناقة ناعمة وحضور لا ينسى' : 'Soft elegance, unforgettable presence'}</h2>
+          <div class="pyramid-level" data-level="base" onclick="selectPyramidLevel('base', this)">
+            <div class="pyramid-header">
+              <span class="pyramid-title font-title">${lang === 'ar' ? 'القاعدة العطرية (Base Notes)' : 'Base Notes'}</span>
+              <span class="pyramid-time">${lang === 'ar' ? 'تثبت حتى 24 ساعة' : 'Up to 24 Hours'}</span>
             </div>
-            <a href="/product/first-lady?lang=${lang}">${lang === 'ar' ? 'عرض العطر' : 'View Perfume'}</a>
+            <p class="pyramid-desc">${lang === 'ar' ? 'عمق فاخر من العنبر الأشهب، أخشاب الأرز، المسك الأبيض والصندل.' : 'Deep trail of ambergris, cedarwood, white musk, and Cambodian oud.'}</p>
+          </div>
         </div>
-        <div class="products-grid shop-products-grid">
-            ${products.filter((product) => product.id === 'first-lady' || product.id === 'parliament' || product.id === 'chairman' || product.id === 'president').map((product, index) => `
-                <article class="product-card shop-card ${product.tone}">
-                    <a href="/product/${product.id}?lang=${lang}" class="product-visual" aria-label="${product.name}">
-                        ${index === 0 ? `<span class="product-badge">${lang === 'ar' ? 'مختار' : 'Featured'}</span>` : ''}
-                        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-photo">` : `<span class="bottle"></span>`}
-                    </a>
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-type">${product.type}</p>
-                        <div class="price-row">
-                            <strong>${product.price}</strong>
-                            <span>${product.size}</span>
-                        </div>
-                        <a href="/checkout?lang=${lang}" class="add-cart-button" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">${lang === 'ar' ? 'أضف للسلة' : 'Add to Cart'}</a>
-                    </div>
-                </article>
-            `).join('')}
+
+        <div class="pyramid-details-card glass-panel" id="pyramid-details-card">
+          <svg class="lux-icon lux-icon-lg pyramid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 22 20 2 20 12 2"></polygon><line x1="7" y1="11" x2="17" y2="11"></line><line x1="4.5" y1="15.5" x2="19.5" y2="15.5"></line></svg>
+          <h3 class="font-title gold-text" id="pyramid-details-title" style="font-size: 1.8rem; margin-bottom: 0.5rem;">${lang === 'ar' ? 'المكونات العليا (Top Notes)' : 'Top Notes'}</h3>
+          <span class="pyramid-time" id="pyramid-details-time" style="display: inline-block; margin-bottom: 1.5rem;">${lang === 'ar' ? 'الـ 15 دقيقة الأولى' : 'First 15 Minutes'}</span>
+          <p id="pyramid-details-desc" style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">
+            ${lang === 'ar' ? 'افتتاحية ناصعة ومشرقة من البرغموت والزعفران والروائح الهوائية المنعشة التي تلفت الانتباه من اللحظة الأولى.' : 'Bright opening notes of bergamot, saffron, and fresh air accords that make an unforgettable impression.'}
+          </p>
         </div>
+      </div>
     </div>
-</section>
+  </section>
+
+  <!-- Interactive Perfume Finder Quiz -->
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">${lang === 'ar' ? 'استكشاف شخصي' : 'Personal Discovery'}</span>
+        <h2 class="section-title font-title gold-text">${lang === 'ar' ? 'مكتشف العطور الذكي' : 'Smart Perfume Finder'}</h2>
+        <p class="section-description">${lang === 'ar' ? 'أجب عن 3 أسئلة بسيطة لمساعدتنا في ترشيح العطر الأنسب لشخصيتك ومناسبتك.' : 'Answer 3 quick questions to discover your ideal AJMAN LUXURY signature perfume.'}</p>
+      </div>
+
+      <div class="quiz-card glass-panel">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar" id="quiz-progress-bar"></div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="quiz-step active" id="quiz-step-1">
+          <h3 class="font-title" style="margin-bottom: 1.5rem;">${lang === 'ar' ? '1. ما هي الأجواء العطرية التي تفضلها عادةً؟' : '1. Which scent atmosphere do you prefer?'}</h3>
+          <div class="quiz-options">
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(1, 'opulent')">${lang === 'ar' ? 'فخمة ودافئة (عود، عنبر، بخور)' : 'Opulent & Warm (Oud, Amber, Incense)'}</button>
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(1, 'soft')">${lang === 'ar' ? 'ناعمة وراقية (مسك، زهور، بودرة)' : 'Soft & Elegant (Musk, Floral, Powder)'}</button>
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(1, 'fresh')">${lang === 'ar' ? 'منعشة وحيوية (حمضيات، نوتات بحرية)' : 'Fresh & Vibrant (Citrus, Marine, Woods)'}</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="quiz-step" id="quiz-step-2">
+          <h3 class="font-title" style="margin-bottom: 1.5rem;">${lang === 'ar' ? '2. ما هي المناسبة الرئيسية لاستخدام العطر؟' : '2. What is the main occasion for this perfume?'}</h3>
+          <div class="quiz-options">
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(2, 'formal')">${lang === 'ar' ? 'المناسبات الرسمية والأمسيات الفاخرة' : 'Formal Events & Luxury Evenings'}</button>
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(2, 'daily')">${lang === 'ar' ? 'الاستخدام اليومي ولقاءات العمل' : 'Daily Wear & Business Meetings'}</button>
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(2, 'intimate')">${lang === 'ar' ? 'الأوقات الخاصة والهدايا' : 'Special Moments & Gifting'}</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="quiz-step" id="quiz-step-3">
+          <h3 class="font-title" style="margin-bottom: 1.5rem;">${lang === 'ar' ? '3. كيف تحب فوحان العطر وثباته؟' : '3. What level of presence & projection do you prefer?'}</h3>
+          <div class="quiz-options">
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(3, 'intense')">${lang === 'ar' ? 'قوي جداً وفوحان يترك بصمة' : 'Intense & Statement Projection'}</button>
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(3, 'balanced')">${lang === 'ar' ? 'متوازن وراقي يلامس الحواس' : 'Balanced & Refined Aura'}</button>
+            <button class="quiz-option-btn" onclick="selectQuizAnswer(3, 'subtle')">${lang === 'ar' ? 'هادئ للمقربين فقط' : 'Subtle & Close to Skin'}</button>
+          </div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="quiz-step" id="quiz-result">
+          <h3 class="font-title gold-text" style="font-size: 1.8rem; margin-bottom: 1rem;">${lang === 'ar' ? 'عطرك المفضل المرشح هو:' : 'Your Perfect Match is:'}</h3>
+          <h2 class="font-title" id="quiz-recommended-name" style="font-size: 2rem; color: #fff; margin-bottom: 1rem;">كاونسل</h2>
+          
+          <img id="quiz-recommended-img" src="/images/products/council.jpeg" alt="Recommended Perfume" style="width: 180px; height: 180px; object-fit: cover; border-radius: 20px; margin: 0 auto 1.5rem auto; border: 1px solid var(--border-glass);" onerror="this.onerror=null; this.src='/images/logo.png';" />
+
+          <div id="quiz-recommended-price" class="gold-text font-title" style="font-size: 1.5rem; margin-bottom: 1.5rem;">480 درهم</div>
+          
+          <div style="background: rgba(200,164,93,0.15); border: 1px dashed var(--gold); padding: 0.8rem; border-radius: 12px; margin-bottom: 1.5rem; color: var(--gold-light);">
+            ${lang === 'ar' ? 'استخدم كود الخصم: AJMANVIP للحصول على خصم 15%' : 'Use Discount Code: AJMANVIP for 15% OFF'}
+          </div>
+
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="quiz-add-btn">
+              <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> 
+              <span>${lang === 'ar' ? 'إضافة للسلة' : 'Add to Bag'}</span>
+            </button>
+            <button class="btn btn-outline" onclick="resetQuiz()">
+              <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> 
+              <span>${lang === 'ar' ? 'إعادة الاختبار' : 'Retake Quiz'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Story & Pillars -->
+  <section class="section" id="story">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">${lang === 'ar' ? 'فلسفتنا' : 'Our Philosophy'}</span>
+        <h2 class="section-title font-title gold-text">${lang === 'ar' ? 'لماذا عجمان لكجري؟' : 'Why AJMAN LUXURY?'}</h2>
+      </div>
+
+      <div class="story-grid">
+        <div class="story-card glass-panel">
+          <div class="story-icon">
+            <svg class="lux-icon lux-icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+          </div>
+          <h3 class="font-title" style="margin-bottom: 0.8rem;">${lang === 'ar' ? 'زيوت نادرة 100%' : '100% Rare Oils'}</h3>
+          <p style="color: var(--text-secondary);">${lang === 'ar' ? 'نستخلص أندر المكونات من جراس بفرنسا، وقمم الهيمالايا، وغابات العود الكامبودي.' : 'Extracting rare ingredients from Grasse, Himalayas, and Cambodian Oud forests.'}</p>
+        </div>
+
+        <div class="story-card glass-panel">
+          <div class="story-icon">
+            <svg class="lux-icon lux-icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="6 3 18 3 21 9 12 21 3 9 6 3"></polygon><line x1="3" y1="9" x2="21" y2="9"></line><line x1="12" y1="21" x2="9" y2="9"></line><line x1="12" y1="21" x2="15" y2="9"></line></svg>
+          </div>
+          <h3 class="font-title" style="margin-bottom: 0.8rem;">${lang === 'ar' ? 'تصميم وإتقان' : 'Crafted Mastery'}</h3>
+          <p style="color: var(--text-secondary);">${lang === 'ar' ? 'زجاجات كريستالية مصممة خصيصًا بتوقيع الصقر الإماراتي لتسليم الفخامة في أبهى صورها.' : 'Crystal bottles designed with the signature falcon emblem for ultimate luxury.'}</p>
+        </div>
+
+        <div class="story-card glass-panel">
+          <div class="story-icon">
+            <svg class="lux-icon lux-icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          </div>
+          <h3 class="font-title" style="margin-bottom: 0.8rem;">${lang === 'ar' ? 'ضمان الفخامة' : 'Luxury Promise'}</h3>
+          <p style="color: var(--text-secondary);">${lang === 'ar' ? 'عينة تجربة مجانية مرفقة مع كل زجاجة لضمان رضاك التام قبل فتح المنتج.' : 'Complimentary trial sample with every bottle to ensure total satisfaction.'}</p>
+        </div>
+      </div>
+    </div>
+  </section>
     `,
     lang: lang,
     isRTL: isRTL,
     currentPath: currentPath,
-    t: t
+    t: t,
+    products: products,
+    designSettings: designSettings
 }) %>

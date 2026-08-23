@@ -3,95 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<%= t.siteName %> - <%= t.footerTagline %>">
-    <meta name="keywords" content="AJMAN LUXURY, luxury perfumes, oud, extrait de parfum, UAE perfume">
-    <title><%= t.siteName %></title>
+    <meta name="description" content="<%= t.siteName %> — Haute Parfumerie & Luxury Essence. <%= t.footerTagline %>">
+    <meta name="keywords" content="AJMAN LUXURY, luxury perfumes, oud, extrait de parfum, UAE perfume, عجمان لكجري, عطور">
+    <title><%= t.siteName %> | Haute Parfumerie</title>
+    
     <link rel="icon" href="<%= designSettings.faviconPath || '/favicon.png' %>">
     <link rel="shortcut icon" href="<%= designSettings.faviconPath || '/favicon.png' %>">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- FontAwesome Icons & Stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="/css/style.css">
+    
     <style>
         :root {
-            --ink: <%- designSettings.ink %>;
-            --gold: <%- designSettings.gold %>;
-            --paper: <%- designSettings.paper %>;
-            --mist: <%- designSettings.mist %>;
-            --card-radius: <%- designSettings.cardRadius %>;
-            --hero-logo-opacity: <%- designSettings.heroOpacity %>;
-            --site-font: <%- designSettings.fontFamily %>;
+            --ink: <%- designSettings.ink || '#16110f' %>;
+            --gold: <%- designSettings.gold || '#c8a45d' %>;
+            --paper: <%- designSettings.paper || '#fffaf3' %>;
+            --mist: <%- designSettings.mist || '#f6ece4' %>;
+            --card-radius: <%- designSettings.cardRadius || '8px' %>;
+            --hero-logo-opacity: <%- designSettings.heroOpacity || '0.18' %>;
+            --site-font: <%- designSettings.fontFamily || '"Adobe Arabic Regular", "Segoe UI", sans-serif' %>;
         }
     </style>
 </head>
-<body class="theme-<%= designSettings.themeMode || 'classic' %>">
-    <div class="top-offer-bar">
-        <span><%= lang === 'ar' ? 'عروض حصرية على عطور عجمان لكجري' : 'Exclusive offers on AJMAN LUXURY perfumes' %></span>
-    </div>
+<body class="theme-<%= designSettings.themeMode || 'royal' %>">
 
-    <header class="site-header">
-        <nav class="site-nav" aria-label="Primary navigation">
-            <a class="brand" href="/?lang=<%= lang %>" aria-label="<%= t.siteName %>">
-                <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="brand-wordmark">
-            </a>
+    <!-- Luxury Splash Screen Loader with Perfume Mist Spray Motion -->
+    <div id="splash-screen" class="splash-screen">
+        <!-- Perfume Spray Mist Particles & Rays -->
+        <div class="perfume-mist-container">
+            <div class="mist-sparkle sp-1"></div>
+            <div class="mist-sparkle sp-2"></div>
+            <div class="mist-sparkle sp-3"></div>
+            <div class="mist-sparkle sp-4"></div>
+            <div class="mist-sparkle sp-5"></div>
+            <div class="mist-sparkle sp-6"></div>
+        </div>
 
-            <button class="mobile-menu-toggle" type="button" data-mobile-menu-toggle aria-expanded="false" aria-controls="mobile-mega-menu">
-                <span><%= lang === 'ar' ? 'القائمة' : 'Menu' %></span>
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 7h16M4 12h16M4 17h16"/>
-                </svg>
-            </button>
-
-            <ul class="nav-links" id="mobile-mega-menu" data-mobile-mega-menu>
-                <li><a href="/?lang=<%= lang %>"><%= t.home %></a></li>
-                <li><a href="/products?lang=<%= lang %>"><%= t.products %></a></li>
-                <li><a href="/scent-finder?lang=<%= lang %>"><%= t.scentFinder %></a></li>
-                <li><a href="/about?lang=<%= lang %>"><%= t.about %></a></li>
-                <li><a href="/contact?lang=<%= lang %>"><%= t.contact %></a></li>
-            </ul>
-
-            <div class="header-tools">
-                <div class="lang-switch" aria-label="Language switcher">
-                    <a href="<%= currentPath %>?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
-                    <a href="<%= currentPath %>?lang=ar" class="<%= lang === 'ar' ? 'active' : '' %>">عربي</a>
-                </div>
-                <div class="store-actions" aria-label="Store actions">
-                    <a href="/admin/login" class="admin-action" title="<%= lang === 'ar' ? 'لوحة التحكم' : 'Admin' %>" aria-label="<%= lang === 'ar' ? 'لوحة التحكم' : 'Admin' %>">
-                        <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2c-4.2 0-7.6 2.5-7.6 5.5 0 .8.6 1.5 1.5 1.5h12.2c.9 0 1.5-.7 1.5-1.5 0-3-3.4-5.5-7.6-5.5Z"/>
-                        </svg>
-                    </a>
-                    <a href="/contact?lang=<%= lang %>" class="support-action" title="<%= lang === 'ar' ? 'الدعم' : 'Support' %>" aria-label="<%= lang === 'ar' ? 'الدعم' : 'Support' %>">
-                        <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 3.5a8.5 8.5 0 0 0-8.5 8.5v3.1A2.9 2.9 0 0 0 6.4 18H8a1 1 0 0 0 1-1v-4.2a1 1 0 0 0-1-1H5.6A6.4 6.4 0 0 1 12 5.5a6.4 6.4 0 0 1 6.4 6.3H16a1 1 0 0 0-1 1V17a1 1 0 0 0 1 1h1.8a4.4 4.4 0 0 1-4.1 2.5H12a1 1 0 1 0 0 2h1.7a6.4 6.4 0 0 0 6.4-6.4V12A8.5 8.5 0 0 0 12 3.5Z"/>
-                        </svg>
-                    </a>
-                    <a href="/checkout?lang=<%= lang %>" class="bag-link" title="<%= lang === 'ar' ? 'سلة المشتريات' : 'Shopping cart' %>" aria-label="<%= lang === 'ar' ? 'سلة المشتريات' : 'Shopping cart' %>">
-                        <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M7 18.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm10 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM4.2 4l2.1 10.2A2.2 2.2 0 0 0 8.5 16h7.8a2.2 2.2 0 0 0 2.1-1.6l1.5-5.6A1.4 1.4 0 0 0 18.6 7H7.1L6.6 4.6A2 2 0 0 0 4.7 3H3a1 1 0 1 0 0 2h1.2Zm3.3 5h10.1l-1.2 4.8a.3.3 0 0 1-.3.2H8.5a.3.3 0 0 1-.3-.2L7.5 9Z"/>
-                        </svg>
-                        <span class="cart-label"><%= lang === 'ar' ? 'السلة' : 'Cart' %></span>
-                        <span class="cart-count" data-cart-count>0</span>
-                    </a>
+        <div class="splash-content">
+            <div class="bottle-spray-wrapper">
+                <!-- Golden Spray Nozzle & Mist Burst Cone -->
+                <div class="spray-nozzle-pulse"></div>
+                <div class="spray-burst-cone"></div>
+                <div class="splash-logo-wrapper perfume-bottle-motion">
+                    <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="splash-logo" onerror="this.onerror=null; this.src='/images/logo.png';" />
                 </div>
             </div>
-        </nav>
+            <div class="splash-title font-title gold-shimmer"><%= t.siteName %></div>
+            <div class="splash-subtitle"><%= lang === 'ar' ? 'نفحات الإكستري الفاخرة — HAUTE PARFUMERIE' : 'HAUTE PARFUMERIE & LUXURY ESSENCE' %></div>
+            <div class="splash-line-wrapper">
+                <div class="splash-line wave-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic Luxury Floating Particles Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Top Announcement Bar -->
+    <div class="top-bar">
+        <div class="container">
+            ✨ <%= lang === 'ar' ? 'شحن مجاني فاخر لجميع دول الخليج عند الطلب بأكثر من 500 د.إ | عينات مجانية مع كل طلب' : '✨ Complimentary Luxury Shipping across GCC for orders over AED 500 | Free Discovery Samples' %>
+        </div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <header class="navbar" id="site-navbar">
+        <div class="container">
+            <!-- Brand Logo in Perfume Bottle Frame -->
+            <a href="/?lang=<%= lang %>" class="brand-logo-container" aria-label="<%= t.siteName %>">
+                <div class="perfume-bottle-badge">
+                    <div class="bottle-nozzle-cap"></div>
+                    <div class="bottle-neck-ring"></div>
+                    <div class="bottle-body-frame">
+                        <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="brand-logo" onerror="this.onerror=null; this.src='/images/logo.png';" />
+                    </div>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <ul class="nav-links">
+                <li><a href="#home"><%= t.home %></a></li>
+                <li><a href="#collection"><%= lang === 'ar' ? 'المجموعة العطرية' : 'Collection' %></a></li>
+                <li><a href="#video-showcase"><%= lang === 'ar' ? 'التناغم العطري' : 'Symphony' %></a></li>
+                <li><a href="#pyramid"><%= lang === 'ar' ? 'نوتات العطر' : 'Fragrance Pyramid' %></a></li>
+                <li><a href="#quiz"><%= t.scentFinder %></a></li>
+                <li><a href="#boutiques"><%= t.contact %></a></li>
+            </ul>
+
+            <!-- Nav Actions -->
+            <div class="nav-actions">
+                <!-- Currency Selector -->
+                <select id="currency-select" class="currency-select" aria-label="Currency">
+                    <option value="AED" selected>AED (د.إ)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="SAR">SAR (ر.س)</option>
+                </select>
+
+                <!-- Language Switcher Button -->
+                <a href="<%= currentPath %>?lang=<%= lang === 'ar' ? 'en' : 'ar' %>" class="lang-switch">
+                    <%= lang === 'ar' ? 'English | EN' : 'العربية | AR' %>
+                </a>
+
+                <!-- Cart Button -->
+                <button class="icon-btn" id="cart-toggle-btn" aria-label="Cart">
+                    <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge" data-cart-count>0</span>
+                </button>
+            </div>
+        </div>
     </header>
 
-    <main>
+    <!-- Main View Content -->
+    <main id="main-content">
         <%- body %>
     </main>
 
-    <footer class="site-footer">
-        <div class="container footer-inner">
-            <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="footer-logo">
-            <p>&copy; 2026 <%= t.siteName %>. <%= t.footerTagline %>.</p>
-            <div class="footer-links">
-                <a href="/gallery?lang=<%= lang %>"><%= t.gallery %></a>
-                <a href="/blog?lang=<%= lang %>"><%= t.blog %></a>
-                <a href="/testimonials?lang=<%= lang %>"><%= t.testimonials %></a>
+    <!-- Shopping Cart Drawer -->
+    <div class="cart-drawer-overlay" id="cart-overlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h3 class="cart-title font-title"><%= lang === 'ar' ? 'سلة التسوق الفاخرة' : 'Luxury Shopping Bag' %></h3>
+                <button class="close-drawer" id="close-cart-btn" aria-label="Close">
+                    <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="cart-items" id="cart-items">
+                <!-- Rendered dynamically by main.js -->
+            </div>
+
+            <div class="cart-footer">
+                <div class="cart-total-row">
+                    <span><%= lang === 'ar' ? 'المجموع الفرعي:' : 'Subtotal:' %></span>
+                    <span id="cart-subtotal" class="gold-text">0 د.إ</span>
+                </div>
+                <a href="/checkout?lang=<%= lang %>" class="btn btn-primary" id="checkout-btn" style="width: 100%; text-align: center; justify-content: center;">
+                    <svg class="lux-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg> 
+                    <span><%= lang === 'ar' ? 'إتمام الطلب الفاخر' : 'Proceed to Checkout' %></span>
+                </a>
             </div>
         </div>
-    </footer>
+    </div>
 
+    <!-- Quick View Modal -->
+    <div class="modal-overlay" id="quick-view-modal">
+        <div class="modal-card">
+            <button class="close-modal" id="close-modal-btn"><i class="fas fa-times"></i></button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- WhatsApp Widget -->
     <div class="whatsapp-widget" data-whatsapp-widget data-lang="<%= lang %>">
         <section class="whatsapp-panel" data-whatsapp-panel hidden aria-label="<%= lang === 'ar' ? 'دردشة خدمة العملاء' : 'Customer care chat' %>">
             <div class="whatsapp-panel-header">
@@ -136,6 +213,61 @@
             </button>
         </div>
     </div>
+
+    <!-- Footer Section -->
+    <footer class="footer" id="boutiques">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/?lang=<%= lang %>" class="brand-logo-container">
+                        <div class="perfume-bottle-badge">
+                            <div class="bottle-nozzle-cap"></div>
+                            <div class="bottle-neck-ring"></div>
+                            <div class="bottle-body-frame">
+                                <img src="/images/logo-wordmark.png" alt="<%= t.siteName %> Logo" class="brand-logo" onerror="this.onerror=null; this.src='/images/logo.png';" />
+                            </div>
+                        </div>
+                    </a>
+                    <p><%= lang === 'ar' ? 'عجمان لكجري — دار عطور إكستريت فاخرة تترجم النوتات العربية والشرقية إلى ذكريات تخلّد الحضور.' : 'AJMAN LUXURY — Extrait de Parfum house translating Arabian notes into unforgettable scents.' %></p>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading font-title"><%= lang === 'ar' ? 'معارضنا ومقراتنا' : 'Boutiques & Presence' %></h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt gold-icon"></i> <%= lang === 'ar' ? 'عجمان — شارع النخيل الفاخر، الإمارات' : 'Ajman — Al Nakheel St, UAE' %></li>
+                        <li><i class="fas fa-map-marker-alt gold-icon"></i> <%= lang === 'ar' ? 'دبي — فاشن أفينيو، دبي مول' : 'Dubai — Fashion Avenue, Dubai Mall' %></li>
+                        <li><i class="fas fa-map-marker-alt gold-icon"></i> <%= lang === 'ar' ? 'الرياض — طريق العليا الفاخر' : 'Riyadh — Olaya Luxury District' %></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading font-title"><%= lang === 'ar' ? 'روابط سريعة' : 'Quick Links' %></h4>
+                    <ul class="footer-links">
+                        <li><a href="#collection"><%= lang === 'ar' ? 'المجموعة العطرية' : 'Collection' %></a></li>
+                        <li><a href="#pyramid"><%= lang === 'ar' ? 'نوتات العطر' : 'Fragrance Pyramid' %></a></li>
+                        <li><a href="#quiz"><%= t.scentFinder %></a></li>
+                        <li><a href="#story"><%= t.learnMore %></a></li>
+                        <li><a href="/admin/login"><%= lang === 'ar' ? 'لوحة التحكم' : 'Admin Area' %></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading font-title"><%= lang === 'ar' ? 'وسائل الدفع والضمان' : 'Payment & Security' %></h4>
+                    <div class="payment-icons">
+                        <i class="fab fa-cc-visa fa-2x"></i>
+                        <i class="fab fa-cc-mastercard fa-2x"></i>
+                        <i class="fab fa-apple-pay fa-2x"></i>
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span><%= lang === 'ar' ? 'جميع الحقوق محفوظة © 2026 عجمان لكجري (AJMAN LUXURY).' : 'All Rights Reserved © 2026 AJMAN LUXURY.' %></span>
+                <div>Haute Parfumerie & Luxury Essence</div>
+            </div>
+        </div>
+    </footer>
 
     <script src="/js/main.js"></script>
 </body>
