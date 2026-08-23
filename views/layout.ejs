@@ -7,13 +7,13 @@
     <meta name="keywords" content="AJMAN LUXURY, luxury perfumes, oud, extrait de parfum, UAE perfume, عجمان لكجري, عطور">
     <title><%= t.siteName %> | Haute Parfumerie</title>
     
-    <link rel="icon" href="<%= designSettings.faviconPath || '/favicon.png' %>">
-    <link rel="shortcut icon" href="<%= designSettings.faviconPath || '/favicon.png' %>">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" href="<%= designSettings.faviconPath || '/favicon.png' %>?v=2.1">
+    <link rel="shortcut icon" href="<%= designSettings.faviconPath || '/favicon.png' %>?v=2.1">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2.1">
     
-    <!-- FontAwesome Icons & Stylesheet -->
+    <!-- FontAwesome Icons & Cache-Busted Stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=2.1">
     
     <style>
         :root {
@@ -47,7 +47,7 @@
                 <div class="spray-nozzle-pulse"></div>
                 <div class="spray-burst-cone"></div>
                 <div class="splash-logo-wrapper perfume-bottle-motion">
-                    <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="splash-logo" onerror="this.onerror=null; this.src='/images/logo.png';" />
+                    <img src="/images/logo-wordmark.png?v=2.1" alt="<%= t.siteName %>" class="splash-logo" onerror="this.onerror=null; this.src='/images/logo.png?v=2.1';" />
                 </div>
             </div>
             <div class="splash-title font-title gold-shimmer"><%= t.siteName %></div>
@@ -77,7 +77,7 @@
                     <div class="bottle-nozzle-cap"></div>
                     <div class="bottle-neck-ring"></div>
                     <div class="bottle-body-frame">
-                        <img src="/images/logo-wordmark.png" alt="<%= t.siteName %>" class="brand-logo" onerror="this.onerror=null; this.src='/images/logo.png';" />
+                        <img src="/images/logo-wordmark.png?v=2.1" alt="<%= t.siteName %>" class="brand-logo" onerror="this.onerror=null; this.src='/images/logo.png?v=2.1';" />
                     </div>
                 </div>
             </a>
@@ -224,7 +224,7 @@
                             <div class="bottle-nozzle-cap"></div>
                             <div class="bottle-neck-ring"></div>
                             <div class="bottle-body-frame">
-                                <img src="/images/logo-wordmark.png" alt="<%= t.siteName %> Logo" class="brand-logo" onerror="this.onerror=null; this.src='/images/logo.png';" />
+                                <img src="/images/logo-wordmark.png?v=2.1" alt="<%= t.siteName %> Logo" class="brand-logo" onerror="this.onerror=null; this.src='/images/logo.png?v=2.1';" />
                             </div>
                         </div>
                     </a>
@@ -269,6 +269,16 @@
         </div>
     </footer>
 
-    <script src="/js/main.js"></script>
+    <!-- Unregister legacy service workers to force immediate refresh -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+    </script>
+    <script src="/js/main.js?v=2.1"></script>
 </body>
 </html>
