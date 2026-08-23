@@ -903,6 +903,84 @@ body {
   font-size: 0.85rem;
 }
 
+/* Scent Profile Radar Styles */
+.scent-radar-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  margin: 0.7rem 0 0.4rem 0;
+  background: rgba(200, 164, 93, 0.08);
+  border: 1px dashed var(--border-glass);
+  border-radius: 12px;
+  color: var(--gold-light);
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.scent-radar-toggle-btn:hover, .scent-radar-toggle-btn.active {
+  background: rgba(200, 164, 93, 0.18);
+  border-color: var(--gold-primary);
+  border-style: solid;
+  box-shadow: 0 0 12px rgba(200, 164, 93, 0.2);
+}
+
+.scent-radar-panel {
+  display: none;
+  background: rgba(13, 10, 9, 0.75);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  padding: 0.9rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.6rem;
+  animation: fadeIn 0.35s ease forwards;
+}
+
+.scent-radar-panel.active {
+  display: block;
+}
+
+.radar-metric {
+  margin-bottom: 0.6rem;
+}
+
+.radar-metric:last-child {
+  margin-bottom: 0;
+}
+
+.radar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.radar-label strong {
+  color: var(--gold-light);
+  font-size: 0.82rem;
+}
+
+.radar-bar-bg {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.radar-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), var(--gold-light));
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(200, 164, 93, 0.5);
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .product-footer {
   display: flex;
   align-items: center;

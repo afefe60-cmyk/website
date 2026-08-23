@@ -409,18 +409,100 @@ function closeCartDrawer() {
     if (overlay) overlay.classList.remove('active');
 }
 
-/* Quick View Modal Handler */
+/* Scent Radar Toggle */
+function toggleRadar(productId) {
+    const panel = document.getElementById(`radar-${productId}`);
+    if (!panel) return;
+    
+    const isOpening = !panel.classList.contains('active');
+    panel.classList.toggle('active', isOpening);
+    
+    if (window.event && window.event.currentTarget) {
+        window.event.currentTarget.classList.toggle('active', isOpening);
+    }
+}
+
+/* Quick View Modal Handler with Scent Radar */
+const productDB = {
+    council: {
+        name: { ar: 'كاونسل', en: 'Council' },
+        price: { ar: '480 درهم', en: 'AED 480' },
+        img: '/images/products/council.jpeg',
+        notes: { ar: 'زعفران، برغموت، عود، عنبر، جلد', en: 'Saffron, Bergamot, Oud, Amber, Leather' },
+        radar: { sillage: '96%', longevity: '98%', depth: '95%', warmth: '92%' }
+    },
+    'first-lady': {
+        name: { ar: 'فيرست ليدي', en: 'First Lady' },
+        price: { ar: '450 درهم', en: 'AED 450' },
+        img: '/images/products/first-lady.jpeg',
+        notes: { ar: 'كمثرى، ورد، ياسمين، فانيلا، مسك', en: 'Pear, Rose, Jasmine, Vanilla, Musk' },
+        radar: { sillage: '86%', longevity: '90%', depth: '94%', warmth: '82%' }
+    },
+    president: {
+        name: { ar: 'بريزدنت', en: 'President' },
+        price: { ar: '520 درهم', en: 'AED 520' },
+        img: '/images/products/president.jpeg',
+        notes: { ar: 'جريب فروت، هيل، أرز، عنبر رمادي', en: 'Grapefruit, Cardamom, Cedar, Ambergris' },
+        radar: { sillage: '94%', longevity: '96%', depth: '92%', warmth: '88%' }
+    },
+    parliament: {
+        name: { ar: 'بارليامنت', en: 'Parliament' },
+        price: { ar: '500 درهم', en: 'AED 500' },
+        img: '/images/products/parliament.jpeg',
+        notes: { ar: 'برغموت، ورد أبيض، آيرس، مسك', en: 'Bergamot, White Rose, Iris, Musk' },
+        radar: { sillage: '84%', longevity: '88%', depth: '90%', warmth: '80%' }
+    },
+    chairman: {
+        name: { ar: 'تشيرمان', en: 'Chairman' },
+        price: { ar: '540 درهم', en: 'AED 540' },
+        img: '/images/products/chairman.jpeg',
+        notes: { ar: 'ليمون، نعناع، لافندر، نفحات بحرية', en: 'Lemon, Mint, Lavender, Marine Notes' },
+        radar: { sillage: '90%', longevity: '92%', depth: '85%', warmth: '95%' }
+    }
+};
+
 function openQuickView(productId) {
     const modal = document.getElementById('quick-view-modal');
     const content = document.getElementById('modal-content');
     if (!modal || !content) return;
 
     const isAr = currentLang() === 'ar';
+    const prod = productDB[productId] || {
+        name: { ar: 'عطر فاخر', en: 'Luxury Perfume' },
+        price: { ar: '480 درهم', en: 'AED 480' },
+        img: '/images/products/council.jpeg',
+        notes: { ar: 'زيوت نادرة وخلاصات نقية', en: 'Rare oils and pure extracts' },
+        radar: { sillage: '90%', longevity: '92%', depth: '90%', warmth: '85%' }
+    };
+
     content.innerHTML = `
-        <div style="text-align: center;">
-            <h2 class="font-title gold-text" style="font-size: 2rem; margin-bottom: 0.5rem;">${isAr ? 'عجمان لكجري — عطر فاخر' : 'AJMAN LUXURY'}</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${isAr ? 'تركيز إكستريت دي بارفان بثبات عالي ونوتات نيش راقية.' : 'Extrait de Parfum concentration with exceptional longevity.'}</p>
-            <a href="/product/${productId}?lang=${currentLang()}" class="btn btn-primary">${isAr ? 'صفحة العطر الكاملة' : 'View Full Details'}</a>
+        <div style="display: grid; grid-template-columns: minmax(160px, 220px) 1fr; gap: 2rem; align-items: center;">
+            <img src="${prod.img}" alt="${prod.name[currentLang()]}" style="width: 100%; border-radius: 16px; border: 1px solid var(--border-glass); object-fit: cover;" onerror="this.onerror=null; this.src='/images/logo.png';">
+            <div>
+                <h2 class="font-title gold-text" style="font-size: 1.8rem; margin-bottom: 0.3rem;">${prod.name[currentLang()]}</h2>
+                <div class="gold-text" style="font-size: 1.3rem; font-weight: bold; margin-bottom: 0.8rem;">${prod.price[currentLang()]}</div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                    <strong>${isAr ? 'النوتات الرئيسية:' : 'Key Notes:'}</strong> ${prod.notes[currentLang()]}
+                </p>
+
+                <!-- Mini Radar in Quick View -->
+                <div style="background: rgba(13,10,9,0.6); padding: 0.8rem; border-radius: 12px; border: 1px solid var(--border-glass); margin-bottom: 1.2rem;">
+                    <div style="font-size: 0.8rem; color: var(--gold-light); font-weight: bold; margin-bottom: 0.5rem;"><i class="fas fa-chart-pie gold-icon"></i> ${isAr ? 'رادار الطابع العطري:' : 'Scent Profile Radar:'}</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; font-size: 0.78rem;">
+                        <div>${isAr ? 'الفوحان:' : 'Sillage:'} <strong class="gold-text">${prod.radar.sillage}</strong></div>
+                        <div>${isAr ? 'الثبات:' : 'Longevity:'} <strong class="gold-text">${prod.radar.longevity}</strong></div>
+                        <div>${isAr ? 'العمق:' : 'Depth:'} <strong class="gold-text">${prod.radar.depth}</strong></div>
+                        <div>${isAr ? 'الدفء:' : 'Warmth:'} <strong class="gold-text">${prod.radar.warmth}</strong></div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary btn-sm" onclick="addToCart({ id: '${productId}', name: '${prod.name[currentLang()]}', price: '${prod.price[currentLang()]}', image: '${prod.img}' }); closeModal();">
+                        <i class="fas fa-shopping-bag"></i> ${isAr ? 'أضف للسلة' : 'Add to Bag'}
+                    </button>
+                    <a href="/product/${productId}?lang=${currentLang()}" class="btn btn-outline btn-sm">${isAr ? 'التفاصيل الكاملة' : 'Full Details'}</a>
+                </div>
+            </div>
         </div>
     `;
     modal.classList.add('active');

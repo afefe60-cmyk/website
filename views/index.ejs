@@ -112,6 +112,42 @@
                 <small><strong>${lang === 'ar' ? 'المكونات:' : 'Notes:'}</strong> ${product.topNotes || ''}</small>
               </div>
 
+              <!-- Scent Profile Radar Toggle & Panel -->
+              <button type="button" class="scent-radar-toggle-btn" onclick="toggleRadar('${product.id}')" aria-label="Scent Radar">
+                <i class="fas fa-chart-pie gold-icon"></i> <span>${lang === 'ar' ? 'رادار الطابع العطري' : 'Visual Scent Radar'}</span>
+              </button>
+
+              <div class="scent-radar-panel" id="radar-${product.id}">
+                <div class="radar-metric">
+                  <div class="radar-label">
+                    <span>${lang === 'ar' ? 'الفوحان (Sillage)' : 'Sillage'}</span>
+                    <strong>${product.id === 'council' ? '96%' : product.id === 'president' ? '94%' : product.id === 'chairman' ? '90%' : product.id === 'first-lady' ? '86%' : '84%'}</strong>
+                  </div>
+                  <div class="radar-bar-bg"><div class="radar-bar-fill" style="width: ${product.id === 'council' ? '96%' : product.id === 'president' ? '94%' : product.id === 'chairman' ? '90%' : product.id === 'first-lady' ? '86%' : '84%'}"></div></div>
+                </div>
+                <div class="radar-metric">
+                  <div class="radar-label">
+                    <span>${lang === 'ar' ? 'الثبات (Longevity)' : 'Longevity'}</span>
+                    <strong>${product.id === 'council' ? '98%' : product.id === 'president' ? '96%' : product.id === 'chairman' ? '92%' : product.id === 'first-lady' ? '90%' : '88%'}</strong>
+                  </div>
+                  <div class="radar-bar-bg"><div class="radar-bar-fill" style="width: ${product.id === 'council' ? '98%' : product.id === 'president' ? '96%' : product.id === 'chairman' ? '92%' : product.id === 'first-lady' ? '90%' : '88%'}"></div></div>
+                </div>
+                <div class="radar-metric">
+                  <div class="radar-label">
+                    <span>${product.id === 'first-lady' || product.id === 'parliament' ? (lang === 'ar' ? 'الزهور والنعومة' : 'Floral & Softness') : (lang === 'ar' ? 'عمق العود والأخشاب' : 'Oud & Woods Depth')}</span>
+                    <strong>${product.id === 'council' ? '95%' : product.id === 'president' ? '92%' : product.id === 'chairman' ? '85%' : product.id === 'first-lady' ? '94%' : '90%'}</strong>
+                  </div>
+                  <div class="radar-bar-bg"><div class="radar-bar-fill" style="width: ${product.id === 'council' ? '95%' : product.id === 'president' ? '92%' : product.id === 'chairman' ? '85%' : product.id === 'first-lady' ? '94%' : '90%'}"></div></div>
+                </div>
+                <div class="radar-metric">
+                  <div class="radar-label">
+                    <span>${product.id === 'chairman' ? (lang === 'ar' ? 'الانتعاش البحري' : 'Marine Freshness') : (lang === 'ar' ? 'الدفء والعنبر' : 'Amber & Warmth')}</span>
+                    <strong>${product.id === 'council' ? '92%' : product.id === 'president' ? '88%' : product.id === 'chairman' ? '95%' : product.id === 'first-lady' ? '82%' : '80%'}</strong>
+                  </div>
+                  <div class="radar-bar-bg"><div class="radar-bar-fill" style="width: ${product.id === 'council' ? '92%' : product.id === 'president' ? '88%' : product.id === 'chairman' ? '95%' : product.id === 'first-lady' ? '82%' : '80%'}"></div></div>
+                </div>
+              </div>
+
               <div class="product-footer">
                 <span class="product-price">${product.price}</span>
                 <button class="btn btn-primary btn-sm" data-add-to-cart data-product-id="${product.id}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-price-fils="${product.priceFils}" data-product-image="${product.image || ''}">
